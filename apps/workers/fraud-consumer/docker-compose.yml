@@ -1,0 +1,25 @@
+services:
+  fcpay-fraud-consumer:
+    container_name: fcpay-fraud-consumer
+    build:
+      context: ../../..
+      dockerfile: apps/workers/fraud-consumer/Dockerfile
+    restart: always
+
+    ports:
+      - 8082:8082 # porta  do debugger
+
+    environment:
+      - NODE_ENV=true
+      - DB_HOST=fcpay-postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=fcpay
+
+    networks:
+      - fcpay_network
+
+networks:
+  fcpay_network: # ficar ligado no nome
+    external: true

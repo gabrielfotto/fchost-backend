@@ -1,8 +1,8 @@
 {
-	"extends": "../../tsconfig.json",
+	"extends": "../../../tsconfig.json",
 	"compilerOptions": {
 		"declaration": false,
-		"outDir": "../../dist/apps/fraud-consumer"
+		"outDir": "../../../dist/apps/workers/fraud-consumer"
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist", "test", "**/*spec.ts"]

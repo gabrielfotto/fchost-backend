@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common'
-import { ConsumerFraudService } from './app.service'
+import { FraudConsumerService } from './app.service'
 
 @Controller()
-export class ConsumerFraudController {
-	constructor(private readonly consumerFraudService: ConsumerFraudService) {}
+export class FraudConsumerController {
+	constructor(private readonly fraudConsumerService: FraudConsumerService) {}
 
 	@Get()
 	getHello(): string {
-		return this.consumerFraudService.getHello()
+		return this.fraudConsumerService.getHello()
 	}
 }

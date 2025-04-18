@@ -1,10 +1,22 @@
 import { Module } from '@nestjs/common'
-import { ConsumerBillingController } from './app.controller'
-import { ConsumerBillingService } from './app.service'
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
 @Module({
-	imports: [],
-	controllers: [ConsumerBillingController],
-	providers: [ConsumerBillingService],
+	imports: [
+		RabbitMQModule.forRoot({
+			exchanges: [
+				{
+					name: 'exchange1',
+					type: 'topic',
+				},
+			],
+			uri: 'amqp://rabbitmq:rabbitmq@localhost:5672',
+			connectionInitOptions: {
+				wait: false,
+			},
+		}),
+	],
+	controllers: [],
+	providers: [],
 })
-export class ConsumerBillingModule {}
+export class BillingConsumerModule {}

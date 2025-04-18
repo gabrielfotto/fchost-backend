@@ -1,10 +1,26 @@
 import { Module } from '@nestjs/common'
-import { ConsumerFraudController } from './app.controller'
-import { ConsumerFraudService } from './app.service'
+
+import { FraudConsumerController } from './app.controller'
+import { FraudConsumerService } from './app.service'
+
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
 @Module({
-	imports: [],
-	controllers: [ConsumerFraudController],
-	providers: [ConsumerFraudService],
+	imports: [
+		RabbitMQModule.forRoot({
+			exchanges: [
+				{
+					name: 'exchange1',
+					type: 'topic',
+				},
+			],
+			uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
+			connectionInitOptions: {
+				wait: false,
+			},
+		}),
+	],
+	controllers: [],
+	providers: [],
 })
-export class ConsumerFraudModule {}
+export class FraudConsumerModule {}

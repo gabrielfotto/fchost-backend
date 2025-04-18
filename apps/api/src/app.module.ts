@@ -6,11 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 
 import AuthGuard from './shared/guards/auth.guard'
 
-import { dataSourceOptionsFn } from '@libs/db/data-source'
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
-
 import AccountsModule from './domains/accounts/accounts.module'
 import InvoicesModule from './domains/invoices/invoices.module'
+
+import { dataSourceOptionsFn } from '@libs/db/data-source'
+import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 
 @Module({
 	imports: [

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
-import { PublisherBillingController } from './app.controller'
-import { PublisherBillingService } from './app.service'
+
+import { BillingPublisherController } from './app.controller'
+import { BillingPublisherService } from './app.service'
 
 @Module({
 	imports: [],
-	controllers: [PublisherBillingController],
-	providers: [PublisherBillingService],
+	controllers: [BillingPublisherController],
+	providers: [BillingPublisherService],
 })
-export class PublisherBillingModule {}
+export class BillingPublisherModule {}

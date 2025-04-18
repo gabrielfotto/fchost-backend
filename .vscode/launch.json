@@ -1,0 +1,25 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "fcpay-gateway-api", // Nome descritivo para a configuração
+			"type": "node", // Tipo de depurador (Node.js)
+			"request": "attach", // Queremos anexar a um processo existente
+			"port": 8081, // Porta do debugger EXPOSTA NO HOST (mapeada no docker-compose)
+			"address": "0.0.0.0", // Onde o debugger está escutando no HOST (Docker expõe em localhost)
+
+			// Mapeamento crucial para os breakpoints funcionarem corretamente:
+			"localRoot": "${workspaceFolder}", // Caminho do seu código na sua máquina local
+			"remoteRoot": "/home/node/app", // Caminho do código DENTRO do container (definido em working_dir/volumes)
+
+			"restart": true, // Tenta reconectar automaticamente se a conexão cair
+			"sourceMaps": true, // Habilita source maps (útil se você usa TypeScript ou transpilers)
+			"skipFiles": [
+				// Opcional: Arquivos para não entrar durante o debug
+				"<node_internals>/**",
+				"node_modules/**"
+			]
+		}
+		// Você pode adicionar outras configurações de debug aqui se necessário
+	]
+}

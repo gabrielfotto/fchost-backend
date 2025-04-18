@@ -1,0 +1,49 @@
+services:
+  api:
+    container_name: fcpay-api
+    build: .
+    restart: always
+
+    ports:
+      - 8080:8080 # porta default da api
+      - 8081:8081 # porta  do debugger
+
+    working_dir: /home/node/app
+    volumes:
+      - .:/home/node/app
+
+    command: npm run start:debug
+
+  postgres:
+    container_name: fcpay-db
+    image: postgres:16-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fcpay
+    volumes:
+      - fcpay_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   container_name: fcpay-rabbitmq
+  #   ports:
+  #     - '5672:5672' # Porta padrão para conexão (ex: via app)
+  #     - '15672:15672' # Porta para acessar o painel web
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: admin
+  #     RABBITMQ_DEFAULT_PASS: admin
+  #   volumes:
+  #     - fcpay_rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  fcpay_postgres_data:
+  fcpay_rabbitmq_data:

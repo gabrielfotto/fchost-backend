@@ -1,0 +1,25 @@
+root = true
+
+[*]
+charset = utf-8
+quote_type = single
+guidelines = 120
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{js,ts,vue}]
+indent_style = tab
+indent_size = 2
+tab_width = 2
+
+[*.yml]
+indent_style = space
+indent_size = 2
+
+[*.txt]
+indent_style = tab
+indent_size = 2
+
+[*.{diff,md}]
+trim_trailing_whitespace = false

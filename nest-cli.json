@@ -1,0 +1,68 @@
+{
+	"$schema": "https://json.schemastore.org/nest-cli",
+	"collection": "@nestjs/schematics",
+	"sourceRoot": "apps/api/src",
+	"compilerOptions": {
+		"deleteOutDir": true,
+		"webpack": true,
+		"tsConfigPath": "apps/api/tsconfig.app.json"
+	},
+	"projects": {
+		"api": {
+			"type": "application",
+			"root": "apps/api",
+			"entryFile": "main",
+			"sourceRoot": "apps/api/src",
+			"compilerOptions": {
+				"tsConfigPath": "apps/api/tsconfig.app.json"
+			}
+		},
+		"billing-consumer": {
+			"type": "application",
+			"root": "apps/workers/billing/consumer",
+			"entryFile": "main",
+			"sourceRoot": "apps/workers/billing/consumer/src",
+			"compilerOptions": {
+				"tsConfigPath": "apps/workers/billing/consumer/tsconfig.app.json"
+			}
+		},
+		"billing-publisher": {
+			"type": "application",
+			"root": "apps/workers/billing/publisher",
+			"entryFile": "main",
+			"sourceRoot": "apps/workers/billing/publisher/src",
+			"compilerOptions": {
+				"tsConfigPath": "apps/workers/billing/publisher/tsconfig.app.json"
+			}
+		},
+		"fraud-consumer": {
+			"type": "application",
+			"root": "apps/workers/fraud-consumer",
+			"entryFile": "main",
+			"sourceRoot": "apps/workers/fraud-consumer/src",
+			"compilerOptions": {
+				"tsConfigPath": "apps/workers/fraud-consumer/tsconfig.app.json"
+			}
+		},
+		"db": {
+			"type": "library",
+			"root": "libs/db",
+			"entryFile": "index",
+			"sourceRoot": "libs/db/src",
+			"compilerOptions": {
+				"tsConfigPath": "libs/db/tsconfig.lib.json"
+			}
+		},
+		"shared": {
+			"type": "library",
+			"root": "libs/shared",
+			"entryFile": "index",
+			"sourceRoot": "libs/shared/src",
+			"compilerOptions": {
+				"tsConfigPath": "libs/shared/tsconfig.lib.json"
+			}
+		}
+	},
+	"monorepo": true,
+	"root": "apps/api"
+}

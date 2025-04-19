@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
 
+import { Public } from '@api/shared/decorators'
 import { CreateAccountInputDTO } from './commands/create-account/create-account.dtos'
 import { CreateAccountCommand } from './commands/create-account/create-account.handler'
 
@@ -9,6 +10,7 @@ import { CreateAccountCommand } from './commands/create-account/create-account.h
 export default class AccountsCommandsController {
 	constructor(private readonly commandBus: CommandBus) {}
 
+	@Public()
 	@Post()
 	async create(@Body() dto: CreateAccountInputDTO) {
 		const command = plainToInstance(CreateAccountCommand, dto)

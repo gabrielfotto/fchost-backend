@@ -10,12 +10,13 @@ services:
       - 8080:8080 # porta default da api
       - 8081:8081 # porta  do debugger
 
-    # working_dir: /home/node/app
-    # volumes:
-    #   - ./../..:/home/node/app
+    working_dir: /usr/src/app
+    volumes:
+      - ./src:/usr/src/app/apps/api/src
 
     environment:
-      - NODE_ENV=true
+      - APP_NAME=api
+      - NODE_ENV=dev
       - DB_HOST=fcpay-postgres
       - DB_PORT=5432
       - DB_USERNAME=postgres
@@ -25,7 +26,10 @@ services:
     # develop:
     #   watch:
     #     - path: .
-    #       action: restart
+    #       action: sync+restart
+    #       target: /usr/src/app/apps/api
+    # exec:
+    #   command: npm run start:prod:api
 
     networks:
       - fcpay_network

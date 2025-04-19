@@ -1,8 +1,10 @@
 import 'dotenv/config'
-import { DataSource, DataSourceOptions } from 'typeorm'
-import { ConfigService } from '@nestjs/config'
+
 import { existsSync } from 'fs'
 import { join } from 'path'
+
+import { DataSource, DataSourceOptions } from 'typeorm'
+import { ConfigService } from '@nestjs/config'
 
 import Entities from './entities'
 
@@ -23,7 +25,7 @@ export function dataSourceOptionsFn(
 	if (!(config instanceof ConfigService) && nodeEnv === 'dev') {
 		dbHost = 'localhost'
 	} else if (config instanceof ConfigService && nodeEnv === 'dev') {
-		dbHost = 'postgres'
+		// dbHost = 'fcpay-postgres'
 	}
 
 	// Caminhos possíveis

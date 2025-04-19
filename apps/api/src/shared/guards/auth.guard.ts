@@ -9,15 +9,26 @@ import { Repository } from 'typeorm'
 
 import { AccountEntity } from '@libs/db/entities'
 import { IRequest } from '../interfaces/request.interfaces'
+import { Reflector } from '@nestjs/core'
 
 @Injectable()
 export default class AuthGuard implements CanActivate {
 	constructor(
 		@InjectRepository(AccountEntity)
 		private accountsRepository: Repository<AccountEntity>,
+		private readonly reflector: Reflector,
 	) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
+		const isPublic = this.reflector.get<boolean>(
+			'isPublic',
+			context.getHandler(),
+		)
+
+		if (isPublic) {
+			return true
+		}
+
 		const request = context.switchToHttp().getRequest<IRequest>()
 		const xApiKey = request.headers['x-api-key']
 

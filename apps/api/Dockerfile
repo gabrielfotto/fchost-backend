@@ -19,5 +19,13 @@ RUN npm run build
 # Expor a porta
 EXPOSE 8080
 
-# Iniciar a aplicação
-CMD ["npm", "run", "start:prod:api"]
+# Copiar o entrypoint
+COPY docker-entrypoint-apps.sh /usr/local/bin/docker-entrypoint-apps.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint-apps.sh
+
+# Rodar o entrypoint customizado
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint-apps.sh"]
+
+# Somente para ambiente DEV
+# CMD ["npm", "run", "start:debug:api"]
+

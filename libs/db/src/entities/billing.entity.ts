@@ -8,11 +8,10 @@ import {
 	UpdateDateColumn,
 } from 'typeorm'
 
-// import { AccountEntity } from '.'
-import { InvoiceEntity } from '.'
+import { AccountEntity } from '.'
 
 @Entity({ name: 'fraud-history' })
-export default class FraudHistoryEntity {
+export default class BillingEntity {
 	@PrimaryGeneratedColumn()
 	id: number
 

@@ -1,8 +1,22 @@
-import { Module } from '@nestjs/common';
-import { SharedService } from './shared.service';
+import { Module } from '@nestjs/common'
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
 @Module({
-  providers: [SharedService],
-  exports: [SharedService],
+	imports: [
+		// RabbitMQModule.forRoot({
+		// 	exchanges: [
+		// 		{
+		// 			name: 'default',
+		// 			type: 'topic',
+		// 		},
+		// 	],
+		// 	uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
+		// 	connectionInitOptions: {
+		// 		wait: false,
+		// 	},
+		// }),
+	],
+	providers: [],
+	exports: [],
 })
-export class SharedModule {}
+export default class SharedModule {}

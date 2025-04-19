@@ -4,12 +4,15 @@ import {
 	Entity,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm'
 
-import { EInvoiceStatus } from '../../../shared/src/enums'
+import { EInvoiceStatus } from '../enums'
+
 import { AccountEntity } from '.'
+import FraudHistoryEntity from './fraud-history.entity'
 
 @Entity({ name: 'invoices' })
 export default class InvoiceEntity {
@@ -38,6 +41,14 @@ export default class InvoiceEntity {
 
 	@Column()
 	cardLastDigits: string
+
+	@Column({ type: 'boolean' })
+	isProcessed: boolean
+
+	@OneToMany(() => FraudHistoryEntity, fraud => fraud.invoice, {
+		cascade: true,
+	})
+	fraudHistory: FraudHistoryEntity[]
 
 	@CreateDateColumn()
 	createdAt: Date

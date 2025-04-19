@@ -25,6 +25,9 @@ export default class AccountEntity {
 	@Column({ type: 'decimal' })
 	balance: number
 
+	@Column({ type: 'boolean' })
+	isSuspicious: boolean
+
 	@CreateDateColumn()
 	createdAt: Date
 

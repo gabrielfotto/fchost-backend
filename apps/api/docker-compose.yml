@@ -31,6 +31,8 @@ services:
     # exec:
     #   command: npm run start:prod:api
 
+    command: npm run start:debug:api
+
     networks:
       - fcpay_network
 

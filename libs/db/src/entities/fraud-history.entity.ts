@@ -10,7 +10,7 @@ import {
 } from 'typeorm'
 
 import { InvoiceEntity } from '.'
-import { EFraudReason } from '../../../shared/src/enums'
+import { EFraudReason } from '../enums'
 
 @Entity({ name: 'fraud-history' })
 export default class FraudHistoryEntity {

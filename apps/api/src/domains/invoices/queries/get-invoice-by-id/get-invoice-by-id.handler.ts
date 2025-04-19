@@ -18,8 +18,6 @@ export default class GetInvoiceByIdQueryHandler
 	implements IQueryHandler<GetInvoiceByIdQuery, GetInvoiceByIdOutputDTO | null>
 {
 	constructor(
-		@InjectRepository(AccountEntity)
-		private readonly accountsRepository: Repository<AccountEntity>,
 		@InjectRepository(InvoiceEntity)
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
 	) {}

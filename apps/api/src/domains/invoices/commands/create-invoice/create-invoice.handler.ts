@@ -2,6 +2,7 @@ import { NotFoundException } from '@nestjs/common'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { DataSource } from 'typeorm'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
@@ -26,6 +27,7 @@ export default class CreateInvoiceCommandHandler
 	constructor(
 		@InjectDataSource()
 		private readonly dataSource: DataSource,
+		private readonly amqpConnection: AmqpConnection,
 	) {}
 
 	async execute(

@@ -1,0 +1,5 @@
+export enum EFraudReason {
+	SUSPICIOUS_ACCOUNT,
+	UNUSUAL_PATTERN,
+	FREQUENT_HIGH_VALUE,
+}

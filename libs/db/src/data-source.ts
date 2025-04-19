@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 import { existsSync } from 'fs'
-import { join } from 'path'
+import { join, dirname } from 'path'
 
 import { DataSource, DataSourceOptions } from 'typeorm'
 import { ConfigService } from '@nestjs/config'
@@ -16,6 +16,19 @@ function resolveValidPath(primary: string, fallback: string): string {
 	return existsSync(primary) ? primary : fallback
 }
 
+export function findDistRoot(startDir: string = __dirname): string {
+	let currentDir = startDir
+
+	while (
+		!existsSync(join(currentDir, 'libs')) &&
+		dirname(currentDir) !== currentDir
+	) {
+		currentDir = dirname(currentDir)
+	}
+
+	return currentDir
+}
+
 export function dataSourceOptionsFn(
 	config: CustomConfigType | ConfigService,
 ): DataSourceOptions {
@@ -24,15 +37,13 @@ export function dataSourceOptionsFn(
 
 	if (!(config instanceof ConfigService) && nodeEnv === 'dev') {
 		dbHost = 'localhost'
-	} else if (config instanceof ConfigService && nodeEnv === 'dev') {
-		// dbHost = 'fcpay-postgres'
 	}
 
-	// Caminhos possíveis
-	const baseWithLibs = join(__dirname, '..', '..', 'libs', 'db', 'src')
-	const baseWithoutLibs = join(__dirname, '..', '..', 'db', 'src')
+	// Usa findDistRoot para achar o dist/libs independente da estrutura
+	const distRoot = findDistRoot()
+	const baseWithLibs = join(distRoot, 'libs', 'db')
+	const baseWithoutLibs = join(distRoot, 'db')
 
-	// Resolvendo caminhos reais
 	const entitiesBase = resolveValidPath(
 		join(baseWithLibs, 'entities'),
 		join(baseWithoutLibs, 'entities'),
@@ -43,7 +54,6 @@ export function dataSourceOptionsFn(
 		join(baseWithoutLibs, 'migrations'),
 	)
 
-	// Logs de debug opcionais
 	if (!existsSync(entitiesBase)) {
 		throw new Error(`Entities path not found: ${entitiesBase}`)
 	}

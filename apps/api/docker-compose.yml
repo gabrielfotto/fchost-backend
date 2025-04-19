@@ -10,6 +10,10 @@ services:
       - 8080:8080 # porta default da api
       - 8081:8081 # porta  do debugger
 
+    # working_dir: /home/node/app
+    # volumes:
+    #   - ./../..:/home/node/app
+
     environment:
       - NODE_ENV=true
       - DB_HOST=fcpay-postgres
@@ -22,9 +26,6 @@ services:
     #   watch:
     #     - path: .
     #       action: restart
-
-    # volumes:
-    #   - .:/usr/src/app # Isso mapeia o código local para o container
 
     networks:
       - fcpay_network

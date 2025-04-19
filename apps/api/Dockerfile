@@ -20,4 +20,4 @@ RUN npm run build
 EXPOSE 8080
 
 # Iniciar a aplicação
-CMD ["npm", "run", "start:debug:api"]
+CMD ["npm", "run", "start:prod:api"]

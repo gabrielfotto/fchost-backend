@@ -1,25 +1,25 @@
 services:
-  fcpay-api:
-    container_name: fcpay-api
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
-    restart: always
+  # fcpay-api:
+  #   container_name: fcpay-api
+  #   build:
+  #     context: .
+  #     dockerfile: apps/api/Dockerfile
+  #   restart: always
 
-    ports:
-      - 8080:8080 # porta default da api
-      - 8081:8081 # porta  do debugger
+  #   ports:
+  #     - 8080:8080 # porta default da api
+  #     - 8081:8081 # porta  do debugger
 
-    environment:
-      - NODE_ENV=true
-      - DB_HOST=fcpay-postgres
-      - DB_PORT=5432
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=fcpay
+  #   environment:
+  #     - NODE_ENV=true
+  #     - DB_HOST=fcpay-postgres
+  #     - DB_PORT=5432
+  #     - DB_USERNAME=postgres
+  #     - DB_PASSWORD=postgres
+  #     - DB_NAME=fcpay
 
-    networks:
-      - fcpay_network
+  #   networks:
+  #     - fcpay_network
 
   fcpay-postgres:
     container_name: fcpay-db

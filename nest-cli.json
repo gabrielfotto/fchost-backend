@@ -26,13 +26,13 @@
 				"tsConfigPath": "apps/workers/billing/consumer/tsconfig.app.json"
 			}
 		},
-		"billing-publisher": {
+		"billing-producer": {
 			"type": "application",
-			"root": "apps/workers/billing/publisher",
+			"root": "apps/workers/billing/producer",
 			"entryFile": "main",
-			"sourceRoot": "apps/workers/billing/publisher/src",
+			"sourceRoot": "apps/workers/billing/producer/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/workers/billing/publisher/tsconfig.app.json"
+				"tsConfigPath": "apps/workers/billing/producer/tsconfig.app.json"
 			}
 		},
 		"fraud-consumer": {

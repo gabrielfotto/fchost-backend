@@ -6,7 +6,7 @@
 	"private": true,
 	"license": "UNLICENSED",
 	"scripts": {
-		"build:libs": "node scripts/build-libs.js",
+		"build:libs": "rm -rf dist/libs/ && node scripts/build-libs.js",
 		"build": "npm run build:libs && nest build",
 		"format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
 		"start": "npm run build:libs && nest start",

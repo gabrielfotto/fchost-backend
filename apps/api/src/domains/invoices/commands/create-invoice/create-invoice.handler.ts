@@ -60,18 +60,23 @@ export default class CreateInvoiceCommandHandler
 					status: EInvoiceStatus.PENDING,
 				})
 
-				invoiceHelper.process()
-
-				if (invoiceHelper.data.status === EInvoiceStatus.APPROVED) {
-					lockedAccount.balance += amount
-					await manager.save(lockedAccount)
-				}
+				// invoiceHelper.process()
+				// if (invoiceHelper.data.status === EInvoiceStatus.APPROVED) {
+				// 	lockedAccount.balance += amount
+				// 	await manager.save(lockedAccount)
+				// }
 
 				const invoice = manager.create(InvoiceEntity, invoiceHelper.data)
 				await manager.save(InvoiceEntity, invoice)
 				return invoice
 			},
 		)
+
+		if (invoice) {
+			await this.amqpConnection.publish('default', 'invoices.fraud-detection', {
+				...invoice,
+			})
+		}
 
 		return invoice
 	}

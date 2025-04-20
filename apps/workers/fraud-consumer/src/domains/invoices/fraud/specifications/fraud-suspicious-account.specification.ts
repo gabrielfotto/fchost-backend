@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common'
 
-import { IFraudEspecification } from '../interfaces'
+import { IFraudSpecification } from '../interfaces'
+
 import { AccountEntity } from '@libs/db/entities'
-import { EFraudReason } from '@libs/db/enums'
+import { EFraudReason } from '@libs/shared/enums'
 
 @Injectable()
 export default class FraudSuspiciousAccountEspecification
-	implements IFraudEspecification
+	implements IFraudSpecification
 {
 	constructor() {}
 

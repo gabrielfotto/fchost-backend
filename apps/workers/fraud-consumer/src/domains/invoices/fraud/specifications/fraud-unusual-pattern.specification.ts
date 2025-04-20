@@ -3,13 +3,13 @@ import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { IFraudEspecification } from '../interfaces'
+import { IFraudSpecification } from '../interfaces'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 import { EFraudReason } from '@libs/shared/enums'
 
 @Injectable()
 export default class FraudUnusualPatternEspecification
-	implements IFraudEspecification
+	implements IFraudSpecification
 {
 	constructor(
 		private readonly configService: ConfigService,

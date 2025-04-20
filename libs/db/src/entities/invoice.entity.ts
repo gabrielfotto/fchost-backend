@@ -10,7 +10,6 @@ import {
 } from 'typeorm'
 
 import { EInvoiceStatus } from '../enums'
-import { TFraud } from '@libs/shared/types'
 
 import { AccountEntity } from '.'
 import FraudEntity from './fraud.entity'
@@ -44,7 +43,7 @@ export default class InvoiceEntity {
 	cardLastDigits: string
 
 	@Column({ type: 'boolean' })
-	isProcessed: boolean
+	isFraudProcessed: boolean
 
 	@OneToOne(() => FraudEntity, fraud => fraud.invoice)
 	@JoinColumn({ name: 'fraudId' })

@@ -1,25 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common'
-import {
-	IFraudEspecificationAggregator,
-	IFraudEspecification,
-	IFraudSpecificationResult,
-} from '../interfaces'
+import { IFraudSpecification } from '../interfaces'
+
+import { ISpecificationAggregator } from '@libs/shared/interfaces'
 
 import { AccountEntity } from '@libs/db/entities'
+import { TFraudSpecificationData, TFraudSpecificationResult } from '../types'
 
 @Injectable()
 export default class FraudEspecificationAggregator
-	implements IFraudEspecificationAggregator
+	implements
+		ISpecificationAggregator<TFraudSpecificationData, TFraudSpecificationResult>
 {
 	constructor(
 		@Inject('FRAUD_SPECIFICATIONS')
-		private readonly fraudSpecifications: IFraudEspecification[],
+		private readonly fraudSpecifications: IFraudSpecification[],
 	) {}
 
-	async execute(
-		account: AccountEntity,
-		amount: number,
-	): Promise<IFraudSpecificationResult | null> {
+	async execute({
+		account,
+		amount,
+	}: TFraudSpecificationData): Promise<TFraudSpecificationResult | null> {
 		let fraud = null
 		for (const spec of this.fraudSpecifications) {
 			let isFraudSatisfied = await spec.isSatisfied(account, amount)

@@ -22,7 +22,7 @@ export class FraudConsumerService {
 		private readonly accountRepository: Repository<AccountEntity>,
 		@InjectRepository(InvoiceEntity)
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
-		private readonly fraudEspecification: FraudEspecificationAggregator,
+		private readonly fraudEspecificationAggregator: FraudEspecificationAggregator,
 	) {}
 
 	async execute(payload: InvoiceDTO) {
@@ -51,7 +51,11 @@ export class FraudConsumerService {
 			return new Nack()
 		}
 
-		const fraud = await this.fraudEspecification.execute(account, amount)
+		const fraud = await this.fraudEspecificationAggregator.execute(
+			account,
+			amount,
+		)
+
 		await this.dataSource.transaction(async manager => {
 			if (fraud) {
 				await manager.create(FraudHistoryEntity, {

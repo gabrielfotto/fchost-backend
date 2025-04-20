@@ -6,9 +6,14 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 import { dataSourceOptionsFn } from '@libs/db/data-source'
 import FraudModule from './domains/invoices/fraud/fraud.module'
 
+import constantsConfig from './config/constants.config'
+
 @Module({
 	imports: [
-		ConfigModule.forRoot(),
+		ConfigModule.forRoot({
+			isGlobal: true,
+			load: [constantsConfig],
+		}),
 
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],

@@ -69,7 +69,8 @@ export function dataSourceOptionsFn(
 		username: config.get('DB_USERNAME'),
 		password: config.get('DB_PASSWORD'),
 		database: config.get('DB_NAME'),
-		entities: [join(entitiesBase, '*.entity.js')],
+		// entities: [join(entitiesBase, '*.entity.js')],
+		entities: [...Entities],
 		migrations: [join(migrationsBase, '*.js')],
 	}
 }

@@ -39,7 +39,7 @@ export class FraudConsumerService {
 			return new Nack()
 		}
 
-		if (invoice.isProcessed) {
+		if (invoice.isFraudProcessed) {
 			this.logger.warn(`Invoice ${invoice_id} has already been processed`)
 			return new Nack()
 		}
@@ -53,10 +53,10 @@ export class FraudConsumerService {
 			return new Nack()
 		}
 
-		const fraud = await this.fraudEspecificationAggregator.execute(
+		const fraud = await this.fraudEspecificationAggregator.execute({
 			account,
 			amount,
-		)
+		})
 
 		await this.dataSource.transaction(async manager => {
 			if (fraud) {
@@ -67,13 +67,15 @@ export class FraudConsumerService {
 				})
 			}
 
+			invoice.isFraudProcessed = true
 			invoice.status = fraud ? EInvoiceStatus.REJECTED : EInvoiceStatus.APPROVED
-			invoice.isProcessed = true
 			await manager.save(InvoiceEntity, invoice)
 		})
 
 		if (!fraud) {
-			await this.amqpConnection.publish('default', 'transactions.credit', {})
+			await this.amqpConnection.publish('default', 'transactions.credit', {
+				...invoice,
+			})
 		}
 	}
 }

@@ -1,0 +1,46 @@
+import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import {
+	FraudFrequentHighValueEspecification,
+	FraudSuspiciousAccountEspecification,
+	FraudUnusualPatternEspecification,
+} from './specifications'
+
+import { FraudConsumerService } from './fraud.service'
+import { FraudConsumerQueues } from './fraud.queues'
+
+import { FraudEspecificationAggregator } from './specifications'
+import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+
+@Module({
+	imports: [
+		TypeOrmModule.forFeature([
+			AccountEntity,
+			InvoiceEntity,
+			//
+		]),
+	],
+	providers: [
+		FraudConsumerService,
+		FraudConsumerQueues,
+
+		FraudEspecificationAggregator,
+		FraudFrequentHighValueEspecification,
+		FraudSuspiciousAccountEspecification,
+		FraudUnusualPatternEspecification,
+		{
+			provide: 'FRAUD_SPECIFICATIONS',
+			inject: [
+				FraudFrequentHighValueEspecification,
+				FraudSuspiciousAccountEspecification,
+				FraudUnusualPatternEspecification,
+			],
+			useFactory: (
+				frequentHighValue: FraudFrequentHighValueEspecification,
+				suspiciousAccount: FraudSuspiciousAccountEspecification,
+				unusualPattern: FraudUnusualPatternEspecification,
+			) => [frequentHighValue, suspiciousAccount, unusualPattern],
+		},
+	],
+})
+export default class FraudModule {}

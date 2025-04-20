@@ -3,11 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
-import { FraudConsumerQueues } from './app.queues'
-import { FraudConsumerService } from './app.service'
-
 import { dataSourceOptionsFn } from '@libs/db/data-source'
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import FraudModule from './domains/invoices/fraud/fraud.module'
 
 @Module({
 	imports: [
@@ -19,12 +16,6 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 			useFactory: (configService: ConfigService) =>
 				dataSourceOptionsFn(configService),
 		}),
-
-		TypeOrmModule.forFeature([
-			AccountEntity,
-			InvoiceEntity,
-			//
-		]),
 
 		RabbitMQModule.forRoot({
 			exchanges: [
@@ -38,8 +29,10 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 			// 	wait: false,
 			// },
 		}),
+
+		FraudModule,
 	],
 	controllers: [],
-	providers: [FraudConsumerQueues, FraudConsumerService],
+	providers: [],
 })
 export class FraudConsumerModule {}

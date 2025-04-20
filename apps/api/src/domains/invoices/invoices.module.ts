@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 
@@ -15,7 +16,11 @@ import InvoicesCommandHandlers from './commands'
 		CqrsModule,
 		TypeOrmModule.forFeature([AccountEntity, InvoiceEntity]),
 	],
-	providers: [...InvoicesQueryHandlers, ...InvoicesCommandHandlers],
+	providers: [
+		AmqpConnection,
+		...InvoicesQueryHandlers,
+		...InvoicesCommandHandlers,
+	],
 	controllers: [InvoicesCommandsController, InvoicesQueriesController],
 })
 export default class AccountsModule {}

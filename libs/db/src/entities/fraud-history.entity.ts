@@ -27,11 +27,6 @@ export default class FraudHistoryEntity {
 	@Column()
 	description: string
 
-	@OneToMany(() => FraudHistoryEntity, fraud => fraud.invoice, {
-		cascade: true,
-	})
-	fraudHistory: FraudHistoryEntity[]
-
 	@CreateDateColumn()
 	createdAt: Date
 

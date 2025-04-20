@@ -1,10 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
 import { Nack } from '@golevelup/nestjs-rabbitmq'
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
+import { DataSource, Repository } from 'typeorm'
 
-import { InvoiceDTO } from './app.dtos'
+import { InvoiceDTO } from './fraud.dtos'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+
+import FraudHistoryEntity from '@libs/db/entities/fraud-history.entity'
+import { FraudEspecificationAggregator } from './specifications'
 
 @Injectable()
 export class FraudConsumerService {
@@ -13,10 +16,13 @@ export class FraudConsumerService {
 	})
 
 	constructor(
+		@InjectDataSource()
+		private readonly dataSource: DataSource,
 		@InjectRepository(AccountEntity)
 		private readonly accountRepository: Repository<AccountEntity>,
 		@InjectRepository(InvoiceEntity)
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
+		private readonly fraudEspecification: FraudEspecificationAggregator,
 	) {}
 
 	async execute(payload: InvoiceDTO) {
@@ -45,11 +51,18 @@ export class FraudConsumerService {
 			return new Nack()
 		}
 
-		if (account.isSuspicious) {
-		}
+		const fraud = await this.fraudEspecification.execute(account, amount)
+		await this.dataSource.transaction(async manager => {
+			if (fraud) {
+				await manager.create(FraudHistoryEntity, {
+					invoice,
+					reason: fraud.reason,
+					description: fraud.description,
+				})
+			}
 
-		// invoice.fraudHistory = fraudHistory
-		invoice.isProcessed = true
-		await this.invoicesRepository.save(invoice)
+			invoice.isProcessed = true
+			await manager.save(InvoiceEntity, invoice)
+		})
 	}
 }

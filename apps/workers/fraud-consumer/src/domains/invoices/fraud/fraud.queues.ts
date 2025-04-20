@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
 
-import { FraudConsumerService } from './app.service'
-import { InvoiceDTO } from './app.dtos'
+import { FraudConsumerService } from './fraud.service'
+import { InvoiceDTO } from './fraud.dtos'
 
 @Injectable()
 export class FraudConsumerQueues {
@@ -10,8 +10,8 @@ export class FraudConsumerQueues {
 
 	@RabbitSubscribe({
 		exchange: 'default',
-		routingKey: 'invoices.fraud',
-		queue: 'invoices.fraud',
+		routingKey: 'invoices.fraud-detector',
+		queue: 'invoices.fraud-detector',
 		queueOptions: {
 			durable: true,
 			arguments: {

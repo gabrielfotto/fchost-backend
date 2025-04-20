@@ -67,7 +67,7 @@ export default class CreateInvoiceCommandHandler
 				}
 
 				const invoice = manager.create(InvoiceEntity, invoiceHelper.data)
-				await manager.save(invoice)
+				await manager.save(InvoiceEntity, invoice)
 				return invoice
 			},
 		)

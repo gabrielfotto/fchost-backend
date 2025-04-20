@@ -10,6 +10,7 @@ import {
 } from 'typeorm'
 
 import { EInvoiceStatus } from '../enums'
+import { TFraudHistory } from '@libs/shared/types'
 
 import { AccountEntity } from '.'
 import FraudHistoryEntity from './fraud-history.entity'
@@ -48,7 +49,7 @@ export default class InvoiceEntity {
 	@OneToMany(() => FraudHistoryEntity, fraud => fraud.invoice, {
 		cascade: true,
 	})
-	fraudHistory: FraudHistoryEntity[]
+	fraudHistory: TFraudHistory
 
 	@CreateDateColumn()
 	createdAt: Date

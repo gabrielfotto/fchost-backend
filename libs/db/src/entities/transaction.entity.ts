@@ -1,17 +1,14 @@
 import {
-	Column,
 	CreateDateColumn,
 	Entity,
-	JoinColumn,
-	ManyToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm'
 
 import { AccountEntity } from '.'
 
-@Entity({ name: 'fraud-history' })
-export default class BillingEntity {
+@Entity({ name: 'transactions' })
+export default class TransactionEntity {
 	@PrimaryGeneratedColumn()
 	id: number
 

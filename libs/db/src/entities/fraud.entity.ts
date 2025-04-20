@@ -3,8 +3,7 @@ import {
 	CreateDateColumn,
 	Entity,
 	JoinColumn,
-	ManyToOne,
-	OneToMany,
+	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm'
@@ -12,12 +11,12 @@ import {
 import { InvoiceEntity } from '.'
 import { EFraudReason } from '../enums'
 
-@Entity({ name: 'fraud-history' })
-export default class FraudHistoryEntity {
+@Entity({ name: 'frauds' })
+export default class FraudEntity {
 	@PrimaryGeneratedColumn()
 	id: number
 
-	@ManyToOne(() => InvoiceEntity, { onDelete: 'CASCADE' })
+	@OneToOne(() => InvoiceEntity, { onDelete: 'CASCADE' })
 	@JoinColumn({ name: 'invoiceId' })
 	invoice: InvoiceEntity
 

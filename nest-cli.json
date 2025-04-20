@@ -17,22 +17,22 @@
 				"tsConfigPath": "apps/api/tsconfig.app.json"
 			}
 		},
-		"billing-consumer": {
+		"transaction-consumer": {
 			"type": "application",
-			"root": "apps/workers/billing/consumer",
+			"root": "apps/workers/transaction/consumer",
 			"entryFile": "main",
-			"sourceRoot": "apps/workers/billing/consumer/src",
+			"sourceRoot": "apps/workers/transaction/consumer/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/workers/billing/consumer/tsconfig.app.json"
+				"tsConfigPath": "apps/workers/transaction/consumer/tsconfig.app.json"
 			}
 		},
-		"billing-producer": {
+		"transaction-producer": {
 			"type": "application",
-			"root": "apps/workers/billing/producer",
+			"root": "apps/workers/transaction/producer",
 			"entryFile": "main",
-			"sourceRoot": "apps/workers/billing/producer/src",
+			"sourceRoot": "apps/workers/transaction/producer/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/workers/billing/producer/tsconfig.app.json"
+				"tsConfigPath": "apps/workers/transaction/producer/tsconfig.app.json"
 			}
 		},
 		"fraud-consumer": {

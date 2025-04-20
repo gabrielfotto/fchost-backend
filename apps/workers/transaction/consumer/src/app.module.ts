@@ -6,4 +6,4 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 	controllers: [],
 	providers: [],
 })
-export class BillingConsumerModule {}
+export class TransactionConsumerModule {}

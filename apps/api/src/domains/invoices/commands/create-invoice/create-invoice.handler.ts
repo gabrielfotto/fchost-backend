@@ -61,6 +61,7 @@ export default class CreateInvoiceCommandHandler
 				})
 
 				invoiceHelper.process()
+
 				if (invoiceHelper.data.status === EInvoiceStatus.APPROVED) {
 					lockedAccount.balance += amount
 					await manager.save(lockedAccount)

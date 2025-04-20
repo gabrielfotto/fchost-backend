@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
-export class BillingProducerService {
+export class TransactionProducerService {
 	getHello(): string {
 		return 'Hello World!'
 	}

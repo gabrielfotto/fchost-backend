@@ -10,7 +10,7 @@ export type TInvoice = {
 	cardLastDigits: string
 }
 
-export type TFraudHistory = {
+export type TFraud = {
 	reason: EFraudReason
 	description: string
 }

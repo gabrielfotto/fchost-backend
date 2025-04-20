@@ -4,16 +4,16 @@ import {
 	Entity,
 	JoinColumn,
 	ManyToOne,
-	OneToMany,
+	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm'
 
 import { EInvoiceStatus } from '../enums'
-import { TFraudHistory } from '@libs/shared/types'
+import { TFraud } from '@libs/shared/types'
 
 import { AccountEntity } from '.'
-import FraudHistoryEntity from './fraud-history.entity'
+import FraudEntity from './fraud.entity'
 
 @Entity({ name: 'invoices' })
 export default class InvoiceEntity {
@@ -46,10 +46,9 @@ export default class InvoiceEntity {
 	@Column({ type: 'boolean' })
 	isProcessed: boolean
 
-	@OneToMany(() => FraudHistoryEntity, fraud => fraud.invoice, {
-		cascade: true,
-	})
-	fraudHistory: TFraudHistory
+	@OneToOne(() => FraudEntity, fraud => fraud.invoice)
+	@JoinColumn({ name: 'fraudId' })
+	fraud?: FraudEntity
 
 	@CreateDateColumn()
 	createdAt: Date

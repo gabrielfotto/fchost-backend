@@ -1,15 +1,10 @@
 import AccountEntity from './account.entity'
 import InvoiceEntity from './invoice.entity'
-import FraudHistoryEntity from './fraud-history.entity'
-import BillingEntity from './billing.entity'
+import FraudEntity from './fraud.entity'
+import TransactionEntity from './transaction.entity'
 
-const Entities = [
-	AccountEntity,
-	InvoiceEntity,
-	FraudHistoryEntity,
-	BillingEntity,
-]
+const Entities = [AccountEntity, InvoiceEntity, FraudEntity, TransactionEntity]
 
-export { AccountEntity, InvoiceEntity, FraudHistoryEntity, BillingEntity }
+export { AccountEntity, InvoiceEntity, FraudEntity, TransactionEntity }
 
 export default Entities

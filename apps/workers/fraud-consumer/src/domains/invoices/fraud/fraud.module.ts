@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import {
 	FraudFrequentHighValueEspecification,
 	FraudSuspiciousAccountEspecification,
@@ -21,6 +22,7 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 		]),
 	],
 	providers: [
+		AmqpConnection,
 		FraudConsumerService,
 		FraudConsumerQueues,
 

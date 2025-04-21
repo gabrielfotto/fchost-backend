@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common'
 import { IFraudSpecification } from '../interfaces'
 
 import { ISpecificationAggregator } from '@libs/shared/interfaces'
-
 import { TFraudSpecificationData, TFraudSpecificationResult } from '../types'
 
 @Injectable()

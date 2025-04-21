@@ -4,7 +4,6 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
 import AuthGuard from './shared/guards/auth.guard'
 
@@ -31,20 +30,6 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 			InvoiceEntity,
 			//
 		]),
-
-		// RabbitMQModule.forRoot({
-		// 	uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
-		// 	// connectionInitOptions: {
-		// 	// 	wait: false,
-		// 	// },
-		// 	exchanges: [
-		// 		{
-		// 			name: 'default',
-		// 			type: 'topic',
-		// 		},
-		// 	],
-		// }),
-		// AppModule,
 
 		AccountsModule,
 		InvoicesModule,

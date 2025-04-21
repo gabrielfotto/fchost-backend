@@ -21,6 +21,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=fcpay
+      - RABBITMQ_URI=amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672
 
     command: npm run start:debug:transaction-producer
 

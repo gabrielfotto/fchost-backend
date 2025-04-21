@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
 import { dataSourceOptionsFn } from '@libs/db/data-source'
 import FraudModule from './domains/invoices/fraud/fraud.module'
@@ -21,19 +20,6 @@ import constantsConfig from './config/constants.config'
 			useFactory: (configService: ConfigService) =>
 				dataSourceOptionsFn(configService),
 		}),
-
-		// RabbitMQModule.forRoot({
-		// 	uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
-		// 	// connectionInitOptions: {
-		// 	// 	wait: false,
-		// 	// },
-		// 	exchanges: [
-		// 		{
-		// 			name: 'default',
-		// 			type: 'topic',
-		// 		},
-		// 	],
-		// }),
 
 		FraudModule,
 	],

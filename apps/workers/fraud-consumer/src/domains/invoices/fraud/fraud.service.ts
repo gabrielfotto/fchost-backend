@@ -24,7 +24,7 @@ export class FraudConsumerService {
 		@InjectRepository(InvoiceEntity)
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
 		private readonly FraudSpecificationAggregator: FraudSpecificationAggregator,
-		// private readonly amqpConnection: AmqpConnection,
+		private readonly amqpConnection: AmqpConnection,
 	) {}
 
 	async execute(payload: InvoiceDTO) {

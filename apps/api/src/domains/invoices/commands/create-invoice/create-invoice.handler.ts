@@ -1,9 +1,8 @@
-import { Inject, NotFoundException } from '@nestjs/common'
-import { InjectDataSource } from '@nestjs/typeorm'
+import { Logger, NotFoundException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
+import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
-// import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
-import { ClientProxy } from '@nestjs/microservices'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
@@ -24,12 +23,12 @@ export class CreateInvoiceCommand {
 export default class CreateInvoiceCommandHandler
 	implements ICommandHandler<CreateInvoiceCommand, CreateInvoiceOutputDTO>
 {
+	private readonly logger: Logger = new Logger(CreateInvoiceCommandHandler.name)
+
 	constructor(
 		@InjectDataSource()
 		private readonly dataSource: DataSource,
-		@Inject('INVOICE_SERVICE')
-		private readonly invoiceService: ClientProxy,
-		// private readonly amqpConnection: AmqpConnection,
+		private readonly amqpConnection: AmqpConnection,
 	) {}
 
 	async execute(
@@ -61,18 +60,13 @@ export default class CreateInvoiceCommandHandler
 				const invoice = manager.create(InvoiceEntity, invoiceHelper.data)
 				await manager.save(InvoiceEntity, invoice)
 
-				await this.invoiceService.emit('invoices.fraud.detect', {
+				await this.amqpConnection.publish('fcpay', 'invoices.fraud.detect', {
 					...invoice,
 				})
 
-				// await this.amqpConnection.publish(
-				// 	'default',
-				// 	'invoices.fraud.detection',
-				// 	{
-				// 		...invoice,
-				// 	},
-				// )
-
+				this.logger.debug(
+					`Message sent to 'invoices.fraud.detect': ${JSON.stringify(invoice)}`,
+				)
 				return invoice
 			},
 		)

@@ -18,12 +18,13 @@
 		"strictBindCallApply": false,
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
+			"@api/*": ["apps/api/src/*"],
+			"@libs/config": ["libs/config/src"],
+			"@libs/config/*": ["libs/config/src/*"],
 			"@libs/db": ["libs/db/src"],
 			"@libs/db/*": ["libs/db/src/*"],
 			"@libs/shared": ["libs/shared/src"],
-			"@libs/shared/*": ["libs/shared/src/*"],
-
-			"@api/*": ["apps/api/src/*"]
+			"@libs/shared/*": ["libs/shared/src/*"]
 		}
 	}
 }

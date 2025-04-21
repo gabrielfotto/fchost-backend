@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { TypeOrmModule } from '@nestjs/typeorm'
-// import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { rabbitmqConfigFn } from '@libs/config'
 
 import InvoicesQueriesController from './invoices-queries.controller'
 import InvoicesCommandsController from './invoices-commands.controller'
@@ -16,30 +17,15 @@ import InvoicesCommandHandlers from './commands'
 	imports: [
 		CqrsModule,
 		TypeOrmModule.forFeature([AccountEntity, InvoiceEntity]),
-
-		ClientsModule.register([
-			{
-				name: 'INVOICE_SERVICE',
-				transport: Transport.RMQ,
-				options: {
-					urls: ['amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672'],
-					queue: 'invoices.fraud.detect',
-					queueOptions: {
-						durable: true,
-						arguments: {
-							'x-queue-type': 'quorum',
-							'x-delivery-limit': 1,
-						},
-					},
-				},
-			},
-		]),
+		// RabbitMQModule.forRoot(rabbitmqConfig),
+		RabbitMQModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) =>
+				rabbitmqConfigFn(configService),
+		}),
 	],
-	providers: [
-		// AmqpConnection,
-		...InvoicesQueryHandlers,
-		...InvoicesCommandHandlers,
-	],
+	providers: [...InvoicesQueryHandlers, ...InvoicesCommandHandlers],
 	controllers: [InvoicesCommandsController, InvoicesQueriesController],
 })
 export default class AccountsModule {}

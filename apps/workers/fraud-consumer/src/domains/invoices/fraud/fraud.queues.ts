@@ -8,20 +8,19 @@ import { InvoiceDTO } from './fraud.dtos'
 export class FraudConsumerQueues {
 	constructor(private readonly fraudConsumerService: FraudConsumerService) {}
 
-	// @RabbitSubscribe({
-	// 	exchange: 'default',
-	// 	routingKey: 'invoices.fraud.detect',
-	// 	queue: 'invoices.fraud.detect',
-	// 	queueOptions: {
-	// 		// channel: 'channel',
-	// 		durable: true,
-	// 		arguments: {
-	// 			'x-queue-type': 'quorum',
-	// 			'x-delivery-limit': 1,
-	// 		},
-	// 	},
-	// })
-	// async fraudConsumerQueueHandler(payload: InvoiceDTO) {
-	// 	await this.fraudConsumerService.execute(payload)
-	// }
+	@RabbitSubscribe({
+		exchange: 'fcpay',
+		routingKey: 'invoices.fraud.detect',
+		queue: 'invoices.fraud.detect',
+		queueOptions: {
+			durable: true,
+			arguments: {
+				'x-queue-type': 'quorum',
+				'x-delivery-limit': 1,
+			},
+		},
+	})
+	async fraudConsumerQueueHandler(message: InvoiceDTO) {
+		await this.fraudConsumerService.execute(message)
+	}
 }

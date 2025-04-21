@@ -61,13 +61,13 @@ export default class CreateInvoiceCommandHandler
 				const invoice = manager.create(InvoiceEntity, invoiceHelper.data)
 				await manager.save(InvoiceEntity, invoice)
 
-				await this.invoiceService.emit('invoices.fraud-detect', {
+				await this.invoiceService.emit('invoices.fraud.detect', {
 					...invoice,
 				})
 
 				// await this.amqpConnection.publish(
 				// 	'default',
-				// 	'invoices.fraud-detection',
+				// 	'invoices.fraud.detection',
 				// 	{
 				// 		...invoice,
 				// 	},

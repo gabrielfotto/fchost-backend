@@ -7,7 +7,7 @@ import { FraudConsumerService } from './fraud.service'
 export class InvoiceFraudListener {
 	constructor(private readonly fraudConsumerService: FraudConsumerService) {}
 
-	@EventPattern('invoices.fraud-detect')
+	@EventPattern('invoices.fraud.detect')
 	async handleInvoiceFraudDetection(@Payload() data: any) {
 		await this.fraudConsumerService.execute(data)
 	}

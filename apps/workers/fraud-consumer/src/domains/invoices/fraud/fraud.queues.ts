@@ -10,8 +10,8 @@ export class FraudConsumerQueues {
 
 	// @RabbitSubscribe({
 	// 	exchange: 'default',
-	// 	routingKey: 'invoices.fraud-detect',
-	// 	queue: 'invoices.fraud-detector',
+	// 	routingKey: 'invoices.fraud.detect',
+	// 	queue: 'invoices.fraud.detect',
 	// 	queueOptions: {
 	// 		// channel: 'channel',
 	// 		durable: true,

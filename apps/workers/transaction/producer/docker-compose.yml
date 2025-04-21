@@ -1,0 +1,32 @@
+services:
+  fcpay-transaction-producer:
+    container_name: fcpay-transaction-producer
+    build:
+      context: ../../..
+      dockerfile: apps/workers/transaction/producer/Dockerfile
+    restart: always
+
+    ports:
+      - 8084:8084 # porta  do debugger
+
+    working_dir: /usr/src/app
+    volumes:
+      - ./src:/usr/src/app/apps/workers/transaction/producer/src
+
+    environment:
+      - APP_NAME=transaction-producer
+      - NODE_ENV=true
+      - DB_HOST=fcpay-postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=fcpay
+
+    command: npm run start:debug:transaction-producer
+
+    networks:
+      - fcpay_network
+
+networks:
+  fcpay_network: # ficar ligado no nome
+    external: true

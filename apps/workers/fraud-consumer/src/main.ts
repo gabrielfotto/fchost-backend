@@ -11,7 +11,7 @@ async function bootstrap() {
 			transport: Transport.RMQ,
 			options: {
 				urls: ['amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672'],
-				queue: 'invoices.fraud-detect',
+				queue: 'invoices.fraud.detect',
 				queueOptions: {
 					durable: true,
 					arguments: {

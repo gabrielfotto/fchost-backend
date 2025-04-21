@@ -1,0 +1,32 @@
+services:
+  fcpay-transaction-consumer:
+    container_name: fcpay-transaction-consumer
+    build:
+      context: ../../..
+      dockerfile: apps/workers/transaction/consumer/Dockerfile
+    restart: always
+
+    ports:
+      - 8083:8083 # porta  do debugger
+
+    working_dir: /usr/src/app
+    volumes:
+      - ./src:/usr/src/app/apps/workers/transaction/consumer/src
+
+    environment:
+      - APP_NAME=transaction-consumer
+      - NODE_ENV=true
+      - DB_HOST=fcpay-postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=fcpay
+
+    command: npm run start:debug:transaction-consumer
+
+    networks:
+      - fcpay_network
+
+networks:
+  fcpay_network: # ficar ligado no nome
+    external: true

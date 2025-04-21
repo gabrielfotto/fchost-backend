@@ -7,7 +7,7 @@ import { CreditAccountBalanceService } from './credit-balance.service'
 @Injectable()
 export class CreditAccountBalanceConsumer {
 	constructor(
-		private readonly CreditAccountBalanceService: CreditAccountBalanceService,
+		private readonly creditAccountBalanceService: CreditAccountBalanceService,
 	) {}
 
 	@RabbitSubscribe({
@@ -23,6 +23,6 @@ export class CreditAccountBalanceConsumer {
 		},
 	})
 	async handler(message) {
-		await this.CreditAccountBalanceService.execute(message)
+		await this.creditAccountBalanceService.execute(message)
 	}
 }

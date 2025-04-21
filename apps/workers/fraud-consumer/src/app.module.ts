@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 
 import { dataSourceOptionsFn } from '@libs/db/data-source'
-import FraudModule from './domains/invoices/fraud/fraud.module'
+import FraudModule from './domains/invoices.fraud/fraud.module'
 
 import constantsConfig from './config/constants.config'
 

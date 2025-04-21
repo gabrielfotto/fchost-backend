@@ -32,18 +32,19 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 			//
 		]),
 
-		RabbitMQModule.forRoot({
-			exchanges: [
-				{
-					name: 'default',
-					type: 'topic',
-				},
-			],
-			uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
-			// connectionInitOptions: {
-			// 	wait: false,
-			// },
-		}),
+		// RabbitMQModule.forRoot({
+		// 	uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
+		// 	// connectionInitOptions: {
+		// 	// 	wait: false,
+		// 	// },
+		// 	exchanges: [
+		// 		{
+		// 			name: 'default',
+		// 			type: 'topic',
+		// 		},
+		// 	],
+		// }),
+		// AppModule,
 
 		AccountsModule,
 		InvoicesModule,

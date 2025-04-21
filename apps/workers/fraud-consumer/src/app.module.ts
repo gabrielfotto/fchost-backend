@@ -22,22 +22,22 @@ import constantsConfig from './config/constants.config'
 				dataSourceOptionsFn(configService),
 		}),
 
-		RabbitMQModule.forRoot({
-			exchanges: [
-				{
-					name: 'default',
-					type: 'topic',
-				},
-			],
-			uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
-			// connectionInitOptions: {
-			// 	wait: false,
-			// },
-		}),
+		// RabbitMQModule.forRoot({
+		// 	uri: 'amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672',
+		// 	// connectionInitOptions: {
+		// 	// 	wait: false,
+		// 	// },
+		// 	exchanges: [
+		// 		{
+		// 			name: 'default',
+		// 			type: 'topic',
+		// 		},
+		// 	],
+		// }),
 
 		FraudModule,
 	],
 	controllers: [],
 	providers: [],
 })
-export class FraudConsumerModule {}
+export class AppModule {}

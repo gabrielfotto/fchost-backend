@@ -42,7 +42,7 @@ export default class InvoiceEntity {
 	@Column()
 	cardLastDigits: string
 
-	@Column({ type: 'boolean' })
+	@Column({ type: 'boolean', default: false })
 	isFraudProcessed: boolean
 
 	@OneToOne(() => FraudEntity, fraud => fraud.invoice)

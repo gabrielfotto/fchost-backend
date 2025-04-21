@@ -24,7 +24,7 @@ export class FraudConsumerService {
 		@InjectRepository(InvoiceEntity)
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
 		private readonly fraudEspecificationAggregator: FraudEspecificationAggregator,
-		private readonly amqpConnection: AmqpConnection,
+		// private readonly amqpConnection: AmqpConnection,
 	) {}
 
 	async execute(payload: InvoiceDTO) {
@@ -70,12 +70,14 @@ export class FraudConsumerService {
 			invoice.isFraudProcessed = true
 			invoice.status = fraud ? EInvoiceStatus.REJECTED : EInvoiceStatus.APPROVED
 			await manager.save(InvoiceEntity, invoice)
-		})
 
-		if (!fraud) {
-			await this.amqpConnection.publish('default', 'transactions.credit', {
-				...invoice,
-			})
-		}
+			// if (!fraud) {
+			// 	await this.amqpConnection.publish('default', 'transactions.credit', {
+			// 		...invoice,
+			// 	})
+			// }
+
+			return invoice
+		})
 	}
 }

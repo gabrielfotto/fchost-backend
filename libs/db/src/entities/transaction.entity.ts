@@ -1,16 +1,38 @@
 import {
+	Column,
 	CreateDateColumn,
 	Entity,
+	JoinColumn,
+	ManyToOne,
+	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm'
 
-import { AccountEntity } from '.'
+import { AccountEntity, InvoiceEntity } from '.'
+import { ETransactionType } from '../enums/transaction-type.enum'
 
 @Entity({ name: 'transactions' })
 export default class TransactionEntity {
 	@PrimaryGeneratedColumn()
 	id: number
+
+	@ManyToOne(() => AccountEntity, { onDelete: 'CASCADE' })
+	@JoinColumn({ name: 'accountId' })
+	account: AccountEntity
+
+	@Column({ type: 'enum', enum: ETransactionType })
+	type: ETransactionType
+
+	@Column()
+	value: number
+
+	// @Column()
+	// balance: number
+
+	@OneToOne(() => InvoiceEntity, { onDelete: 'CASCADE' })
+	@JoinColumn({ name: 'invoiceId' })
+	invoice: InvoiceEntity
 
 	@CreateDateColumn()
 	createdAt: Date

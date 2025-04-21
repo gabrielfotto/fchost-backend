@@ -1,16 +1,16 @@
-import { NotFoundException } from '@nestjs/common'
+import { Inject, NotFoundException } from '@nestjs/common'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { DataSource } from 'typeorm'
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
+// import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
+import { ClientProxy } from '@nestjs/microservices'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
 
 import { CreateInvoiceOutputDTO } from './create-invoice.dtos'
-import { TCreditCard } from '../../types/credit-card.types'
-import { CreditCardHelper } from '../../helpers/credit-card.helper'
-import { InvoiceHelper } from '../../helpers/invoice.helper'
+import { TCreditCard } from '../../types'
+import { CreditCardHelper, InvoiceHelper } from '../../helpers'
 
 export class CreateInvoiceCommand {
 	account: AccountEntity
@@ -27,7 +27,9 @@ export default class CreateInvoiceCommandHandler
 	constructor(
 		@InjectDataSource()
 		private readonly dataSource: DataSource,
-		private readonly amqpConnection: AmqpConnection,
+		@Inject('INVOICE_SERVICE')
+		private readonly invoiceService: ClientProxy,
+		// private readonly amqpConnection: AmqpConnection,
 	) {}
 
 	async execute(
@@ -39,12 +41,8 @@ export default class CreateInvoiceCommandHandler
 		const invoice = await this.dataSource.transaction<CreateInvoiceOutputDTO>(
 			async manager => {
 				const lockedAccount = await manager.findOne(AccountEntity, {
-					where: {
-						id: account.id,
-					},
-					lock: {
-						mode: 'pessimistic_write',
-					},
+					where: { id: account.id },
+					lock: { mode: 'pessimistic_write' },
 				})
 
 				if (!lockedAccount) {
@@ -60,23 +58,24 @@ export default class CreateInvoiceCommandHandler
 					status: EInvoiceStatus.PENDING,
 				})
 
-				// invoiceHelper.process()
-				// if (invoiceHelper.data.status === EInvoiceStatus.APPROVED) {
-				// 	lockedAccount.balance += amount
-				// 	await manager.save(lockedAccount)
-				// }
-
 				const invoice = manager.create(InvoiceEntity, invoiceHelper.data)
 				await manager.save(InvoiceEntity, invoice)
+
+				await this.invoiceService.emit('invoices.fraud-detect', {
+					...invoice,
+				})
+
+				// await this.amqpConnection.publish(
+				// 	'default',
+				// 	'invoices.fraud-detection',
+				// 	{
+				// 		...invoice,
+				// 	},
+				// )
+
 				return invoice
 			},
 		)
-
-		if (invoice) {
-			await this.amqpConnection.publish('default', 'invoices.fraud-detection', {
-				...invoice,
-			})
-		}
 
 		return invoice
 	}

@@ -1,3 +1,4 @@
+import { ForbiddenException, NotFoundException } from '@nestjs/common'
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -7,6 +8,7 @@ import { GetAccountOutputDTO } from './get-account-by-id.dtos'
 import { AccountEntity } from '@libs/db/entities'
 
 export class GetAccountQuery {
+	accountId: number
 	id: number
 }
 
@@ -25,7 +27,11 @@ export default class GetAccountQueryHandler
 		})
 
 		if (!account) {
-			return null
+			throw new NotFoundException('Account not found')
+		}
+
+		if (account.id !== query.accountId) {
+			throw new ForbiddenException()
 		}
 
 		return plainToInstance(GetAccountOutputDTO, account)

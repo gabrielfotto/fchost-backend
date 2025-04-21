@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
+// import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import {
 	FraudFrequentHighValueEspecification,
 	FraudSuspiciousAccountEspecification,
@@ -12,6 +12,7 @@ import { FraudConsumerQueues } from './fraud.queues'
 
 import { FraudEspecificationAggregator } from './specifications'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { InvoiceFraudListener } from './fraud.controller'
 
 @Module({
 	imports: [
@@ -22,9 +23,9 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 		]),
 	],
 	providers: [
-		AmqpConnection,
+		// AmqpConnection,
 		FraudConsumerService,
-		FraudConsumerQueues,
+		// FraudConsumerQueues,
 
 		FraudEspecificationAggregator,
 		FraudFrequentHighValueEspecification,
@@ -44,5 +45,6 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 			) => [frequentHighValue, suspiciousAccount, unusualPattern],
 		},
 	],
+	controllers: [InvoiceFraudListener],
 })
 export default class FraudModule {}

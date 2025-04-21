@@ -1,0 +1,31 @@
+import { Module } from '@nestjs/common'
+import { CqrsModule } from '@nestjs/cqrs'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+
+import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { rabbitmqConfigFn } from '@libs/config'
+
+import TransactionsQueriesController from './transactions-queries.controller'
+// import InvoicesCommandsController from './transactions-commands.controller'
+
+import TransactionsQueryHandlers from './queries'
+// import InvoicesCommandHandlers from './commands'
+
+@Module({
+	imports: [
+		CqrsModule,
+		TypeOrmModule.forFeature([AccountEntity, InvoiceEntity]),
+		// RabbitMQModule.forRoot(rabbitmqConfig),
+		RabbitMQModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) =>
+				rabbitmqConfigFn(configService),
+		}),
+	],
+	providers: [...TransactionsQueryHandlers],
+	controllers: [TransactionsQueriesController],
+})
+export default class AccountsModule {}

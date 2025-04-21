@@ -5,7 +5,7 @@ import { ISpecificationAggregator } from '@libs/shared/interfaces'
 import { TFraudSpecificationData, TFraudSpecificationResult } from '../types'
 
 @Injectable()
-export default class FraudEspecificationAggregator
+export default class FraudSpecificationAggregator
 	implements
 		ISpecificationAggregator<TFraudSpecificationData, TFraudSpecificationResult>
 {

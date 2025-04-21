@@ -1,9 +1,8 @@
 import { NestFactory } from '@nestjs/core'
-import { TransactionProducerModule } from './app.module'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-	const app = await NestFactory.createApplicationContext(
-		TransactionProducerModule,
-	)
+	await NestFactory.createApplicationContext(AppModule)
 }
+
 bootstrap()

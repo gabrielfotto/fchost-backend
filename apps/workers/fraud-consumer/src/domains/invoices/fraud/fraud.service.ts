@@ -6,7 +6,7 @@ import { DataSource, Repository } from 'typeorm'
 import { InvoiceDTO } from './fraud.dtos'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 
-import { FraudEspecificationAggregator } from './specifications'
+import { FraudSpecificationAggregator } from './specifications'
 import { FraudEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
 
@@ -23,7 +23,7 @@ export class FraudConsumerService {
 		private readonly accountRepository: Repository<AccountEntity>,
 		@InjectRepository(InvoiceEntity)
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
-		private readonly fraudEspecificationAggregator: FraudEspecificationAggregator,
+		private readonly FraudSpecificationAggregator: FraudSpecificationAggregator,
 		// private readonly amqpConnection: AmqpConnection,
 	) {}
 
@@ -53,7 +53,7 @@ export class FraudConsumerService {
 			return new Nack()
 		}
 
-		const fraud = await this.fraudEspecificationAggregator.execute({
+		const fraud = await this.FraudSpecificationAggregator.execute({
 			account,
 			amount,
 		})

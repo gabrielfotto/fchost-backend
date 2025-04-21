@@ -10,7 +10,7 @@ import {
 import { FraudConsumerService } from './fraud.service'
 import { FraudConsumerQueues } from './fraud.queues'
 
-import { FraudEspecificationAggregator } from './specifications'
+import { FraudSpecificationAggregator } from './specifications'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 import { InvoiceFraudListener } from './fraud.controller'
 
@@ -27,7 +27,7 @@ import { InvoiceFraudListener } from './fraud.controller'
 		FraudConsumerService,
 		// FraudConsumerQueues,
 
-		FraudEspecificationAggregator,
+		FraudSpecificationAggregator,
 		FraudFrequentHighValueEspecification,
 		FraudSuspiciousAccountEspecification,
 		FraudUnusualPatternEspecification,

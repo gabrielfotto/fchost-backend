@@ -1,4 +1,4 @@
-export { default as FraudEspecificationAggregator } from './fraud-aggregator.specification'
+export { default as FraudSpecificationAggregator } from './fraud-aggregator.specification'
 export * from './fraud-aggregator.specification'
 
 export { default as FraudFrequentHighValueEspecification } from './fraud-frequent-high-value.specification'

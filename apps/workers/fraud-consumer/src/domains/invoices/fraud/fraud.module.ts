@@ -9,7 +9,7 @@ import {
 } from './specifications'
 
 import { FraudConsumerService } from './fraud.service'
-import { FraudConsumerQueues } from './fraud.queues'
+import { FraudConsumerQueues } from './fraud.consumer'
 
 import { rabbitmqConfigFn } from '@libs/config'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'

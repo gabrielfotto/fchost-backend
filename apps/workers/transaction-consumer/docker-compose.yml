@@ -1,20 +1,20 @@
 services:
-  fcpay-transaction-producer:
-    container_name: fcpay-transaction-producer
+  fcpay-transaction-consumer:
+    container_name: fcpay-transaction-consumer
     build:
       context: ../../..
-      dockerfile: apps/workers/transaction/producer/Dockerfile
+      dockerfile: apps/workers/transaction-consumer/Dockerfile
     restart: always
 
     ports:
-      - 8084:8084 # porta  do debugger
+      - 8083:8083 # porta  do debugger
 
     working_dir: /usr/src/app
     volumes:
-      - ./src:/usr/src/app/apps/workers/transaction/producer/src
+      - ./src:/usr/src/app/apps/workers/transaction-consumer/src
 
     environment:
-      - APP_NAME=transaction-producer
+      - APP_NAME=transaction-consumer
       - NODE_ENV=true
       - DB_HOST=fcpay-postgres
       - DB_PORT=5432
@@ -23,7 +23,7 @@ services:
       - DB_NAME=fcpay
       - RABBITMQ_URI=amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672
 
-    command: npm run start:debug:transaction-producer
+    command: npm run start:debug:transaction-consumer
 
     networks:
       - fcpay_network

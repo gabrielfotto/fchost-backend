@@ -4,9 +4,9 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
 import { DataSource, Repository } from 'typeorm'
 
 import { InvoiceDTO } from './fraud.dtos'
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
-
 import { FraudSpecificationAggregator } from './specifications'
+
+import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 import { FraudEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
 
@@ -71,11 +71,15 @@ export class FraudConsumerService {
 			invoice.status = fraud ? EInvoiceStatus.REJECTED : EInvoiceStatus.APPROVED
 			await manager.save(InvoiceEntity, invoice)
 
-			// if (!fraud) {
-			// 	await this.amqpConnection.publish('default', 'transactions.credit', {
-			// 		...invoice,
-			// 	})
-			// }
+			if (!fraud) {
+				await this.amqpConnection.publish('fcpay', 'accounts.balance.credit', {
+					...invoice,
+				})
+
+				this.logger.debug(
+					`Message sent to 'accounts.balance.credit': ${JSON.stringify(invoice)}`,
+				)
+			}
 
 			return invoice
 		})

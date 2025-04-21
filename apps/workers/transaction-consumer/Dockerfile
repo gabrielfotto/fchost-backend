@@ -13,9 +13,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# Copy the .env and .env.development files
-COPY .env ./
-
 # Creates a "dist" folder with the production build
 RUN npm run build
 
@@ -30,4 +27,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint-apps.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint-apps.sh"]
 
 # Start the server using the production build
-# CMD ["npm", "run", "start:prod:transaction-producer"]
+# CMD ["npm", "run", "start:prod:transaction-consumer"]

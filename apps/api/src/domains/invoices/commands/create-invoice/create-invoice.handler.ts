@@ -23,7 +23,12 @@ export class CreateInvoiceCommand {
 export default class CreateInvoiceCommandHandler
 	implements ICommandHandler<CreateInvoiceCommand, CreateInvoiceOutputDTO>
 {
-	private readonly logger: Logger = new Logger(CreateInvoiceCommandHandler.name)
+	private readonly logger: Logger = new Logger(
+		CreateInvoiceCommandHandler.name,
+		{
+			timestamp: true,
+		},
+	)
 
 	constructor(
 		@InjectDataSource()

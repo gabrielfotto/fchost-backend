@@ -72,6 +72,7 @@ export default class CreateInvoiceCommandHandler
 				this.logger.debug(
 					`Message sent to 'invoices.fraud.detect': ${JSON.stringify(invoice)}`,
 				)
+
 				return invoice
 			},
 		)

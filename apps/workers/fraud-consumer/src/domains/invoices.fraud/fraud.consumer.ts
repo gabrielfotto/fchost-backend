@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
 
-import { FraudConsumerService } from './fraud.service'
+import { FraudDetectionConsumerHandlerService } from './fraud.service'
 import { InvoiceDTO } from './fraud.dtos'
 
 @Injectable()
-export class FraudConsumerQueues {
-	constructor(private readonly fraudConsumerService: FraudConsumerService) {}
+export class FraudDetectionConsumerHandler {
+	constructor(
+		private readonly FraudDetectionConsumerHandlerService: FraudDetectionConsumerHandlerService,
+	) {}
 
 	@RabbitSubscribe({
 		exchange: 'fcpay',
@@ -20,7 +22,7 @@ export class FraudConsumerQueues {
 			},
 		},
 	})
-	async fraudConsumerQueueHandler(message: InvoiceDTO) {
-		await this.fraudConsumerService.execute(message)
+	async handler(message: InvoiceDTO) {
+		await this.FraudDetectionConsumerHandlerService.execute(message)
 	}
 }

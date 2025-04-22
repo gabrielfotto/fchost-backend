@@ -11,10 +11,13 @@ import { FraudEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
 
 @Injectable()
-export class FraudConsumerService {
-	private readonly logger: Logger = new Logger(FraudConsumerService.name, {
-		timestamp: true,
-	})
+export class FraudDetectionConsumerHandlerService {
+	private readonly logger: Logger = new Logger(
+		FraudDetectionConsumerHandlerService.name,
+		{
+			timestamp: true,
+		},
+	)
 
 	constructor(
 		@InjectDataSource()
@@ -23,7 +26,7 @@ export class FraudConsumerService {
 		private readonly accountRepository: Repository<AccountEntity>,
 		@InjectRepository(InvoiceEntity)
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
-		private readonly FraudSpecificationAggregator: FraudSpecificationAggregator,
+		private readonly fraudSpecificationAggregator: FraudSpecificationAggregator,
 		private readonly amqpConnection: AmqpConnection,
 	) {}
 
@@ -39,7 +42,7 @@ export class FraudConsumerService {
 			return new Nack()
 		}
 
-		if (invoice.isFraudProcessed) {
+		if (invoice.fraud) {
 			this.logger.warn(`Invoice ${invoice_id} has already been processed`)
 			return new Nack()
 		}
@@ -53,25 +56,30 @@ export class FraudConsumerService {
 			return new Nack()
 		}
 
-		const fraud = await this.FraudSpecificationAggregator.execute({
+		const fraudData = await this.fraudSpecificationAggregator.execute({
 			account,
 			amount,
 		})
 
 		await this.dataSource.transaction(async manager => {
-			if (fraud) {
-				await manager.create(FraudEntity, {
+			if (fraudData) {
+				const fraud = manager.create(FraudEntity, {
 					invoice,
-					reason: fraud.reason,
-					description: fraud.description,
+					reason: fraudData.reason,
+					description: fraudData.description,
 				})
+
+				await manager.save(FraudEntity, fraud)
+				invoice.fraud = fraud
 			}
 
 			invoice.isFraudProcessed = true
-			invoice.status = fraud ? EInvoiceStatus.REJECTED : EInvoiceStatus.APPROVED
+			invoice.status = fraudData
+				? EInvoiceStatus.REJECTED
+				: EInvoiceStatus.APPROVED
 			await manager.save(InvoiceEntity, invoice)
 
-			if (!fraud) {
+			if (!fraudData) {
 				await this.amqpConnection.publish('fcpay', 'accounts.balance.credit', {
 					...invoice,
 				})

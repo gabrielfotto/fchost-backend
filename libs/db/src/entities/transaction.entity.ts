@@ -30,9 +30,9 @@ export default class TransactionEntity {
 	// @Column()
 	// balance: number
 
-	@OneToOne(() => InvoiceEntity, { onDelete: 'CASCADE' })
+	@OneToOne(() => InvoiceEntity, { onDelete: 'CASCADE', nullable: true })
 	@JoinColumn({ name: 'invoiceId' })
-	invoice: InvoiceEntity
+	invoice?: InvoiceEntity
 
 	@CreateDateColumn()
 	createdAt: Date

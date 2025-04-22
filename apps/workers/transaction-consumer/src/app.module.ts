@@ -6,11 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { dataSourceOptionsFn } from '@libs/db/data-source'
 import { rabbitmqConfigFn } from '@libs/config'
 
-import { CreditAccountBalanceConsumer } from './domains/accounts.transaction/credit-balance.consumer'
-import { CreditAccountBalanceService } from './domains/accounts.transaction/credit-balance.service'
+import { CreditAccountBalanceConsumerHandler } from './domains/accounts.transaction/credit-balance/credit-balance.consumer'
+import { CreditAccountBalanceService } from './domains/accounts.transaction/credit-balance/credit-balance.service'
 
-import { DebitAccountBalanceConsumer } from './domains/accounts.transaction/debit-balance.consumer'
-import { DebitAccountBalanceService } from './domains/accounts.transaction/debit-balance.service'
+import { DebitAccountBalanceConsumerHandler } from './domains/accounts.transaction/debit-balance/debit-balance.consumer'
+import { DebitAccountBalanceService } from './domains/accounts.transaction/debit-balance/debit-balance.service'
 
 @Module({
 	imports: [
@@ -30,9 +30,9 @@ import { DebitAccountBalanceService } from './domains/accounts.transaction/debit
 	],
 	controllers: [],
 	providers: [
-		CreditAccountBalanceConsumer,
+		CreditAccountBalanceConsumerHandler,
 		CreditAccountBalanceService,
-		DebitAccountBalanceConsumer,
+		DebitAccountBalanceConsumerHandler,
 		DebitAccountBalanceService,
 	],
 })

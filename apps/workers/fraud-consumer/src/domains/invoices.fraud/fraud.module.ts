@@ -8,8 +8,8 @@ import {
 	FraudUnusualPatternEspecification,
 } from './specifications'
 
-import { FraudConsumerService } from './fraud.service'
-import { FraudConsumerQueues } from './fraud.consumer'
+import { FraudDetectionConsumerHandlerService } from './fraud.service'
+import { FraudDetectionConsumerHandler } from './fraud.consumer'
 
 import { rabbitmqConfigFn } from '@libs/config'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
@@ -32,8 +32,8 @@ import { FraudSpecificationAggregator } from './specifications'
 		}),
 	],
 	providers: [
-		FraudConsumerService,
-		FraudConsumerQueues,
+		FraudDetectionConsumerHandlerService,
+		FraudDetectionConsumerHandler,
 
 		FraudSpecificationAggregator,
 		FraudFrequentHighValueEspecification,

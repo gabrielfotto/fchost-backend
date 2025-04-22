@@ -8,6 +8,7 @@ export type TInvoice = {
 	paymentType: string
 	status: EInvoiceStatus
 	cardLastDigits: string
+	isFraudProcessed?: boolean
 }
 
 export type TFraud = {

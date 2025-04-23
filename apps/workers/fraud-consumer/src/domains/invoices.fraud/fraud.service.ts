@@ -30,8 +30,8 @@ export class FraudDetectionConsumerHandlerService {
 		private readonly amqpConnection: AmqpConnection,
 	) {}
 
-	async execute(payload: InvoiceDTO) {
-		const { invoice_id, account_id, amount } = payload
+	async execute(message: InvoiceDTO) {
+		const { invoice_id, account_id, amount } = message
 
 		const invoice = await this.invoicesRepository.findOneBy({
 			id: invoice_id,
@@ -82,6 +82,7 @@ export class FraudDetectionConsumerHandlerService {
 			if (!fraudData) {
 				await this.amqpConnection.publish('fcpay', 'accounts.balance.credit', {
 					...invoice,
+					account,
 				})
 
 				this.logger.debug(

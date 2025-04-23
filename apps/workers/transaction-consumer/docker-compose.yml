@@ -7,7 +7,7 @@ services:
     restart: always
 
     ports:
-      - 8083:8083 # porta  do debugger
+      - 8083:8083 # porta do debugger
 
     working_dir: /usr/src/app
     volumes:

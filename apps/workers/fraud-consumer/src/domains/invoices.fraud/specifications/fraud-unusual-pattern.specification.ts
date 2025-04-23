@@ -18,13 +18,17 @@ export default class FraudUnusualPatternEspecification
 	) {}
 
 	async isSatisfied(account: AccountEntity, amount: number): Promise<boolean> {
+		const MIN_INVOICE_COUNT = this.configService.get('fraud.MIN_INVOICE_COUNT')
+
+		const Z_SCORE_THRESHOLD = this.configService.get('fraud.Z_SCORE_THRESHOLD')
+
 		const INVOICE_HISTORY_LIMIT = this.configService.get(
 			'fraud.INVOICE_HISTORY_LIMIT',
 		)
 
-		const MAX_VARIATION_PERCENTAGE = this.configService.get(
-			'fraud.MAX_VARIATION_PERCENTAGE',
-		)
+		// const MAX_VARIATION_PERCENTAGE = this.configService.get(
+		// 	'fraud.MAX_VARIATION_PERCENTAGE',
+		// )
 
 		const invoices = await this.invoicesRepository.find({
 			where: { account: { id: account.id } },
@@ -32,13 +36,20 @@ export default class FraudUnusualPatternEspecification
 			take: INVOICE_HISTORY_LIMIT,
 		})
 
-		if (!invoices.length) {
+		if (invoices.length < MIN_INVOICE_COUNT) {
 			return false
 		}
 
-		const total = invoices.reduce((acc, inv) => acc + inv.amount, 0)
-		const average = total / invoices.length
-		return amount > average * ((1 + MAX_VARIATION_PERCENTAGE) / 100)
+		const amounts = invoices.map(inv => inv.amount)
+		const average = amounts.reduce((a, b) => a + b, 0) / amounts.length
+
+		const variance =
+			amounts.reduce((sum, a) => sum + Math.pow(a - average, 2), 0) /
+			amounts.length
+		const stdDev = Math.sqrt(variance)
+
+		const zScore = (amount - average) / stdDev
+		return zScore >= Z_SCORE_THRESHOLD
 	}
 
 	getFraudReason(account: AccountEntity, amount: number) {

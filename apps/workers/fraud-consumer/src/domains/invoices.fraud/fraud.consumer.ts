@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
 
 import { FraudDetectionConsumerHandlerService } from './fraud.service'
@@ -6,8 +6,15 @@ import { InvoiceDTO } from './fraud.dtos'
 
 @Injectable()
 export class FraudDetectionConsumerHandler {
+	private readonly logger: Logger = new Logger(
+		FraudDetectionConsumerHandler.name,
+		{
+			timestamp: true,
+		},
+	)
+
 	constructor(
-		private readonly FraudDetectionConsumerHandlerService: FraudDetectionConsumerHandlerService,
+		private readonly fraudDetectionConsumerHandlerService: FraudDetectionConsumerHandlerService,
 	) {}
 
 	@RabbitSubscribe({
@@ -23,6 +30,7 @@ export class FraudDetectionConsumerHandler {
 		},
 	})
 	async handler(message: InvoiceDTO) {
-		await this.FraudDetectionConsumerHandlerService.execute(message)
+		await this.fraudDetectionConsumerHandlerService.execute(message)
+		this.logger.debug(`Message consumed: ${JSON.stringify(message)}`)
 	}
 }

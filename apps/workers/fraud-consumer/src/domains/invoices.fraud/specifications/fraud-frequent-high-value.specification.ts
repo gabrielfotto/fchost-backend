@@ -26,11 +26,11 @@ export default class FraudFrequentHighValueEspecification {
 
 		const since = subHours(new Date(), TIMEFRAME_HOURS_FOR_ANALYSIS)
 
-		const recent = await this.invoicesRepository.count({
+		const timeframeInvoicesCount = await this.invoicesRepository.count({
 			where: { createdAt: MoreThan(since) },
 		})
 
-		return recent >= MIN_FLAGGED_INVOICES
+		return timeframeInvoicesCount >= MIN_FLAGGED_INVOICES
 	}
 
 	getFraudReason(account: AccountEntity) {

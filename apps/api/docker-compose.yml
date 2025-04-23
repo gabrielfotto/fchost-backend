@@ -8,7 +8,7 @@ services:
 
     ports:
       - 8080:8080 # porta default da api
-      - 8081:8081 # porta  do debugger
+      - 8081:8081 # porta do debugger
 
     working_dir: /usr/src/app
     volumes:

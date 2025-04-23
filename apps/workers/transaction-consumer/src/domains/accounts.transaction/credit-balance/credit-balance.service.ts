@@ -33,7 +33,8 @@ export class CreditAccountBalanceService {
 				return
 			}
 
-			lockedAccount.balance += amount
+			const totalBalance = Number(lockedAccount.balance) + Number(amount)
+			lockedAccount.balance = totalBalance
 			await manager.save(AccountEntity, lockedAccount)
 		})
 	}

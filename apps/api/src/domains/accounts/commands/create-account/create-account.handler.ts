@@ -8,7 +8,7 @@ import { CreateAccountInputDTO } from './create-account.dtos'
 export class CreateAccountCommand {
 	name: string
 	email: string
-	balance: number
+	balance: string
 }
 
 @CommandHandler(CreateAccountCommand)

@@ -11,13 +11,13 @@ export default class FraudSuspiciousAccountEspecification
 {
 	constructor() {}
 
-	isSatisfied(account: AccountEntity, amount: number): Promise<boolean> {
+	isSatisfied(account: AccountEntity, amount: string): Promise<boolean> {
 		return Promise.resolve(account.isSuspicious)
 	}
 
 	getFraudReason(
 		account: AccountEntity,
-		amount: number,
+		amount: string,
 	): { reason: EFraudReason; description: string } {
 		return {
 			reason: EFraudReason.SUSPICIOUS_ACCOUNT,

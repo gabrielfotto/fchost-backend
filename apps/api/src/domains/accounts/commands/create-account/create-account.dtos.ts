@@ -9,5 +9,5 @@ export class CreateAccountInputDTO {
 
 	@IsOptional()
 	@IsNumber()
-	balance?: number
+	balance?: string
 }

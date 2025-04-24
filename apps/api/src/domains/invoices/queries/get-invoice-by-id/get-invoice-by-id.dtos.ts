@@ -4,7 +4,7 @@ import { EInvoiceStatus } from '@libs/shared/enums'
 @Exclude()
 export class GetInvoiceByIdOutputDTO {
 	@Expose()
-	amount: number
+	amount: string
 
 	@Expose()
 	description: string
@@ -16,5 +16,5 @@ export class GetInvoiceByIdOutputDTO {
 	status: EInvoiceStatus
 
 	@Expose()
-	cardLastDigits: string
+	cardLast4Digits: string
 }

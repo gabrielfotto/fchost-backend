@@ -5,7 +5,7 @@ export class CreditCardHelper {
 		this.card = card
 	}
 
-	get cardLastDigits() {
+	get cardLast4Digits() {
 		if (!this.card) return ''
 		return this.card.cardNumber?.replace(/\s+/g, '').slice(12)
 	}

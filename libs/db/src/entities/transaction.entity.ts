@@ -28,7 +28,7 @@ export default class TransactionEntity {
 	value: number
 
 	// @Column()
-	// balance: number
+	// balance: string
 
 	@OneToOne(() => InvoiceEntity, { onDelete: 'CASCADE', nullable: true })
 	@JoinColumn({ name: 'invoiceId' })

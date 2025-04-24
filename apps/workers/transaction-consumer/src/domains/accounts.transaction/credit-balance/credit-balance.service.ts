@@ -24,8 +24,9 @@ export class CreditAccountBalanceService {
 		const { invoice_id } = message
 
 		await this.dataSource.transaction(async manager => {
-			const invoice = await manager.findOneByOrFail(InvoiceEntity, {
-				id: invoice_id,
+			const invoice = await manager.findOneOrFail(InvoiceEntity, {
+				where: { id: invoice_id },
+				relations: ['account'],
 			})
 
 			if (!invoice) {
@@ -46,7 +47,7 @@ export class CreditAccountBalanceService {
 			const totalBalance =
 				Number(lockedAccount.balance) + Number(invoice.amount)
 
-			lockedAccount.balance = totalBalance
+			lockedAccount.balance = String(totalBalance)
 			await manager.save(AccountEntity, lockedAccount)
 		})
 	}

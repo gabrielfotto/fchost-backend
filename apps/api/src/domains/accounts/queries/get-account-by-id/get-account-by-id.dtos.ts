@@ -12,5 +12,5 @@ export class GetAccountOutputDTO {
 	email: string
 
 	@Expose()
-	balance: number
+	balance: string
 }

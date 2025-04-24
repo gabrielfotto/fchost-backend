@@ -39,7 +39,7 @@ class CreditCardInputDTO {
 export class CreateInvoiceInputDTO {
 	@IsNumber()
 	@Min(0.1)
-	amount: number
+	amount: string
 
 	@IsString()
 	description: string
@@ -56,7 +56,7 @@ export class CreateInvoiceInputDTO {
 // OUTPUTS
 export class CreateInvoiceOutputDTO {
 	@Expose()
-	amount: number
+	amount: string
 
 	@Expose()
 	description: string

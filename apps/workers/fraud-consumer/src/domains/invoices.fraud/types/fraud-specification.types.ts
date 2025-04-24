@@ -3,7 +3,7 @@ import { EFraudReason } from '@libs/shared/enums'
 
 export type TFraudSpecificationData = {
 	account: AccountEntity
-	amount: number
+	amount: string
 }
 
 export type TFraudSpecificationResult = {

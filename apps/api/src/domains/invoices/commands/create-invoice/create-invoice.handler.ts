@@ -12,7 +12,7 @@ import { CreditCardHelper, InvoiceHelper } from '../../helpers'
 
 export class CreateInvoiceCommand {
 	account: AccountEntity
-	amount: number
+	amount: string
 	description: string
 	paymentType: string
 	card: TCreditCard
@@ -39,7 +39,7 @@ export default class CreateInvoiceCommandHandler
 		command: CreateInvoiceCommand,
 	): Promise<CreateInvoiceOutputDTO> {
 		const { account, card, amount, description, paymentType } = command
-		const { cardLastDigits } = new CreditCardHelper(card)
+		const { cardLast4Digits } = new CreditCardHelper(card)
 
 		const invoice = await this.dataSource.transaction<CreateInvoiceOutputDTO>(
 			async manager => {
@@ -57,7 +57,7 @@ export default class CreateInvoiceCommandHandler
 					amount,
 					description,
 					paymentType,
-					cardLastDigits,
+					cardLast4Digits,
 				})
 
 				await manager.save(InvoiceEntity, invoice)

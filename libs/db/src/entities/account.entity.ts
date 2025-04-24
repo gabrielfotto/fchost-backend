@@ -22,8 +22,8 @@ export default class AccountEntity {
 	@Column({ unique: true })
 	apiKey: string
 
-	@Column({ type: 'decimal' })
-	balance: number
+	@Column({ type: 'decimal', scale: 2 })
+	balance: string
 
 	@Column({ type: 'boolean', nullable: true })
 	isSuspicious: boolean

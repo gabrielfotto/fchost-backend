@@ -23,8 +23,8 @@ export default class InvoiceEntity {
 	@JoinColumn({ name: 'accountId' })
 	account: AccountEntity
 
-	@Column({ type: 'decimal' })
-	amount: number
+	@Column({ type: 'decimal', precision: 10, scale: 2 })
+	amount: string // FIX CAST BUG
 
 	@Column({
 		type: 'enum',
@@ -40,7 +40,7 @@ export default class InvoiceEntity {
 	paymentType: string
 
 	@Column()
-	cardLastDigits: string
+	cardLast4Digits: string
 
 	@Column({ type: 'boolean', default: false })
 	isFraudProcessed: boolean

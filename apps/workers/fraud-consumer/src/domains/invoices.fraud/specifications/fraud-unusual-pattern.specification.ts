@@ -17,7 +17,7 @@ export default class FraudUnusualPatternEspecification
 		private readonly invoicesRepository: Repository<InvoiceEntity>,
 	) {}
 
-	async isSatisfied(account: AccountEntity, amount: number): Promise<boolean> {
+	async isSatisfied(account: AccountEntity, amount: string): Promise<boolean> {
 		const MIN_INVOICE_COUNT = this.configService.get('fraud.MIN_INVOICE_COUNT')
 
 		const Z_SCORE_THRESHOLD = this.configService.get('fraud.Z_SCORE_THRESHOLD')
@@ -41,18 +41,19 @@ export default class FraudUnusualPatternEspecification
 		}
 
 		const amounts = invoices.map(inv => inv.amount)
-		const average = amounts.reduce((a, b) => a + b, 0) / amounts.length
+		const average =
+			amounts.reduce((a, b) => Number(a) + Number(b), 0) / amounts.length
 
 		const variance =
-			amounts.reduce((sum, a) => sum + Math.pow(a - average, 2), 0) /
+			amounts.reduce((sum, a) => sum + Math.pow(Number(a) - average, 2), 0) /
 			amounts.length
 		const stdDev = Math.sqrt(variance)
 
-		const zScore = (amount - average) / stdDev
+		const zScore = (Number(amount) - average) / stdDev
 		return zScore >= Z_SCORE_THRESHOLD
 	}
 
-	getFraudReason(account: AccountEntity, amount: number) {
+	getFraudReason(account: AccountEntity, amount: string) {
 		return {
 			reason: EFraudReason.UNUSUAL_PATTERN,
 			description: `Amount ${amount} is unusually high for account ${account.id}`,

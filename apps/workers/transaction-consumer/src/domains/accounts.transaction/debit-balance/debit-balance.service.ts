@@ -41,7 +41,7 @@ export class DebitAccountBalanceService {
 
 			const totalBalance = Number(lockedAccount.balance) - Number(amount)
 
-			lockedAccount.balance = totalBalance
+			lockedAccount.balance = String(totalBalance)
 			await manager.save(AccountEntity, lockedAccount)
 		})
 	}

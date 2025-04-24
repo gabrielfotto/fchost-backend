@@ -1,6 +1,4 @@
-import { TAccount } from '@libs/shared/types'
-
 export class DebitBalanceInputDTO {
-	account: TAccount
+	account_id: number
 	amount: number
 }

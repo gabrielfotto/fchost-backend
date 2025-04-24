@@ -61,13 +61,12 @@ export default class CreateInvoiceCommandHandler
 				})
 
 				await manager.save(InvoiceEntity, invoice)
-				await this.amqpConnection.publish('fcpay', 'invoices.fraud.detect', {
-					account: account.id,
+				await this.amqpConnection.publish('fcpay', 'invoices.fraud.detection', {
 					invoice_id: invoice.id,
 				})
 
 				this.logger.debug(
-					`Message sent to 'invoices.fraud.detect': ${JSON.stringify(invoice)}`,
+					`Message sent to 'invoices.fraud.detection': ${JSON.stringify(invoice)}`,
 				)
 
 				return invoice

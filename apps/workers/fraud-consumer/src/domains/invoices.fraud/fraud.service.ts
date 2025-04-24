@@ -31,11 +31,12 @@ export class FraudDetectionConsumerHandlerService {
 	) {}
 
 	async execute(message: FraudDetectionInputDTO) {
-		const { invoice_id, account_id } = message
+		const { invoice_id } = message
 
 		await this.dataSource.transaction(async manager => {
-			const invoice = await manager.findOneByOrFail(InvoiceEntity, {
-				id: invoice_id,
+			const invoice = await manager.findOneOrFail(InvoiceEntity, {
+				where: { id: invoice_id },
+				relations: ['account'],
 			})
 
 			if (!invoice) {
@@ -48,17 +49,8 @@ export class FraudDetectionConsumerHandlerService {
 				return new Nack()
 			}
 
-			const account = await manager.findOneByOrFail(AccountEntity, {
-				id: account_id,
-			})
-
-			if (!account) {
-				this.logger.warn(`Account ${account_id} not found`)
-				return new Nack()
-			}
-
 			const fraudData = await this.fraudSpecificationAggregator.execute({
-				account,
+				account: invoice.account,
 				amount: invoice.amount,
 			})
 
@@ -81,7 +73,6 @@ export class FraudDetectionConsumerHandlerService {
 
 			if (!fraudData) {
 				await this.amqpConnection.publish('fcpay', 'accounts.balance.credit', {
-					account_id: account.id,
 					invoice_id: invoice.id,
 				})
 

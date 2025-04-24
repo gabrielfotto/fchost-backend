@@ -21,25 +21,25 @@ export class CreditAccountBalanceService {
 	) {}
 
 	async execute(message: CreditBalanceInputDTO) {
-		const { account_id, invoice_id } = message
+		const { invoice_id } = message
 
 		await this.dataSource.transaction(async manager => {
-			const lockedAccount = await manager.findOne(AccountEntity, {
-				where: { id: account_id },
-				lock: { mode: 'pessimistic_write' },
-			})
-
-			if (!lockedAccount) {
-				this.logger.warn(`Account ${account_id} not found`)
-				return new Nack()
-			}
-
 			const invoice = await manager.findOneByOrFail(InvoiceEntity, {
 				id: invoice_id,
 			})
 
 			if (!invoice) {
 				this.logger.warn(`Invoice ${invoice_id} not found`)
+				return new Nack()
+			}
+
+			const lockedAccount = await manager.findOne(AccountEntity, {
+				where: { id: invoice.account.id },
+				lock: { mode: 'pessimistic_write' },
+			})
+
+			if (!lockedAccount) {
+				this.logger.warn(`Account ${invoice.account.id} not found`)
 				return new Nack()
 			}
 

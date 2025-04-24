@@ -6,17 +6,17 @@ export class InvoiceHelper {
 		this.invoice = invoice
 	}
 
-	process(): void {
-		if (this.invoice.amount > 10000) {
-			return
-		}
+	// process(): void {
+	// 	if (this.invoice.amount > 10000) {
+	// 		return
+	// 	}
 
-		const random = Math.random()
-		const newStatus =
-			random <= 0.7 ? EInvoiceStatus.APPROVED : EInvoiceStatus.REJECTED
+	// 	const random = Math.random()
+	// 	const newStatus =
+	// 		random <= 0.7 ? EInvoiceStatus.APPROVED : EInvoiceStatus.REJECTED
 
-		this.invoice.status = newStatus
-	}
+	// 	this.invoice.status = newStatus
+	// }
 
 	get data() {
 		return this.invoice

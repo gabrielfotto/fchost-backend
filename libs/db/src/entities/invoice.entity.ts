@@ -23,7 +23,7 @@ export default class InvoiceEntity {
 	@JoinColumn({ name: 'accountId' })
 	account: AccountEntity
 
-	@Column()
+	@Column({ type: 'decimal' })
 	amount: number
 
 	@Column({

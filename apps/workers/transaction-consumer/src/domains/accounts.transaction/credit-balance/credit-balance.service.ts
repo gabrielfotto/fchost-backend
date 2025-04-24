@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
+import { Nack } from '@golevelup/nestjs-rabbitmq'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
 import { CreditBalanceInputDTO } from './credit-balance.dtos'
-import { AccountEntity } from '@libs/db/entities'
+import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 
 @Injectable()
 export class CreditAccountBalanceService {
@@ -20,20 +21,31 @@ export class CreditAccountBalanceService {
 	) {}
 
 	async execute(message: CreditBalanceInputDTO) {
-		const { account, amount } = message
+		const { account_id, invoice_id } = message
 
 		await this.dataSource.transaction(async manager => {
 			const lockedAccount = await manager.findOne(AccountEntity, {
-				where: { id: account.id },
+				where: { id: account_id },
 				lock: { mode: 'pessimistic_write' },
 			})
 
 			if (!lockedAccount) {
-				this.logger.warn(`Account ${account.id} not found`)
-				return
+				this.logger.warn(`Account ${account_id} not found`)
+				return new Nack()
 			}
 
-			const totalBalance = Number(lockedAccount.balance) + Number(amount)
+			const invoice = await manager.findOneByOrFail(InvoiceEntity, {
+				id: invoice_id,
+			})
+
+			if (!invoice) {
+				this.logger.warn(`Invoice ${invoice_id} not found`)
+				return new Nack()
+			}
+
+			const totalBalance =
+				Number(lockedAccount.balance) + Number(invoice.amount)
+
 			lockedAccount.balance = totalBalance
 			await manager.save(AccountEntity, lockedAccount)
 		})

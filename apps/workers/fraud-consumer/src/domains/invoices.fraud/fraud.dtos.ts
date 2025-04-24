@@ -1,5 +1,4 @@
-export class InvoiceDTO {
+export class FraudDetectionInputDTO {
 	invoice_id: number
 	account_id: number
-	amount: number
 }

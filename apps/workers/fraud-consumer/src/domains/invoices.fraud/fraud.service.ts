@@ -3,7 +3,7 @@ import { AmqpConnection, Nack } from '@golevelup/nestjs-rabbitmq'
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
 import { DataSource, Repository } from 'typeorm'
 
-import { InvoiceDTO } from './fraud.dtos'
+import { FraudDetectionInputDTO } from './fraud.dtos'
 import { FraudSpecificationAggregator } from './specifications'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
@@ -22,46 +22,46 @@ export class FraudDetectionConsumerHandlerService {
 	constructor(
 		@InjectDataSource()
 		private readonly dataSource: DataSource,
-		@InjectRepository(AccountEntity)
-		private readonly accountRepository: Repository<AccountEntity>,
-		@InjectRepository(InvoiceEntity)
-		private readonly invoicesRepository: Repository<InvoiceEntity>,
+		// @InjectRepository(AccountEntity)
+		// private readonly accountRepository: Repository<AccountEntity>,
+		// @InjectRepository(InvoiceEntity)
+		// private readonly invoicesRepository: Repository<InvoiceEntity>,
 		private readonly fraudSpecificationAggregator: FraudSpecificationAggregator,
 		private readonly amqpConnection: AmqpConnection,
 	) {}
 
-	async execute(message: InvoiceDTO) {
-		const { invoice_id, account_id, amount } = message
-
-		const invoice = await this.invoicesRepository.findOneBy({
-			id: invoice_id,
-		})
-
-		if (!invoice) {
-			this.logger.warn(`Invoice ${invoice_id} not found`)
-			return new Nack()
-		}
-
-		if (invoice.fraud) {
-			this.logger.warn(`Invoice ${invoice_id} has already been processed`)
-			return new Nack()
-		}
-
-		const account = await this.accountRepository.findOneBy({
-			id: account_id,
-		})
-
-		if (!account) {
-			this.logger.warn(`Account ${account_id} not found`)
-			return new Nack()
-		}
-
-		const fraudData = await this.fraudSpecificationAggregator.execute({
-			account,
-			amount,
-		})
+	async execute(message: FraudDetectionInputDTO) {
+		const { invoice_id, account_id } = message
 
 		await this.dataSource.transaction(async manager => {
+			const invoice = await manager.findOneByOrFail(InvoiceEntity, {
+				id: invoice_id,
+			})
+
+			if (!invoice) {
+				this.logger.warn(`Invoice ${invoice_id} not found`)
+				return new Nack()
+			}
+
+			if (invoice.isFraudProcessed) {
+				this.logger.warn(`Invoice ${invoice_id} has already been processed`)
+				return new Nack()
+			}
+
+			const account = await manager.findOneByOrFail(AccountEntity, {
+				id: account_id,
+			})
+
+			if (!account) {
+				this.logger.warn(`Account ${account_id} not found`)
+				return new Nack()
+			}
+
+			const fraudData = await this.fraudSpecificationAggregator.execute({
+				account,
+				amount: invoice.amount,
+			})
+
 			if (fraudData) {
 				const fraud = manager.create(FraudEntity, {
 					invoice,
@@ -81,16 +81,14 @@ export class FraudDetectionConsumerHandlerService {
 
 			if (!fraudData) {
 				await this.amqpConnection.publish('fcpay', 'accounts.balance.credit', {
-					...invoice,
-					account,
+					account_id: account.id,
+					invoice_id: invoice.id,
 				})
 
 				this.logger.debug(
 					`Message sent to 'accounts.balance.credit': ${JSON.stringify(invoice)}`,
 				)
 			}
-
-			return invoice
 		})
 	}
 }

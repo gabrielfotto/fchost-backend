@@ -5,7 +5,6 @@ import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
-import { EInvoiceStatus } from '@libs/shared/enums'
 
 import { CreateInvoiceOutputDTO } from './create-invoice.dtos'
 import { TCreditCard } from '../../types'
@@ -53,20 +52,18 @@ export default class CreateInvoiceCommandHandler
 					throw new NotFoundException('Account not found')
 				}
 
-				const invoiceHelper = new InvoiceHelper({
+				const invoice = manager.create(InvoiceEntity, {
 					account: lockedAccount,
 					amount,
 					description,
 					paymentType,
 					cardLastDigits,
-					status: EInvoiceStatus.PENDING,
 				})
 
-				const invoice = manager.create(InvoiceEntity, invoiceHelper.data)
 				await manager.save(InvoiceEntity, invoice)
-
 				await this.amqpConnection.publish('fcpay', 'invoices.fraud.detect', {
-					...invoice,
+					account: account.id,
+					invoice_id: invoice.id,
 				})
 
 				this.logger.debug(

@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { AmqpConnection, Nack } from '@golevelup/nestjs-rabbitmq'
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
-import { DataSource, Repository } from 'typeorm'
+import { InjectDataSource } from '@nestjs/typeorm'
+import { DataSource } from 'typeorm'
 
 import { FraudDetectionInputDTO } from './fraud.dtos'
 import { FraudSpecificationAggregator } from './specifications'
 
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { InvoiceEntity } from '@libs/db/entities'
 import { FraudEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
 
@@ -22,10 +22,6 @@ export class FraudDetectionConsumerHandlerService {
 	constructor(
 		@InjectDataSource()
 		private readonly dataSource: DataSource,
-		// @InjectRepository(AccountEntity)
-		// private readonly accountRepository: Repository<AccountEntity>,
-		// @InjectRepository(InvoiceEntity)
-		// private readonly invoicesRepository: Repository<InvoiceEntity>,
 		private readonly fraudSpecificationAggregator: FraudSpecificationAggregator,
 		private readonly amqpConnection: AmqpConnection,
 	) {}

@@ -14,5 +14,7 @@ export class AppService implements ICronService {
 		private readonly amqpConnection: AmqpConnection,
 	) {}
 
-	async execute() {}
+	async execute() {
+		// await this.amqpConnection.publish('fcpay', 'accounts.balance.debit', {})
+	}
 }

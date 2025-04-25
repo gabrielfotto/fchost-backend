@@ -12,7 +12,7 @@ import {
 import { EInvoiceStatus } from '../enums'
 
 import { AccountEntity } from '.'
-import FraudEntity from './fraud.entity'
+import FraudEntity from './invoice-fraud.entity'
 
 @Entity({ name: 'invoices' })
 export default class InvoiceEntity {

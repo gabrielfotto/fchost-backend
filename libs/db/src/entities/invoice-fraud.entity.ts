@@ -11,7 +11,7 @@ import {
 import { InvoiceEntity } from '.'
 import { EFraudReason } from '../enums'
 
-@Entity({ name: 'frauds' })
+@Entity({ name: 'invoice-frauds' })
 export default class FraudEntity {
 	@PrimaryGeneratedColumn()
 	id: number

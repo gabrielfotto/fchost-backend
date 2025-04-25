@@ -10,7 +10,7 @@ import {
 import { AccountMachineEntity } from '.'
 
 @Entity({ name: 'machine-usages' })
-export class MachineUsageEntity {
+export default class MachineUsageEntity {
 	@PrimaryGeneratedColumn()
 	id: number
 
@@ -25,6 +25,9 @@ export class MachineUsageEntity {
 
 	@Column({ type: 'decimal', scale: 4, nullable: true })
 	cost: string
+
+	@Column({ type: 'timestamp', nullable: true })
+	processedAt: Date | null
 
 	@CreateDateColumn()
 	createdAt: Date

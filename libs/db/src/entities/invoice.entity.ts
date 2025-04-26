@@ -45,7 +45,10 @@ export default class InvoiceEntity {
 	@Column({ type: 'boolean', default: false })
 	isFraudProcessed: boolean
 
-	@OneToOne(() => FraudEntity, fraud => fraud.invoice)
+	@OneToOne(() => FraudEntity, fraud => fraud.invoice, {
+		cascade: true,
+		nullable: true,
+	})
 	@JoinColumn({ name: 'fraudId' })
 	fraud?: FraudEntity
 

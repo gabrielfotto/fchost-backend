@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm'
 
 import { CreditBalanceInputDTO } from './credit-balance.dtos'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { EInvoiceStatus } from '@libs/shared/enums'
 
 @Injectable()
 export class CreditAccountBalanceService {
@@ -23,7 +24,7 @@ export class CreditAccountBalanceService {
 		const { invoice_id } = message
 
 		await this.dataSource.transaction(async manager => {
-			const invoice = await manager.findOneOrFail(InvoiceEntity, {
+			const invoice = await manager.findOne(InvoiceEntity, {
 				where: { id: invoice_id },
 				relations: ['account'],
 			})
@@ -48,6 +49,9 @@ export class CreditAccountBalanceService {
 
 			lockedAccount.balance = String(totalBalance)
 			await manager.save(AccountEntity, lockedAccount)
+
+			invoice.status = EInvoiceStatus.PROCESSED
+			await manager.save(InvoiceEntity, invoice)
 		})
 	}
 }

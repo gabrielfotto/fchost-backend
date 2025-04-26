@@ -53,13 +53,13 @@ export class FraudDetectionConsumerHandlerService {
 			})
 
 			if (fraudData) {
-				const fraud = manager.create(FraudEntity, {
+				const fraudCreate = manager.create(FraudEntity, {
 					invoice,
 					reason: fraudData.reason,
 					description: fraudData.description,
 				})
 
-				await manager.save(FraudEntity, fraud)
+				const fraud = await manager.save(FraudEntity, fraudCreate)
 				invoice.fraud = fraud
 			}
 
@@ -67,8 +67,8 @@ export class FraudDetectionConsumerHandlerService {
 			invoice.status = fraudData
 				? EInvoiceStatus.REJECTED
 				: EInvoiceStatus.APPROVED
-			await manager.save(InvoiceEntity, invoice)
 
+			await manager.save(InvoiceEntity, invoice)
 			return invoice
 		})
 

@@ -77,7 +77,8 @@ export class AppService implements ICronService {
 
 				totalAccountUsageCost += usageCost
 
-				usage.cost += usageCost
+				const parsedUsageCost = (Number(usage.cost || 0) + usageCost).toFixed(4)
+				usage.cost = parsedUsageCost
 				usage.processedAt = new Date()
 
 				return usage

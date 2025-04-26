@@ -18,7 +18,8 @@ export class AppCron implements ICron {
 			await this.appService.execute()
 			this.logger.debug('Cron executed')
 		} catch (error) {
-			this.logger.error(`Cron execution error: `, JSON.stringify(error))
+			console.error(error)
+			// this.logger.error(`Cron execution error: `, JSON.stringify(error))
 		}
 	}
 }

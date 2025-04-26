@@ -42,14 +42,16 @@ export default class FraudUnusualPatternEspecification
 
 		const amounts = invoices.map(inv => inv.amount)
 		const average =
-			amounts.reduce((a, b) => Number(a) + Number(b), 0) / amounts.length
+			amounts.reduce((total, b) => total + parseFloat(b), 0) / amounts.length
 
 		const variance =
-			amounts.reduce((sum, a) => sum + Math.pow(Number(a) - average, 2), 0) /
-			amounts.length
+			amounts.reduce(
+				(sum, a) => sum + Math.pow(parseFloat(a) - average, 2),
+				0,
+			) / amounts.length
 		const stdDev = Math.sqrt(variance)
 
-		const zScore = (Number(amount) - average) / stdDev
+		const zScore = (parseFloat(amount) - average) / stdDev
 		return zScore >= Z_SCORE_THRESHOLD
 	}
 

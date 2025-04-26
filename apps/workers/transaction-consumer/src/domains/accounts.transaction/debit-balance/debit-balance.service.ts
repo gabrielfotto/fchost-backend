@@ -41,7 +41,7 @@ export class DebitAccountBalanceService {
 			}
 
 			const totalBalance = (
-				Number(lockedAccount.balance) - Number(amount)
+				parseFloat(lockedAccount.balance) - parseFloat(amount)
 			).toFixed(4)
 
 			lockedAccount.balance = totalBalance

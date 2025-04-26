@@ -21,6 +21,7 @@ export class DebitAccountBalanceService {
 	) {}
 
 	async execute(message: DebitBalanceInputDTO) {
+		// . setar debitedAt para machine-usages
 		const { account_id, amount } = message
 
 		await this.dataSource.transaction(async manager => {

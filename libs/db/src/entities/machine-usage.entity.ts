@@ -23,11 +23,14 @@ export default class MachineUsageEntity {
 	@Column({ type: 'timestamp', nullable: true })
 	endedAt?: Date
 
-	@Column({ type: 'decimal', scale: 4, nullable: true })
-	cost: string
+	// @Column({ type: 'decimal', scale: 4, nullable: true })
+	// cost: string
 
 	@Column({ type: 'timestamp', nullable: true })
-	debitedAt: Date | null
+	processedAt?: Date | null
+
+	@Column({ type: 'timestamp', nullable: true })
+	debitedAt?: Date | null
 
 	@CreateDateColumn()
 	createdAt: Date

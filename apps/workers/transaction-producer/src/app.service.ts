@@ -1,26 +1,102 @@
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
+import { InjectRepository } from '@nestjs/typeorm'
+import { In, IsNull, Repository } from 'typeorm'
 
 import { ICronService } from './app.interfaces'
-import { AccountEntity } from '@libs/db/entities'
+import {
+	AccountEntity,
+	AccountMachineEntity,
+	MachineUsageEntity,
+} from '@libs/db/entities'
+import { differenceInMilliseconds } from 'date-fns'
 
 @Injectable()
 export class AppService implements ICronService {
 	constructor(
 		@InjectRepository(AccountEntity)
 		private readonly accountsRepository: Repository<AccountEntity>,
+		@InjectRepository(AccountMachineEntity)
+		private readonly accountMachinesRepository: Repository<AccountMachineEntity>,
+		@InjectRepository(MachineUsageEntity)
+		private readonly machineUsagesRepository: Repository<MachineUsageEntity>,
 		private readonly amqpConnection: AmqpConnection,
 	) {}
 
 	async execute() {
-		/**
-		 * 1. pegar account-machines onde processedAt está null (pegar todas as machine de uma account)
-		 * 2. somar o custo por hora de cada machine da account
-		 * 3. enviar para serviço de debit
-		 */
-		// usar padrão de events??
-		// await this.amqpConnection.publish('fcpay', 'accounts.balance.debit', {})
+		const accounts = await this.accountsRepository.find()
+
+		for (const account of accounts) {
+			const accountMachines = await this.accountMachinesRepository.find({
+				where: { account: { id: account.id } },
+				relations: ['machine'],
+			})
+
+			if (!accountMachines.length) {
+				continue
+			}
+
+			const accountMachineIds = accountMachines.map(am => am.id)
+			const machineUsages = await this.machineUsagesRepository.find({
+				where: [
+					{
+						accountMachine: { id: In(accountMachineIds) },
+						processedAt: IsNull(),
+					},
+					{
+						accountMachine: { id: In(accountMachineIds) },
+						endedAt: IsNull(),
+					},
+				],
+				relations: ['accountMachine'],
+			})
+
+			if (!machineUsages.length) {
+				continue
+			}
+
+			let totalAccountUsageCost = 0
+			const accountMachineMap = new Map(accountMachines.map(am => [am.id, am]))
+
+			const usagePromises = machineUsages.map(async usage => {
+				const accountMachine = accountMachineMap.get(usage.accountMachine.id)
+				if (!accountMachine) {
+					return
+				}
+
+				const usageStartedAt = usage.processedAt || usage.startedAt
+				const usageEndedAt = usage.endedAt || new Date()
+
+				const usageDiffInMs = differenceInMilliseconds(
+					usageEndedAt,
+					usageStartedAt,
+				)
+
+				const usageDiffInHours = usageDiffInMs / (1000 * 60 * 60)
+				const usageCost = usageDiffInHours * accountMachine.machine.pricePerHour
+
+				totalAccountUsageCost += usageCost
+				usage.processedAt = new Date()
+				return usage
+			})
+
+			const machineUsagesToUpdate = await Promise.all(usagePromises)
+			const validMachineUsagesToUpdate = machineUsagesToUpdate.filter(
+				(usage): usage is MachineUsageEntity => usage !== undefined,
+			)
+
+			await this.machineUsagesRepository.save(validMachineUsagesToUpdate)
+
+			const message = {
+				account_id: account.id,
+				amount: Number(totalAccountUsageCost.toFixed(2)),
+			}
+
+			await this.amqpConnection.publish(
+				'fcpay',
+				'accounts.balance.debit',
+				message,
+			)
+		}
 	}
 }

@@ -80,7 +80,12 @@ export class AppService implements ICronService {
 				)
 
 				totalAccountUsageCost += usageCost
-				usage.cost = String(Number(usage.cost || 0) + usageCost)
+
+				const parsedUsageCost = Number(
+					Number(usage.cost || 0) + Number(usageCost),
+				).toFixed(4)
+
+				usage.cost = parsedUsageCost
 				usage.processedAt = new Date()
 
 				return usage
@@ -95,7 +100,7 @@ export class AppService implements ICronService {
 
 			const message = {
 				account_id: account.id,
-				amount: totalAccountUsageCost,
+				amount: Number(totalAccountUsageCost.toFixed(4)),
 			}
 
 			await this.amqpConnection.publish(

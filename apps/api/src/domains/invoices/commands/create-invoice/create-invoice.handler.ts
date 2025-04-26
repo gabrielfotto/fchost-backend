@@ -8,7 +8,7 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 
 import { CreateInvoiceOutputDTO } from './create-invoice.dtos'
 import { TCreditCard } from '../../types'
-import { CreditCardHelper, InvoiceHelper } from '../../helpers'
+import { CreditCardHelper } from '../../helpers'
 
 export class CreateInvoiceCommand {
 	account: AccountEntity
@@ -61,17 +61,22 @@ export default class CreateInvoiceCommandHandler
 				})
 
 				await manager.save(InvoiceEntity, invoice)
-				await this.amqpConnection.publish('fcpay', 'invoices.fraud.detection', {
-					invoice_id: invoice.id,
-				})
-
-				this.logger.debug(
-					`Message sent to 'invoices.fraud.detection': ${JSON.stringify(invoice)}`,
-				)
-
 				return invoice
 			},
 		)
+
+		if (invoice) {
+			const message = { invoice_id: invoice.id }
+			await this.amqpConnection.publish(
+				'fcpay',
+				'invoices.fraud.detection',
+				message,
+			)
+
+			this.logger.debug(
+				`Message sent to 'invoices.fraud.detection': ${JSON.stringify(message)}`,
+			)
+		}
 
 		return invoice
 	}

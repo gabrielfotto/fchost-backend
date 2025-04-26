@@ -15,6 +15,12 @@ export class AppService implements ICronService {
 	) {}
 
 	async execute() {
+		/**
+		 * 1. pegar account-machines onde processedAt está null (pegar todas as machine de uma account)
+		 * 2. somar o custo por hora de cada machine da account
+		 * 3. enviar para serviço de debit
+		 */
+		// usar padrão de events??
 		// await this.amqpConnection.publish('fcpay', 'accounts.balance.debit', {})
 	}
 }

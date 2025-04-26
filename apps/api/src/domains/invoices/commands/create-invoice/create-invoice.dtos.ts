@@ -56,6 +56,9 @@ export class CreateInvoiceInputDTO {
 // OUTPUTS
 export class CreateInvoiceOutputDTO {
 	@Expose()
+	id: number
+
+	@Expose()
 	amount: string
 
 	@Expose()

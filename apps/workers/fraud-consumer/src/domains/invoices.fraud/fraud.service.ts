@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { AmqpConnection, Nack } from '@golevelup/nestjs-rabbitmq'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
-import { FraudDetectionInputDTO } from './fraud.dtos'
+import { FraudDetectionInputDTO, FraudDetectionOutputDTO } from './fraud.dtos'
 import { FraudSpecificationAggregator } from './specifications'
 
 import { InvoiceEntity } from '@libs/db/entities'
@@ -29,7 +29,9 @@ export class FraudDetectionConsumerHandlerService {
 	async execute(message: FraudDetectionInputDTO) {
 		const { invoice_id } = message
 
-		await this.dataSource.transaction(async manager => {
+		const invoice = await this.dataSource.transaction<
+			FraudDetectionOutputDTO | undefined
+		>(async manager => {
 			const invoice = await manager.findOneOrFail(InvoiceEntity, {
 				where: { id: invoice_id },
 				relations: ['account'],
@@ -37,12 +39,12 @@ export class FraudDetectionConsumerHandlerService {
 
 			if (!invoice) {
 				this.logger.warn(`Invoice ${invoice_id} not found`)
-				return new Nack()
+				return
 			}
 
 			if (invoice.isFraudProcessed) {
 				this.logger.warn(`Invoice ${invoice_id} has already been processed`)
-				return new Nack()
+				return
 			}
 
 			const fraudData = await this.fraudSpecificationAggregator.execute({
@@ -67,15 +69,21 @@ export class FraudDetectionConsumerHandlerService {
 				: EInvoiceStatus.APPROVED
 			await manager.save(InvoiceEntity, invoice)
 
-			if (!fraudData) {
-				await this.amqpConnection.publish('fcpay', 'accounts.balance.credit', {
-					invoice_id: invoice.id,
-				})
-
-				this.logger.debug(
-					`Message sent to 'accounts.balance.credit': ${JSON.stringify(invoice)}`,
-				)
-			}
+			return invoice
 		})
+
+		if (invoice && !invoice.fraud) {
+			const message = { invoice_id: invoice.id }
+
+			await this.amqpConnection.publish(
+				'fcpay',
+				'accounts.balance.credit',
+				message,
+			)
+
+			this.logger.debug(
+				`Message sent to 'accounts.balance.credit': ${JSON.stringify(message)}`,
+			)
+		}
 	}
 }

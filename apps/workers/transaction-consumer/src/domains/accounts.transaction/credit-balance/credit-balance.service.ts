@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Nack } from '@golevelup/nestjs-rabbitmq'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
@@ -31,7 +30,7 @@ export class CreditAccountBalanceService {
 
 			if (!invoice) {
 				this.logger.warn(`Invoice ${invoice_id} not found`)
-				return new Nack()
+				return
 			}
 
 			const lockedAccount = await manager.findOne(AccountEntity, {
@@ -41,7 +40,7 @@ export class CreditAccountBalanceService {
 
 			if (!lockedAccount) {
 				this.logger.warn(`Account ${invoice.account.id} not found`)
-				return new Nack()
+				return
 			}
 
 			const totalBalance =

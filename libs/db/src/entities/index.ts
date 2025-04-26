@@ -4,7 +4,7 @@ import FraudEntity from './invoice-fraud.entity'
 import TransactionEntity from './transaction.entity'
 import MachineEntity from './machine.entity'
 import AccountMachineEntity from './account-machine.entity'
-import MachineUsage from './machine-usage.entity'
+import MachineUsageEntity from './machine-usage.entity'
 
 const Entities = [
 	AccountEntity,
@@ -13,7 +13,7 @@ const Entities = [
 	TransactionEntity,
 	MachineEntity,
 	AccountMachineEntity,
-	MachineUsage,
+	MachineUsageEntity,
 ]
 
 export {
@@ -23,7 +23,7 @@ export {
 	TransactionEntity,
 	MachineEntity,
 	AccountMachineEntity,
-	MachineUsage,
+	MachineUsageEntity,
 }
 
 export default Entities

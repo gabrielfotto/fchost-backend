@@ -2,7 +2,6 @@ import {
 	Controller,
 	DefaultValuePipe,
 	Get,
-	Param,
 	ParseIntPipe,
 	Query,
 } from '@nestjs/common'
@@ -12,7 +11,25 @@ import { plainToInstance } from 'class-transformer'
 import { Account } from '@api/shared/decorators/account.decorator'
 import { AccountEntity } from '@libs/db/entities'
 
-@Controller('transactions')
+import { GetMachinesQuery } from './queries/get-machines/get-machines.handler'
+
+@Controller('machines')
 export default class TransactionsQueriesController {
 	constructor(private readonly queryBus: QueryBus) {}
+
+	@Get()
+	async getAll(
+		@Account() account: AccountEntity,
+		@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+		@Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+	) {
+		const query = plainToInstance(GetMachinesQuery, {
+			account,
+			page,
+			limit,
+		})
+
+		const machines = await this.queryBus.execute(query)
+		return machines
+	}
 }

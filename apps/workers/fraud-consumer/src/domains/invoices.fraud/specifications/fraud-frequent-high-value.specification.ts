@@ -34,13 +34,17 @@ export default class FraudFrequentHighValueEspecification {
 	}
 
 	getFraudReason(account: AccountEntity) {
+		const MIN_FLAGGED_INVOICES = this.configService.get(
+			'fraud.MIN_FLAGGED_INVOICES',
+		)
+
 		const TIMEFRAME_HOURS_FOR_ANALYSIS = this.configService.get(
 			'fraud.TIMEFRAME_HOURS_FOR_ANALYSIS',
 		)
 
 		return {
 			reason: EFraudReason.FREQUENT_HIGH_VALUE,
-			description: `Account ${account.id} has more than 100 invoices in the last ${TIMEFRAME_HOURS_FOR_ANALYSIS} hours`,
+			description: `Account ${account.id} has more than ${MIN_FLAGGED_INVOICES} invoices in the last ${TIMEFRAME_HOURS_FOR_ANALYSIS} hours`,
 		}
 	}
 }

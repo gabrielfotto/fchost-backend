@@ -76,7 +76,10 @@ export class AppService implements ICronService {
 				const usageCost = usageDiffInHours * accountMachine.machine.pricePerHour
 
 				totalAccountUsageCost += usageCost
+
+				usage.cost += usageCost
 				usage.processedAt = new Date()
+
 				return usage
 			})
 
@@ -89,7 +92,7 @@ export class AppService implements ICronService {
 
 			const message = {
 				account_id: account.id,
-				amount: Number(totalAccountUsageCost.toFixed(2)),
+				amount: Number(totalAccountUsageCost.toFixed(4)),
 			}
 
 			await this.amqpConnection.publish(

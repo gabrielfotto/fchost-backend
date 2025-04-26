@@ -44,10 +44,11 @@ export class CreditAccountBalanceService {
 				return
 			}
 
-			const totalBalance =
+			const totalBalance = (
 				Number(lockedAccount.balance) + Number(invoice.amount)
+			).toFixed(4)
 
-			lockedAccount.balance = String(totalBalance)
+			lockedAccount.balance = totalBalance
 			await manager.save(AccountEntity, lockedAccount)
 
 			invoice.status = EInvoiceStatus.PROCESSED

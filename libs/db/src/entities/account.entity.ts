@@ -22,7 +22,7 @@ export default class AccountEntity {
 	@Column({ unique: true })
 	apiKey: string
 
-	@Column({ type: 'decimal', scale: 2 })
+	@Column({ type: 'decimal', scale: 4 })
 	balance: string
 
 	@Column({ type: 'boolean', nullable: true })

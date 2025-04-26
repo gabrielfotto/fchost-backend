@@ -4,6 +4,7 @@ import {
 	Entity,
 	ManyToOne,
 	PrimaryGeneratedColumn,
+	Unique,
 	UpdateDateColumn,
 } from 'typeorm'
 
@@ -23,7 +24,7 @@ export default class AccountMachinesEntity {
 	@ManyToOne(() => MachineEntity)
 	machine: MachineEntity
 
-	@Column({ type: 'enum', enum: EMachineStatus })
+	@Column({ type: 'enum', enum: EMachineStatus, default: EMachineStatus.OFF })
 	status: EMachineStatus
 
 	@CreateDateColumn()

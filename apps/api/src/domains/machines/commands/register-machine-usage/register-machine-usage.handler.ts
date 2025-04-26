@@ -1,4 +1,4 @@
-import { BadRequestException, Logger, NotFoundException } from '@nestjs/common'
+import { Logger, NotFoundException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource, IsNull } from 'typeorm'
@@ -13,7 +13,7 @@ import { EMachineStatus } from '@libs/db/enums'
 
 export class RegisterMachineUsageCommand {
 	account: AccountEntity
-	machineId: number
+	accountMachineId: number
 	machineStatus: EMachineStatus
 }
 
@@ -34,28 +34,33 @@ export default class RegisterMachineUsageCommandHandler
 	) {}
 
 	async execute(command: RegisterMachineUsageCommand): Promise<void> {
-		const { account, machineId, machineStatus } = command
-
-		if (machineStatus === EMachineStatus.ON && !account.balance) {
-			throw new BadRequestException(`The account has not enough balance`)
-		}
+		const { account, accountMachineId, machineStatus } = command
 
 		await this.dataSource.transaction(async manager => {
-			const accountMachineInsertResult =
-				await manager.upsert<AccountMachineEntity>(
-					AccountMachineEntity,
-					{
-						account,
-						status: machineStatus,
-						machine: {
-							id: machineId,
-						},
-					},
-					['account', 'machine'],
-				)
+			const accountMachine = await manager.findOne(AccountMachineEntity, {
+				where: { id: accountMachineId },
+			})
 
-			const accountMachine: AccountMachineEntity =
-				accountMachineInsertResult.raw
+			if (!accountMachine) {
+				throw new NotFoundException(
+					`Account machine ${accountMachineId} not found`,
+				)
+			}
+
+			if (
+				(machineStatus === EMachineStatus.ON &&
+					accountMachine.status === EMachineStatus.ON) ||
+				(machineStatus === EMachineStatus.OFF &&
+					accountMachine.status === EMachineStatus.OFF)
+			) {
+				this.logger.warn(
+					`Attempt to set the same current machine status: '${machineStatus}'`,
+				)
+				return
+			}
+
+			accountMachine.status = machineStatus
+			await manager.save(AccountMachineEntity, accountMachine)
 
 			if (machineStatus === EMachineStatus.ON) {
 				const machineUsageCreate = manager.create(MachineUsageEntity, {
@@ -66,7 +71,10 @@ export default class RegisterMachineUsageCommandHandler
 				await manager.save(MachineUsageEntity, machineUsageCreate)
 			} else if (machineStatus === EMachineStatus.OFF) {
 				const machineUsage = await manager.findOne(MachineUsageEntity, {
-					where: { accountMachine, endedAt: IsNull() },
+					where: {
+						accountMachine: { id: accountMachineId },
+						endedAt: IsNull(),
+					},
 				})
 
 				if (!machineUsage) {

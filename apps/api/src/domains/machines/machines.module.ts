@@ -4,7 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import {
+	AccountEntity,
+	AccountMachineEntity,
+	InvoiceEntity,
+	MachineEntity,
+} from '@libs/db/entities'
 import { rabbitmqConfigFn } from '@libs/config'
 
 import MachinesQueriesController from './machines-queries.controller'
@@ -16,7 +21,12 @@ import MachinesCommandHandlers from './commands'
 @Module({
 	imports: [
 		CqrsModule,
-		TypeOrmModule.forFeature([AccountEntity, InvoiceEntity]),
+		TypeOrmModule.forFeature([
+			AccountEntity,
+			InvoiceEntity,
+			MachineEntity,
+			AccountMachineEntity,
+		]),
 		// RabbitMQModule.forRoot(rabbitmqConfig),
 		RabbitMQModule.forRootAsync({
 			imports: [ConfigModule],

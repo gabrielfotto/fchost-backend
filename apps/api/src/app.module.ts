@@ -9,9 +9,10 @@ import AuthGuard from './shared/guards/auth.guard'
 
 import AccountsModule from './domains/accounts/accounts.module'
 import InvoicesModule from './domains/invoices/invoices.module'
+import MachinesModule from './domains/machines/machines.module'
 
 import { dataSourceOptionsFn } from '@libs/db/data-source'
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { AccountEntity, InvoiceEntity, MachineEntity } from '@libs/db/entities'
 
 @Module({
 	imports: [
@@ -28,11 +29,13 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 		TypeOrmModule.forFeature([
 			AccountEntity,
 			InvoiceEntity,
+			MachineEntity,
 			//
 		]),
 
 		AccountsModule,
 		InvoicesModule,
+		MachinesModule,
 	],
 	controllers: [],
 	providers: [

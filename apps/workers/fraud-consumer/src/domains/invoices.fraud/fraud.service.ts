@@ -32,7 +32,7 @@ export class FraudDetectionConsumerHandlerService {
 		const invoice = await this.dataSource.transaction<
 			FraudDetectionOutputDTO | undefined
 		>(async manager => {
-			const invoice = await manager.findOneOrFail(InvoiceEntity, {
+			const invoice = await manager.findOne(InvoiceEntity, {
 				where: { id: invoice_id },
 				relations: ['account'],
 			})

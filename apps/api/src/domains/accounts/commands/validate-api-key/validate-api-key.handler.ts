@@ -4,7 +4,10 @@ import { UnauthorizedException } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 
 import { AccountEntity } from '@libs/db/entities'
-import { ValidateApiKeyInputDTO } from './validate-api-key.dtos'
+import {
+	ValidateApiKeyInputDTO,
+	ValidateApiKeyOutputDTO,
+} from './validate-api-key.dtos'
 
 export class ValidateApiKeyCommand {
 	apiKey: string
@@ -12,14 +15,16 @@ export class ValidateApiKeyCommand {
 
 @CommandHandler(ValidateApiKeyCommand)
 export default class ValidateApiKeyCommandHandler
-	implements ICommandHandler<ValidateApiKeyCommand, void>
+	implements ICommandHandler<ValidateApiKeyCommand, ValidateApiKeyOutputDTO>
 {
 	constructor(
 		@InjectRepository(AccountEntity)
 		private readonly accountsRepository: Repository<AccountEntity>,
 	) {}
 
-	async execute(command: ValidateApiKeyCommand): Promise<void> {
+	async execute(
+		command: ValidateApiKeyCommand,
+	): Promise<ValidateApiKeyOutputDTO> {
 		const { apiKey } = command
 
 		const account = await this.accountsRepository.findOne({
@@ -29,5 +34,7 @@ export default class ValidateApiKeyCommandHandler
 		if (!account) {
 			throw new UnauthorizedException(`Invalid Api Key`)
 		}
+
+		return account
 	}
 }

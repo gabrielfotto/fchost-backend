@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Param, Post } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
 
@@ -15,13 +15,13 @@ import { RegisterMachineUsageCommand } from './commands/register-machine-usage/r
 export default class MachinesCommandsController {
 	constructor(private readonly commandBus: CommandBus) {}
 
-	@Post('rent')
+	@Post(':id/rent')
 	async rent(
 		@Account() account: AccountEntity,
-		@Body() dto: RentMachineInputDTO,
+		@Param('id') machineId: number,
 	) {
 		const command = plainToInstance(RentMachineCommand, {
-			...dto,
+			machineId,
 			account,
 		})
 

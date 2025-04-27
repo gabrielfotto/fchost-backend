@@ -34,6 +34,8 @@ export default class GetAccountQueryHandler
 			throw new ForbiddenException()
 		}
 
-		return plainToInstance(GetAccountOutputDTO, account)
+		return plainToInstance(GetAccountOutputDTO, account, {
+			excludeExtraneousValues: true,
+		})
 	}
 }

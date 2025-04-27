@@ -1,12 +1,10 @@
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
+import { plainToInstance } from 'class-transformer'
 
 import { AccountEntity } from '@libs/db/entities'
-import {
-	CreateAccountInputDTO,
-	CreateAccountOutputDTO,
-} from './create-account.dtos'
+import { CreateAccountOutputDTO } from './create-account.dtos'
 
 export class CreateAccountCommand {
 	name: string
@@ -35,6 +33,20 @@ export default class CreateAccountCommandHandler
 
 		// usar shared/utils dto para validar dados
 		await this.accountsRepository.save(account)
-		return account
+
+		const transformedAccount = plainToInstance(
+			CreateAccountOutputDTO,
+			account,
+			{
+				// Importante: Garante que apenas propriedades com @Expose() sejam incluídas
+				// e que transformações padrão sejam aplicadas.
+
+				// se eu quiser que seja lançado um erro,
+				// precisarei criar um interceptor usando o util plain-to-instance-and-validate.utils
+				excludeExtraneousValues: true,
+			},
+		)
+
+		return transformedAccount
 	}
 }

@@ -2,10 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const execSync = require('child_process').execSync
 
-// Caminho para a pasta das libs
+// caminho para a pasta das libs
 const libsPath = path.join(__dirname, '..', 'libs')
 
-// Função para buscar todas as libs na pasta
+// função para buscar todas as libs
 function getLibs() {
 	return fs.readdirSync(libsPath).filter(lib => {
 		const libPath = path.join(libsPath, lib)
@@ -13,7 +13,7 @@ function getLibs() {
 	})
 }
 
-// Função para rodar o comando de build para cada lib
+// função para rodar o comando de build para cada lib
 function buildLibs() {
 	const libs = getLibs()
 	libs.forEach(lib => {
@@ -27,5 +27,4 @@ function buildLibs() {
 	})
 }
 
-// Rodando o build para todas as libs
 buildLibs()

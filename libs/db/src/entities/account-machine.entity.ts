@@ -2,9 +2,9 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	JoinColumn,
 	ManyToOne,
 	PrimaryGeneratedColumn,
-	Unique,
 	UpdateDateColumn,
 } from 'typeorm'
 
@@ -19,9 +19,11 @@ export default class AccountMachinesEntity {
 	id: number
 
 	@ManyToOne(() => AccountEntity)
+	@JoinColumn({ name: 'accountId' })
 	account: AccountEntity
 
 	@ManyToOne(() => MachineEntity)
+	@JoinColumn({ name: 'machineId' })
 	machine: MachineEntity
 
 	@Column({ type: 'enum', enum: EMachineStatus, default: EMachineStatus.OFF })

@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { plainToInstance } from 'class-transformer'
 
-import { GetMachinesOutputDTO } from './get-machines.dtos'
-
 import { AccountEntity, MachineEntity } from '@libs/db/entities'
 import { TPaginationMeta } from '@api/shared/types/pagination.types'
+
 import { PaginationResponseDTO } from '@api/shared/dtos/pagination.dtos'
+import { GetMachinesOutputDTO } from './get-machines.dtos'
 
 export class GetMachinesQuery {
 	account: AccountEntity

@@ -12,6 +12,7 @@ import { Account } from '@api/shared/decorators/account.decorator'
 import { AccountEntity } from '@libs/db/entities'
 
 import { GetMachinesQuery } from './queries/get-machines/get-machines.handler'
+import { GetAccountMachinesQuery } from './queries/get-account-machines/get-account-machines.handler'
 
 @Controller('machines')
 export default class TransactionsQueriesController {
@@ -24,6 +25,22 @@ export default class TransactionsQueriesController {
 		@Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
 	) {
 		const query = plainToInstance(GetMachinesQuery, {
+			account,
+			page,
+			limit,
+		})
+
+		const machines = await this.queryBus.execute(query)
+		return machines
+	}
+
+	@Get('account')
+	async getAccountMachines(
+		@Account() account: AccountEntity,
+		@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+		@Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+	) {
+		const query = plainToInstance(GetAccountMachinesQuery, {
 			account,
 			page,
 			limit,

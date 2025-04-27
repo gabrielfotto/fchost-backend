@@ -1,5 +1,7 @@
+import { Exclude, Expose } from 'class-transformer'
 import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator'
 
+// INPUT
 export class CreateAccountInputDTO {
 	@IsString()
 	name: string
@@ -7,7 +9,23 @@ export class CreateAccountInputDTO {
 	@IsEmail()
 	email: string
 
-	@IsOptional()
-	@IsNumber()
-	balance?: string
+	// @IsOptional()
+	// @IsNumber()
+	// balance?: string
+}
+
+// OUTPUT
+@Exclude()
+export class CreateAccountOutputDTO {
+	@Expose()
+	name: string
+
+	@Expose()
+	email: string
+
+	@Expose()
+	balance: string
+
+	@Expose()
+	apiKey: string
 }

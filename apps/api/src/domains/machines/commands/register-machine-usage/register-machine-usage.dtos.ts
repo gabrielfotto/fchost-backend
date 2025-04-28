@@ -3,7 +3,7 @@ import { EMachineStatus } from '@libs/db/enums'
 
 export class RegisterMachineUsageInputDTO {
 	@IsNumber()
-	machineId: number
+	accountMachineId: number
 
 	@IsEnum(EMachineStatus)
 	machineStatus: EMachineStatus

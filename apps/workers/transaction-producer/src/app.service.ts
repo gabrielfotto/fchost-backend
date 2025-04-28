@@ -41,7 +41,7 @@ export class AppService implements ICronService {
 				where: [
 					{
 						accountMachine: { id: In(accountMachineIds) },
-						processedAt: IsNull(),
+						lastProcessedAt: IsNull(),
 					},
 					{
 						accountMachine: { id: In(accountMachineIds) },
@@ -64,7 +64,7 @@ export class AppService implements ICronService {
 					return
 				}
 
-				const usageStartedAt = usage.processedAt || usage.startedAt
+				const usageStartedAt = usage.lastProcessedAt || usage.startedAt
 				const usageEndedAt = usage.endedAt || new Date()
 
 				const usageDiffInMs = differenceInMilliseconds(
@@ -81,7 +81,7 @@ export class AppService implements ICronService {
 				const parsedUsageCost = parseFloat(usage.cost + usageCost).toFixed(4)
 
 				usage.cost = parsedUsageCost
-				usage.processedAt = new Date()
+				usage.lastProcessedAt = new Date()
 
 				return usage
 			})

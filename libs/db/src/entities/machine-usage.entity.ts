@@ -27,7 +27,7 @@ export default class MachineUsageEntity {
 	cost: string
 
 	@Column({ type: 'timestamp', nullable: true })
-	processedAt?: Date | null
+	lastProcessedAt?: Date | null
 
 	@Column({ type: 'timestamp', nullable: true })
 	debitedAt?: Date | null

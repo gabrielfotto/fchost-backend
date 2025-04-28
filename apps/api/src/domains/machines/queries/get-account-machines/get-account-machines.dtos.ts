@@ -26,6 +26,12 @@ export class GetAccountMachinesOutputDTO {
 	status: EMachineStatus
 
 	@Expose()
+	totalUsageCost: number
+
+	@Expose()
+	totalUsageHours: number
+
+	@Expose()
 	@Type(() => MachineOutputDTO)
 	machine: TMachine
 }

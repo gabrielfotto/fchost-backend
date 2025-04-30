@@ -1,9 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Nack } from '@golevelup/nestjs-rabbitmq'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { AccountEntity, TransactionEntity } from '@libs/db/entities'
 import { DebitBalanceInputDTO } from './debit-balance.dtos'
 
 @Injectable()

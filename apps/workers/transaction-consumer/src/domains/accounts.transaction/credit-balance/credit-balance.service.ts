@@ -3,7 +3,11 @@ import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
 import { CreditBalanceInputDTO } from './credit-balance.dtos'
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import {
+	AccountEntity,
+	InvoiceEntity,
+	TransactionEntity,
+} from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
 
 @Injectable()

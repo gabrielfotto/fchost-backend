@@ -1,5 +1,4 @@
 import { Exclude, Expose } from 'class-transformer'
-import { IsDefined } from 'class-validator'
 import { EInvoiceStatus } from '@libs/shared/enums'
 
 @Exclude()
@@ -19,7 +18,6 @@ export class GetInvoicesByAccountOutputDTO {
 	@Expose()
 	cardLast4Digits: string
 
-	@IsDefined()
 	@Expose()
 	createdAt: string
 

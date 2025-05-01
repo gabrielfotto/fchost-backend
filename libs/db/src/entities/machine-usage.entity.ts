@@ -23,7 +23,7 @@ export default class MachineUsageEntity {
 	@Column({ type: 'timestamp', nullable: true })
 	endedAt?: Date
 
-	@Column({ type: 'decimal', scale: 4, nullable: true })
+	@Column({ type: 'decimal', scale: 4, default: 0 })
 	cost: string
 
 	@Column({ type: 'timestamp', nullable: true })

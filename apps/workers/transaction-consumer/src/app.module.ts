@@ -32,6 +32,7 @@ import { DebitAccountBalanceService } from './domains/accounts.transaction/debit
 	providers: [
 		CreditAccountBalanceConsumerHandler,
 		CreditAccountBalanceService,
+
 		DebitAccountBalanceConsumerHandler,
 		DebitAccountBalanceService,
 	],

@@ -5,11 +5,11 @@ import { plainToInstance } from 'class-transformer'
 
 import { PaginationResponseDTO } from '@api/shared/dtos/pagination.dtos'
 import { TPaginationMeta } from '@api/shared/types/pagination.types'
-import { plainToInstanceAndValidate } from '@api/shared/utils/plain-to-instance-and-validate.utils'
+// import { plainToInstanceAndValidate } from '@api/shared/utils/plain-to-instance-and-validate.utils'
 
 import { GetTransactionsByAccountOutputDTO } from './get-transactions-by-account.dtos'
 
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { AccountEntity, TransactionEntity } from '@libs/db/entities'
 
 export class GetTransactionsByAccountQuery {
 	account: AccountEntity
@@ -30,8 +30,8 @@ export default class GetTransactionsByAccountQueryHandler
 	constructor(
 		@InjectRepository(AccountEntity)
 		private readonly accountsRepository: Repository<AccountEntity>,
-		@InjectRepository(InvoiceEntity)
-		private readonly invoicesRepository: Repository<InvoiceEntity>,
+		@InjectRepository(TransactionEntity)
+		private readonly transactionsRepository: Repository<TransactionEntity>,
 	) {}
 
 	async execute(
@@ -42,32 +42,24 @@ export default class GetTransactionsByAccountQueryHandler
 		// Calcula o offset (quantos itens pular)
 		const skip = (page - 1) * limit
 
-		const [invoices, totalItems] = await this.invoicesRepository.findAndCount({
-			where: {
-				account: {
-					id: account.id,
+		const [invoices, totalItems] =
+			await this.transactionsRepository.findAndCount({
+				where: {
+					account: {
+						id: account.id,
+					},
 				},
-			},
-			skip,
-			take: limit,
-			order: {
-				createdAt: 'DESC',
-			},
-		})
-
-		// ---> Transforma cada InvoiceEntity em GetTransactionsByAccountOutputDTO <---
-		// plainToInstance itera sobre o array 'invoices'
-		// const transformedInvoices = await plainToInstanceAndValidate(
-		// 	GetTransactionsByAccountOutputDTO,
-		// 	invoices,
-		// )
+				skip,
+				take: limit,
+				order: {
+					createdAt: 'DESC',
+				},
+			})
 
 		const transformedInvoices = plainToInstance(
 			GetTransactionsByAccountOutputDTO,
 			invoices,
 			{
-				// Importante: Garante que apenas propriedades com @Expose() sejam incluídas
-				// e que transformações padrão sejam aplicadas.
 				excludeExtraneousValues: true,
 			},
 		)

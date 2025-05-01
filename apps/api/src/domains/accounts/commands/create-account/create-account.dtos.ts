@@ -23,8 +23,8 @@ export class CreateAccountOutputDTO {
 	@Expose()
 	email: string
 
-	@Expose()
-	balance: string
+	// @Expose()
+	// balance: string
 
 	@Expose()
 	apiKey: string

@@ -69,12 +69,12 @@ export default class CreateInvoiceCommandHandler
 			const message = { invoice_id: invoice.id }
 			await this.amqpConnection.publish(
 				'fcpay',
-				'invoices.fraud.detection',
+				'invoices.fraud.detect',
 				message,
 			)
 
 			this.logger.debug(
-				`Message sent to 'invoices.fraud.detection': ${JSON.stringify(message)}`,
+				`Message sent to 'invoices.fraud.detect': ${JSON.stringify(message)}`,
 			)
 		}
 

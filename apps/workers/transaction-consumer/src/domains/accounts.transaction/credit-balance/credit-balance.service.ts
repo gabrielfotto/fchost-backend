@@ -3,8 +3,13 @@ import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
 import { CreditBalanceInputDTO } from './credit-balance.dtos'
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import {
+	AccountEntity,
+	InvoiceEntity,
+	TransactionEntity,
+} from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/shared/enums'
+import { ETransactionType } from '@libs/db/enums/transaction-type.enum'
 
 @Injectable()
 export class CreditAccountBalanceService {
@@ -44,6 +49,8 @@ export class CreditAccountBalanceService {
 				return
 			}
 
+			const transactionValue = invoice.amount
+
 			const totalBalance = (
 				parseFloat(lockedAccount.balance) + parseFloat(invoice.amount)
 			).toFixed(4)
@@ -53,6 +60,16 @@ export class CreditAccountBalanceService {
 
 			invoice.status = EInvoiceStatus.PROCESSED
 			await manager.save(InvoiceEntity, invoice)
+
+			// save transaction
+			const transaction = manager.create(TransactionEntity, {
+				account: lockedAccount,
+				type: ETransactionType.CREDIT,
+				value: invoice.amount,
+				invoice,
+			})
+
+			await manager.save(TransactionEntity, transaction)
 		})
 	}
 }

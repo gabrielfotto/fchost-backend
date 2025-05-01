@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Nack } from '@golevelup/nestjs-rabbitmq'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import { AccountEntity, TransactionEntity } from '@libs/db/entities'
 import { DebitBalanceInputDTO } from './debit-balance.dtos'
+import { ETransactionType } from '@libs/db/enums/transaction-type.enum'
 
 @Injectable()
 export class DebitAccountBalanceService {
@@ -46,6 +46,15 @@ export class DebitAccountBalanceService {
 
 			lockedAccount.balance = totalBalance
 			await manager.save(AccountEntity, lockedAccount)
+
+			// save transaction
+			const transaction = manager.create(TransactionEntity, {
+				account: lockedAccount,
+				type: ETransactionType.DEBIT,
+				value: amount,
+			})
+
+			await manager.save(TransactionEntity, transaction)
 		})
 	}
 }

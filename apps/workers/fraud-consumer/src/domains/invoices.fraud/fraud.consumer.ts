@@ -19,8 +19,8 @@ export class FraudDetectionConsumerHandler {
 
 	@RabbitSubscribe({
 		exchange: 'fcpay',
-		routingKey: 'invoices.fraud.detection',
-		queue: 'invoices.fraud.detection',
+		routingKey: 'invoices.fraud.detect',
+		queue: 'invoices.fraud.detect',
 		queueOptions: {
 			durable: true,
 			arguments: {

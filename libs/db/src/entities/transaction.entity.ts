@@ -24,8 +24,8 @@ export default class TransactionEntity {
 	@Column({ type: 'enum', enum: ETransactionType })
 	type: ETransactionType
 
-	@Column()
-	value: number
+	@Column({ type: 'decimal', scale: 4, default: 0 })
+	value: string
 
 	// @Column()
 	// balance: string

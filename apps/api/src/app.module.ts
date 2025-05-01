@@ -10,6 +10,7 @@ import AuthGuard from './shared/guards/auth.guard'
 import AccountsModule from './domains/accounts/accounts.module'
 import InvoicesModule from './domains/invoices/invoices.module'
 import MachinesModule from './domains/machines/machines.module'
+import TransactionsModule from './domains/transactions/transactions.module'
 
 import { dataSourceOptionsFn } from '@libs/db/data-source'
 import { AccountEntity, InvoiceEntity, MachineEntity } from '@libs/db/entities'
@@ -36,6 +37,7 @@ import { AccountEntity, InvoiceEntity, MachineEntity } from '@libs/db/entities'
 		AccountsModule,
 		InvoicesModule,
 		MachinesModule,
+		TransactionsModule,
 	],
 	controllers: [],
 	providers: [

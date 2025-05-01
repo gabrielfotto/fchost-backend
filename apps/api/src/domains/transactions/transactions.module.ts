@@ -4,7 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
+import {
+	AccountEntity,
+	InvoiceEntity,
+	TransactionEntity,
+} from '@libs/db/entities'
 import { rabbitmqConfigFn } from '@libs/config'
 
 import TransactionsQueriesController from './transactions-queries.controller'
@@ -16,7 +20,7 @@ import TransactionsQueryHandlers from './queries'
 @Module({
 	imports: [
 		CqrsModule,
-		TypeOrmModule.forFeature([AccountEntity, InvoiceEntity]),
+		TypeOrmModule.forFeature([AccountEntity, InvoiceEntity, TransactionEntity]),
 		// RabbitMQModule.forRoot(rabbitmqConfig),
 		RabbitMQModule.forRootAsync({
 			imports: [ConfigModule],

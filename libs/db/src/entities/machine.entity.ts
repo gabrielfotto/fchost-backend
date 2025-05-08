@@ -20,6 +20,9 @@ export default class MachineEntity {
 	@Column({ type: 'int' })
 	ram: number // MB
 
+	@Column({ type: 'int' })
+	storage: number // MB
+
 	@Column({ type: 'decimal', scale: 4 })
 	pricePerHour: number
 

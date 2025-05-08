@@ -22,64 +22,49 @@
 			]
 		},
 		{
-			"name": "debug:fcpay-fraud-consumer", // Nome descritivo para a configuração
-			"type": "node", // Tipo de depurador (Node.js)
-			"request": "attach", // Queremos anexar a um processo existente
-			"port": 8082, // Porta do debugger EXPOSTA NO HOST (mapeada no docker-compose)
-			"address": "0.0.0.0", // Onde o debugger está escutando no HOST (Docker expõe em localhost)
+			"name": "debug:fcpay-fraud-consumer",
+			"type": "node",
+			"request": "attach",
+			"port": 8082,
+			"address": "0.0.0.0",
 
 			"cwd": "${workspaceFolder}",
-			// Mapeamento crucial para os breakpoints funcionarem corretamente:
-			"localRoot": "${workspaceFolder}/apps/workers/fraud-consumer", // Caminho do seu código na sua máquina local
-			"remoteRoot": "/usr/src/app", // Caminho do código DENTRO do container (definido em working_dir/volumes)
+			"localRoot": "${workspaceFolder}/apps/workers/fraud-consumer",
+			"remoteRoot": "/usr/src/app",
 
-			"restart": true, // Tenta reconectar automaticamente se a conexão cair
-			"sourceMaps": true, // Habilita source maps (útil se você usa TypeScript ou transpilers)
-			"skipFiles": [
-				// Opcional: Arquivos para não entrar durante o debug
-				"<node_internals>/**",
-				"node_modules/**"
-			]
+			"restart": true,
+			"sourceMaps": true,
+			"skipFiles": ["<node_internals>/**", "node_modules/**"]
 		},
 		{
-			"name": "debug:fcpay-transaction-consumer", // Nome descritivo para a configuração
-			"type": "node", // Tipo de depurador (Node.js)
-			"request": "attach", // Queremos anexar a um processo existente
-			"port": 8083, // Porta do debugger EXPOSTA NO HOST (mapeada no docker-compose)
-			"address": "0.0.0.0", // Onde o debugger está escutando no HOST (Docker expõe em localhost)
+			"name": "debug:fcpay-transaction-consumer",
+			"type": "node",
+			"request": "attach",
+			"port": 8083,
+			"address": "0.0.0.0",
 
 			"cwd": "${workspaceFolder}",
-			// Mapeamento crucial para os breakpoints funcionarem corretamente:
-			"localRoot": "${workspaceFolder}/apps/workers/transaction-consumer", // Caminho do seu código na sua máquina local
-			"remoteRoot": "/usr/src/app", // Caminho do código DENTRO do container (definido em working_dir/volumes)
+			"localRoot": "${workspaceFolder}/apps/workers/transaction-consumer",
+			"remoteRoot": "/usr/src/app",
 
-			"restart": true, // Tenta reconectar automaticamente se a conexão cair
-			"sourceMaps": true, // Habilita source maps (útil se você usa TypeScript ou transpilers)
-			"skipFiles": [
-				// Opcional: Arquivos para não entrar durante o debug
-				"<node_internals>/**",
-				"node_modules/**"
-			]
+			"restart": true,
+			"sourceMaps": true,
+			"skipFiles": ["<node_internals>/**", "node_modules/**"]
 		},
 		{
-			"name": "debug:fcpay-transaction-producer", // Nome descritivo para a configuração
-			"type": "node", // Tipo de depurador (Node.js)
-			"request": "attach", // Queremos anexar a um processo existente
-			"port": 8084, // Porta do debugger EXPOSTA NO HOST (mapeada no docker-compose)
-			"address": "0.0.0.0", // Onde o debugger está escutando no HOST (Docker expõe em localhost)
+			"name": "debug:fcpay-transaction-producer",
+			"type": "node",
+			"request": "attach",
+			"port": 8084,
+			"address": "0.0.0.0",
 
 			"cwd": "${workspaceFolder}",
-			// Mapeamento crucial para os breakpoints funcionarem corretamente:
-			"localRoot": "${workspaceFolder}/apps/workers/transaction-producer", // Caminho do seu código na sua máquina local
-			"remoteRoot": "/usr/src/app", // Caminho do código DENTRO do container (definido em working_dir/volumes)
+			"localRoot": "${workspaceFolder}/apps/workers/transaction-producer",
+			"remoteRoot": "/usr/src/app",
 
-			"restart": true, // Tenta reconectar automaticamente se a conexão cair
-			"sourceMaps": true, // Habilita source maps (útil se você usa TypeScript ou transpilers)
-			"skipFiles": [
-				// Opcional: Arquivos para não entrar durante o debug
-				"<node_internals>/**",
-				"node_modules/**"
-			]
+			"restart": true,
+			"sourceMaps": true,
+			"skipFiles": ["<node_internals>/**", "node_modules/**"]
 		}
 	]
 }

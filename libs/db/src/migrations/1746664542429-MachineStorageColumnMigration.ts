@@ -1,0 +1,28 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class MachineStorageColumnMigration1746664542429 implements MigrationInterface {
+    name = 'MachineStorageColumnMigration1746664542429'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "machines" ADD "storage" integer NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "accounts" ALTER COLUMN "balance" TYPE numeric`);
+        await queryRunner.query(`ALTER TABLE "transactions" DROP COLUMN "value"`);
+        await queryRunner.query(`ALTER TABLE "transactions" ADD "value" numeric NOT NULL DEFAULT '0'`);
+        await queryRunner.query(`ALTER TABLE "machines" ALTER COLUMN "pricePerHour" TYPE numeric`);
+        await queryRunner.query(`ALTER TABLE "machine-usages" ALTER COLUMN "cost" TYPE numeric`);
+        await queryRunner.query(`ALTER TABLE "machine-usages" ALTER COLUMN "cost" SET NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "machine-usages" ALTER COLUMN "cost" SET DEFAULT '0'`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "machine-usages" ALTER COLUMN "cost" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "machine-usages" ALTER COLUMN "cost" DROP NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "machine-usages" ALTER COLUMN "cost" TYPE numeric`);
+        await queryRunner.query(`ALTER TABLE "machines" ALTER COLUMN "pricePerHour" TYPE numeric`);
+        await queryRunner.query(`ALTER TABLE "transactions" DROP COLUMN "value"`);
+        await queryRunner.query(`ALTER TABLE "transactions" ADD "value" integer NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "accounts" ALTER COLUMN "balance" TYPE numeric`);
+        await queryRunner.query(`ALTER TABLE "machines" DROP COLUMN "storage"`);
+    }
+
+}

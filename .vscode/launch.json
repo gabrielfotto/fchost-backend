@@ -2,7 +2,7 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "debug:fcpay-gateway-api", // Nome descritivo para a configuração
+			"name": "debug:fchost-gateway-api", // Nome descritivo para a configuração
 			"type": "node", // Tipo de depurador (Node.js)
 			"request": "attach", // Queremos anexar a um processo existente
 			"port": 8081, // Porta do debugger EXPOSTA NO HOST (mapeada no docker-compose)
@@ -22,7 +22,7 @@
 			]
 		},
 		{
-			"name": "debug:fcpay-fraud-consumer",
+			"name": "debug:fchost-fraud-consumer",
 			"type": "node",
 			"request": "attach",
 			"port": 8082,
@@ -37,7 +37,7 @@
 			"skipFiles": ["<node_internals>/**", "node_modules/**"]
 		},
 		{
-			"name": "debug:fcpay-transaction-consumer",
+			"name": "debug:fchost-transaction-consumer",
 			"type": "node",
 			"request": "attach",
 			"port": 8083,
@@ -52,7 +52,7 @@
 			"skipFiles": ["<node_internals>/**", "node_modules/**"]
 		},
 		{
-			"name": "debug:fcpay-transaction-producer",
+			"name": "debug:fchost-transaction-producer",
 			"type": "node",
 			"request": "attach",
 			"port": 8084,

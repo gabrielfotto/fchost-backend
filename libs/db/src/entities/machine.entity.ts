@@ -18,10 +18,10 @@ export default class MachineEntity {
 	vcpu: number
 
 	@Column({ type: 'int' })
-	ram: number // MB
+	ram: number // GB
 
 	@Column({ type: 'int' })
-	storage: number // MB
+	storage: number // GB
 
 	@Column({ type: 'decimal', scale: 4 })
 	pricePerHour: number

@@ -68,7 +68,7 @@ export default class CreateInvoiceCommandHandler
 		if (invoice) {
 			const message = { invoice_id: invoice.id }
 			await this.amqpConnection.publish(
-				'fcpay',
+				'fchost',
 				'invoices.fraud.detect',
 				message,
 			)

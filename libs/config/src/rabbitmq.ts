@@ -7,7 +7,7 @@ export const rabbitmqConfigFn = (configService: ConfigService) => ({
 	},
 	exchanges: [
 		{
-			name: 'fcpay',
+			name: 'fchost',
 			type: 'topic',
 		},
 	],

@@ -1,15 +1,15 @@
 services:
-  fcpay-postgres:
-    container_name: fcpay-db
+  fchost-postgres:
+    container_name: fchost-db
     image: postgres:16-alpine
     ports:
       - '5432:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=fcpay
+      - POSTGRES_DB=fchost
     volumes:
-      - fcpay_postgres_data:/var/lib/postgresql/data
+      - fchost_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 10s
@@ -17,11 +17,11 @@ services:
       retries: 5
     restart: unless-stopped
     networks:
-      - fcpay_network
+      - fchost_network
 
-  fcpay-rabbitmq:
+  fchost-rabbitmq:
     image: rabbitmq:3-management
-    container_name: fcpay-rabbitmq
+    container_name: fchost-rabbitmq
     ports:
       - '5672:5672' # Porta padrão para conexão (ex: via app)
       - '15672:15672' # Porta para acessar o painel web
@@ -29,14 +29,14 @@ services:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
     volumes:
-      - fcpay_rabbitmq_data:/var/lib/rabbitmq
+      - fchost_rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - fcpay_network
+      - fchost_network
 
 volumes:
-  fcpay_postgres_data:
-  fcpay_rabbitmq_data:
+  fchost_postgres_data:
+  fchost_rabbitmq_data:
 
 networks:
-  fcpay_network:
-    name: fcpay_network # ficar ligado no nome
+  fchost_network:
+    name: fchost_network # ficar ligado no nome

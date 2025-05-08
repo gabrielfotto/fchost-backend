@@ -76,7 +76,7 @@ export class FraudDetectionConsumerHandlerService {
 			const message = { invoice_id: invoice.id }
 
 			await this.amqpConnection.publish(
-				'fcpay',
+				'fchost',
 				'accounts.balance.credit',
 				message,
 			)

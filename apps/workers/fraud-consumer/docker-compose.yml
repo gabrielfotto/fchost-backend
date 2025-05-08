@@ -1,6 +1,6 @@
 services:
-  fcpay-fraud-consumer:
-    container_name: fcpay-fraud-consumer
+  fchost-fraud-consumer:
+    container_name: fchost-fraud-consumer
     build:
       context: ../../..
       dockerfile: apps/workers/fraud-consumer/Dockerfile
@@ -16,18 +16,19 @@ services:
     environment:
       - APP_NAME=fraud-consumer
       - NODE_ENV=true
-      - DB_HOST=fcpay-postgres
+      - DB_HOST=fchost-postgres
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-      - DB_NAME=fcpay
-      - RABBITMQ_URI=amqp://rabbitmq:rabbitmq@fcpay-rabbitmq:5672
+      - DB_NAME=fchost
+      # - RABBITMQ_URI=amqp://rabbitmq:rabbitmq@fchost-rabbitmq:5672
+      - RABBITMQ_URI=amqps://xxinxjrt:700e4XYDwyOF6-y4IibOBw8U2ytGAYqn@moose.rmq.cloudamqp.com/xxinxjrt
 
     command: npm run start:debug:fraud-consumer
 
     networks:
-      - fcpay_network
+      - fchost_network
 
 networks:
-  fcpay_network: # ficar ligado no nome
+  fchost_network: # ficar ligado no nome
     external: true

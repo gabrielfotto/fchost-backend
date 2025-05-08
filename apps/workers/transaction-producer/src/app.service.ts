@@ -99,7 +99,7 @@ export class AppService implements ICronService {
 			}
 
 			await this.amqpConnection.publish(
-				'fcpay',
+				'fchost',
 				'accounts.balance.debit',
 				message,
 			)

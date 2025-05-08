@@ -18,7 +18,7 @@ export class DebitAccountBalanceConsumerHandler {
 	) {}
 
 	@RabbitSubscribe({
-		exchange: 'fcpay',
+		exchange: 'fchost',
 		routingKey: 'accounts.balance.debit',
 		queue: 'accounts.balance.debit',
 		queueOptions: {

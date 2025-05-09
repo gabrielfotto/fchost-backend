@@ -49,8 +49,6 @@ export class CreditAccountBalanceService {
 				return
 			}
 
-			const transactionValue = invoice.amount
-
 			const totalBalance = (
 				parseFloat(lockedAccount.balance) + parseFloat(invoice.amount)
 			).toFixed(4)

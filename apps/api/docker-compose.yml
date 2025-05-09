@@ -7,7 +7,7 @@ services:
     restart: always
 
     ports:
-      - 8080:8080 # porta default da api
+      - 8080:80 # porta default da api
       - 8081:8081 # porta do debugger
 
     working_dir: /usr/src/app
@@ -36,8 +36,12 @@ services:
     command: npm run start:debug:api
 
     networks:
-      - fchost_network
+      - kind
 
+# kind k8s
 networks:
-  fchost_network: # ficar ligado no nome
+  kind: # ficar ligado no nome
     external: true
+# networks:
+#   fchost_network: # ficar ligado no nome
+#     external: true

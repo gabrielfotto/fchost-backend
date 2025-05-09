@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm'
+import { BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
@@ -25,6 +26,16 @@ export default class CreateAccountCommandHandler
 		command: CreateAccountCommand,
 	): Promise<CreateAccountOutputDTO> {
 		const { name, email } = command
+
+		const dbAccount = await this.accountsRepository.findOne({
+			where: {
+				email,
+			},
+		})
+
+		if (dbAccount) {
+			throw new BadRequestException(`Email already used`)
+		}
 
 		const account = await this.accountsRepository.create({
 			name,

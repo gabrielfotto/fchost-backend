@@ -14,25 +14,27 @@ import TransactionsModule from './domains/transactions/transactions.module'
 
 import { dataSourceOptionsFn } from '@libs/db/data-source'
 import { AccountEntity, InvoiceEntity, MachineEntity } from '@libs/db/entities'
+import { GlobalModule } from './global.module'
 
 @Module({
 	imports: [
-		CqrsModule,
-		ConfigModule.forRoot(),
+		GlobalModule,
+		// CqrsModule,
+		// ConfigModule.forRoot(),
 
-		TypeOrmModule.forRootAsync({
-			imports: [ConfigModule],
-			inject: [ConfigService],
-			useFactory: (configService: ConfigService) =>
-				dataSourceOptionsFn(configService),
-		}),
+		// TypeOrmModule.forRootAsync({
+		// 	imports: [ConfigModule],
+		// 	inject: [ConfigService],
+		// 	useFactory: (configService: ConfigService) =>
+		// 		dataSourceOptionsFn(configService),
+		// }),
 
-		TypeOrmModule.forFeature([
-			AccountEntity,
-			InvoiceEntity,
-			MachineEntity,
-			//
-		]),
+		// TypeOrmModule.forFeature([
+		// 	AccountEntity,
+		// 	InvoiceEntity,
+		// 	MachineEntity,
+		// 	//
+		// ]),
 
 		AccountsModule,
 		InvoicesModule,

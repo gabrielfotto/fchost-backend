@@ -17,20 +17,7 @@ import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 import { FraudSpecificationAggregator } from './specifications'
 
 @Module({
-	imports: [
-		TypeOrmModule.forFeature([
-			AccountEntity,
-			InvoiceEntity,
-			//
-		]),
-
-		RabbitMQModule.forRootAsync({
-			imports: [ConfigModule],
-			inject: [ConfigService],
-			useFactory: (configService: ConfigService) =>
-				rabbitmqConfigFn(configService),
-		}),
-	],
+	imports: [],
 	providers: [
 		FraudDetectionConsumerHandlerService,
 		FraudDetectionConsumerHandler,

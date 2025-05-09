@@ -27,8 +27,12 @@ services:
     command: npm run start:debug:transaction-producer
 
     networks:
-      - fchost_network
+      - kind
 
+# kind k8s
 networks:
-  fchost_network: # ficar ligado no nome
+  kind: # ficar ligado no nome
     external: true
+# networks:
+#   fchost_network: # ficar ligado no nome
+#     external: true

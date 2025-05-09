@@ -1,6 +1,6 @@
 services:
   fchost-postgres:
-    container_name: fchost-db
+    container_name: fchost-postgres
     image: postgres:16-alpine
     ports:
       - '5432:5432'
@@ -17,11 +17,11 @@ services:
       retries: 5
     restart: unless-stopped
     networks:
-      - fchost_network
+      - kind
 
   fchost-rabbitmq:
-    image: rabbitmq:3-management
     container_name: fchost-rabbitmq
+    image: rabbitmq:3-management
     ports:
       - '5672:5672' # Porta padrão para conexão (ex: via app)
       - '15672:15672' # Porta para acessar o painel web
@@ -31,12 +31,16 @@ services:
     volumes:
       - fchost_rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - fchost_network
+      - kind
 
 volumes:
   fchost_postgres_data:
   fchost_rabbitmq_data:
 
+# kind k8s
 networks:
-  fchost_network:
-    name: fchost_network # ficar ligado no nome
+  kind: # ficar ligado no nome
+    external: true
+# networks:
+#   fchost_network:
+#     name: fchost_network # ficar ligado no nome

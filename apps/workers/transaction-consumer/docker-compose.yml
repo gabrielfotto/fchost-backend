@@ -14,15 +14,14 @@ services:
       - ./src:/usr/src/app/apps/workers/transaction-consumer/src
 
     environment:
-      - APP_NAME=transaction-consumer
-      - NODE_ENV=true
-      - DB_HOST=fchost-postgres
-      - DB_PORT=5432
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=fchost
-      # - RABBITMQ_URI=amqp://rabbitmq:rabbitmq@fchost-rabbitmq:5672
-      - RABBITMQ_URI=amqps://xxinxjrt:700e4XYDwyOF6-y4IibOBw8U2ytGAYqn@moose.rmq.cloudamqp.com/xxinxjrt
+      - APP_NAME=api
+      - NODE_ENV=dev
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - RABBITMQ_URI=${RABBITMQ_URI}
 
     command: npm run start:debug:transaction-consumer
 

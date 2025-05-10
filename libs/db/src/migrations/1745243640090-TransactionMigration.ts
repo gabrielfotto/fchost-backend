@@ -38,12 +38,6 @@ export class TransactionMigration1745243640090 implements MigrationInterface {
 		)
 		await queryRunner.query(`DROP TYPE "public"."invoices_status_enum_old"`)
 		await queryRunner.query(
-			`ALTER TABLE "frauds" ADD CONSTRAINT "FK_180f86b0432b5587664ac84f62c" FOREIGN KEY ("invoiceId") REFERENCES "invoices"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
-		)
-		await queryRunner.query(
-			`ALTER TABLE "invoices" ADD CONSTRAINT "FK_e32b419321e135156b16d7d6ebc" FOREIGN KEY ("fraudId") REFERENCES "frauds"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-		)
-		await queryRunner.query(
 			`ALTER TABLE "transactions" ADD CONSTRAINT "FK_26d8aec71ae9efbe468043cd2b9" FOREIGN KEY ("accountId") REFERENCES "accounts"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
 		)
 		await queryRunner.query(
@@ -57,9 +51,6 @@ export class TransactionMigration1745243640090 implements MigrationInterface {
 		)
 		await queryRunner.query(
 			`ALTER TABLE "transactions" DROP CONSTRAINT "FK_26d8aec71ae9efbe468043cd2b9"`,
-		)
-		await queryRunner.query(
-			`ALTER TABLE "invoices" DROP CONSTRAINT "FK_e32b419321e135156b16d7d6ebc"`,
 		)
 		await queryRunner.query(
 			`CREATE TYPE "public"."invoices_status_enum_old" AS ENUM('pending', 'approved', 'rejected')`,

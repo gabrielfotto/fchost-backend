@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fchost-deployment
+  name: fchost-api-deployment
   # namespace: fchost
 spec:
   replicas: 1
@@ -16,6 +16,7 @@ spec:
       containers:
         - name: fchost-api
           image: public.ecr.aws/e0j5c6t0/fchost/api:latest
+          imagePullPolicy: Always
           resources:
             limits:
               memory: '512Mi'
@@ -31,49 +32,74 @@ spec:
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config
+                  name: fchost-config-dev
                   key: DB_HOST
 
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config
+                  name: fchost-config-dev
                   key: DB_PORT
 
             - name: DB_USERNAME
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config
+                  name: fchost-config-dev
                   key: DB_USERNAME
 
             - name: DB_PASSWORD
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config
+                  name: fchost-config-dev
                   key: DB_PASSWORD
 
             - name: DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config
+                  name: fchost-config-dev
                   key: DB_NAME
 
             - name: RABBITMQ_URI
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config
+                  name: fchost-config-dev
                   key: RABBITMQ_URI
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: fchost-service
+  name: fchost-api-service
   # namespace: fchost
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: fchost-api
   ports:
     - protocol: TCP
       port: 8080
-      # targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fchost-ingress
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  # ingressClassName: nginx-example
+  tls:
+    - hosts:
+        - portfolio.ottodev.com.br
+      secretName: fchost-api-tls
+  rules:
+    - http:
+        paths:
+          - path: /fchost-api
+            pathType: Prefix
+            backend:
+              service:
+                name: fchost-api-service
+                port:
+                  number: 8080

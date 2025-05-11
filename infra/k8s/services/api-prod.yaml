@@ -27,42 +27,42 @@ spec:
             - name: APP_NAME
               value: 'api'
             - name: NODE_ENV
-              value: 'dev'
+              value: 'prod'
 
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config-dev
+                  name: fchost-config-prod
                   key: DB_HOST
 
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config-dev
+                  name: fchost-config-prod
                   key: DB_PORT
 
             - name: DB_USERNAME
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config-dev
+                  name: fchost-config-prod
                   key: DB_USERNAME
 
             - name: DB_PASSWORD
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config-dev
+                  name: fchost-config-prod
                   key: DB_PASSWORD
 
             - name: DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config-dev
+                  name: fchost-config-prod
                   key: DB_NAME
 
             - name: RABBITMQ_URI
               valueFrom:
                 configMapKeyRef:
-                  name: fchost-config-dev
+                  name: fchost-config-prod
                   key: RABBITMQ_URI
 ---
 apiVersion: v1

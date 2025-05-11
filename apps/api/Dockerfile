@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Expor a porta
-# EXPOSE 8080
+EXPOSE 8080
 
 # Copiar o entrypoint
 COPY docker-entrypoint-apps.sh /usr/local/bin/docker-entrypoint-apps.sh

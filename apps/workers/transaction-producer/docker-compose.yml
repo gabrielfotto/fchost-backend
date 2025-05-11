@@ -27,11 +27,11 @@ services:
 
     networks:
       - kind
+      - fchost_network
 
 # kind k8s
 networks:
   kind: # ficar ligado no nome
     external: true
-# networks:
-#   fchost_network: # ficar ligado no nome
-#     external: true
+  fchost_network: # ficar ligado no nome
+    external: true

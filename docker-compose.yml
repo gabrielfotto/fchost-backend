@@ -18,6 +18,7 @@ services:
     restart: unless-stopped
     networks:
       - kind
+      - fchost_network
 
   fchost-rabbitmq:
     container_name: fchost-rabbitmq
@@ -32,6 +33,7 @@ services:
       - fchost_rabbitmq_data:/var/lib/rabbitmq
     networks:
       - kind
+      - fchost_network
 
 volumes:
   fchost_postgres_data:
@@ -41,6 +43,5 @@ volumes:
 networks:
   kind: # ficar ligado no nome
     external: true
-# networks:
-#   fchost_network:
-#     name: fchost_network # ficar ligado no nome
+  fchost_network:
+    name: fchost_network # ficar ligado no nome

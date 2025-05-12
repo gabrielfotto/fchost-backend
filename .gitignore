@@ -60,4 +60,4 @@ todo.txt
 notes.txt
 
 # k8s
-infra/k8s/config/*.yaml
+infra/k8s/resources/config-map.yaml

@@ -19,11 +19,12 @@ vpc:
         id: 'subnet-022af9b2f4f91c9f7'
 
 nodeGroups:
-  - name: fchost-api-ng
-    instanceType: t3a.small
+  # uso um grupo de node para api, ou para todos os serviços?
+  - name: fchost-ng
+    instanceType: t3a.medium
     desiredCapacity: 1
     minSize: 1
-    maxSize: 1
+    maxSize: 2
     ssh:
       allow: true
       publicKeyName: fchost

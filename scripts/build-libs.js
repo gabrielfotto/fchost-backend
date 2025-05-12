@@ -13,6 +13,39 @@ function getLibs() {
 	})
 }
 
+function copyStaticFiles(libName) {
+	const libSrcPath = path.join(libsPath, libName, 'src')
+	const libDistPath = path.join(__dirname, '..', 'dist', 'libs', libName)
+
+	const copyConfig = [
+		{ lib: 'db', items: ['cert'] },
+		// adicione outras libs se necessário
+	]
+
+	const config = copyConfig.find(cfg => cfg.lib === libName)
+	if (!config) return
+
+	config.items.forEach(item => {
+		const srcPath = path.join(libSrcPath, item)
+		const destPath = path.join(libDistPath, item)
+
+		if (!fs.existsSync(srcPath)) {
+			console.warn(
+				`🔸 [${libName}] Pasta ou arquivo estático "${item}" não encontrado em: ${srcPath}`,
+			)
+			return
+		}
+
+		try {
+			fs.mkdirSync(path.dirname(destPath), { recursive: true })
+			fs.cpSync(srcPath, destPath, { recursive: true })
+			console.log(`✅ [${libName}] Copiado: ${item} → ${destPath}`)
+		} catch (err) {
+			console.error(`❌ Erro ao copiar ${item} para ${destPath}:`, err)
+		}
+	})
+}
+
 // função para rodar o comando de build para cada lib
 function buildLibs() {
 	const libs = getLibs()
@@ -21,6 +54,7 @@ function buildLibs() {
 		if (fs.existsSync(tsConfigPath)) {
 			console.log(`Building ${lib}...`)
 			execSync(`tsc -p ${tsConfigPath}`, { stdio: 'inherit' })
+			copyStaticFiles(lib)
 		} else {
 			console.log(`No tsconfig.lib.json found for ${lib}. Skipping...`)
 		}

@@ -16,7 +16,7 @@ services:
 
     environment:
       - APP_NAME=api
-      - NODE_ENV=dev
+      - NODE_ENV=prod
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USERNAME=${DB_USERNAME}

@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-import { existsSync } from 'fs'
+import { readFileSync, existsSync } from 'fs'
 import { join, dirname } from 'path'
 
 import { DataSource, DataSourceOptions } from 'typeorm'
@@ -16,7 +16,24 @@ function resolveValidPath(primary: string, fallback: string): string {
 	return existsSync(primary) ? primary : fallback
 }
 
-export function findDistRoot(startDir: string = __dirname): string {
+function getProjectRootDir(): string {
+	return dirname(require.main?.filename || process.cwd())
+}
+
+function readCertFile(certPath: string) {
+	try {
+		const cert = readFileSync(certPath)
+		return {
+			ca: cert.toString(),
+			rejectUnauthorized: true,
+		}
+	} catch (error) {
+		console.warn(`⚠️ Certificado SSL não pôde ser lido em: ${certPath}`)
+		console.warn(error)
+	}
+}
+
+export function findRoot(startDir: string = __dirname): string {
 	let currentDir = startDir
 
 	while (
@@ -39,8 +56,16 @@ export function dataSourceOptionsFn(
 		dbHost = 'localhost'
 	}
 
-	// Usa findDistRoot para achar o dist/libs independente da estrutura
-	const distRoot = findDistRoot()
+	// Usa findRoot para achar o dist/libs independente da estrutura
+	const distRoot = findRoot()
+
+	let rdsSslCertOptions
+	if (nodeEnv === 'prod') {
+		rdsSslCertOptions = readCertFile(
+			join(distRoot, 'libs', 'db', 'cert', 'rds-us-east-1-bundle.pem'),
+		)
+	}
+
 	const baseWithLibs = join(distRoot, 'libs', 'db')
 	const baseWithoutLibs = join(distRoot, 'db')
 
@@ -72,6 +97,11 @@ export function dataSourceOptionsFn(
 		// entities: [join(entitiesBase, '*.entity.js')],
 		entities: [...Entities],
 		migrations: [join(migrationsBase, '*.js')],
+		...(nodeEnv === 'prod'
+			? {
+					ssl: rdsSslCertOptions,
+				}
+			: {}),
 	}
 }
 

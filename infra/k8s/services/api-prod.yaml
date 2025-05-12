@@ -82,21 +82,22 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fchost-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/use-regex: 'true'
+  # annotations:
+  #   cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+  #   nginx.ingress.kubernetes.io/rewrite-target: /$1
+  #   nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - portfolio.ottodev.com.br
-      secretName: fchost-api-tls
+  # tls:
+  #   - hosts:
+  #       - portfolio.ottodev.com.br
+  #     secretName: fchost-api-tls
   rules:
-    - http:
+    - host: portfolio.ottodev.com.br
+      http:
         paths:
-          - path: /fchost-api/(.*)
-            pathType: ImplementationSpecific
+          - path: /fchost/api
+            pathType: Prefix
             backend:
               service:
                 name: fchost-api-service

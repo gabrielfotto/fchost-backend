@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: fchost
+  name: fchost-cluster
   region: us-east-1
 
 vpc:
@@ -23,7 +23,7 @@ nodeGroups:
     instanceType: t3a.small
     desiredCapacity: 1
     minSize: 1
-    maxSize: 2
+    maxSize: 1
     ssh:
       allow: true
       publicKeyName: fchost

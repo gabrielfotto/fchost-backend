@@ -13,7 +13,10 @@ echo 'applying cert-manager.yaml...'
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
 
 # ==============================================================================
-# Aplicar yaml's abaixo somente após a criação dos recursos anteriores
+# Apply below's yaml's after the creation of the resources above
+
+# wait for the above resources to be available
+sleep 60
 
 # ConfigMap
 echo ''

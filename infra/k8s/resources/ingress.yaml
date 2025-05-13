@@ -3,21 +3,21 @@ kind: Ingress
 metadata:
   name: fchost-ingress
   annotations:
-    # cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-    # nginx.ingress.kubernetes.io/rewrite-target: /$1
-    # nginx.ingress.kubernetes.io/use-regex: 'true'
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   ingressClassName: nginx
-  # tls:
-  #   - hosts:
-  #       - io.ottodev.com.br
-  #     secretName: fchost-tls
+  tls:
+    - hosts:
+        - io.ottodev.com.br
+      secretName: fchost-tls
   rules:
     - host: io.ottodev.com.br
       http:
         paths:
-          - path: /fchost/api
-            pathType: Prefix
+          - path: /fchost/api/(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: fchost-api-service

@@ -1,1 +1,79 @@
-# para os serviços, não preciso de Services, somente Deployments, pois eles não serão expostos
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fchost-fraud-consumer-deployment
+  # namespace: fchost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fchost-fraud-consumer
+  template:
+    metadata:
+      labels:
+        app: fchost-fraud-consumer
+    spec:
+      containers:
+        - name: fchost-fraud-consumer
+          image: public.ecr.aws/e0j5c6t0/fchost/fraud-consumer:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_NAME
+              value: 'fraud-consumer'
+            - name: NODE_ENV
+              value: 'prod'
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: fchost-config-prod
+                  key: DB_HOST
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: fchost-config-prod
+                  key: DB_PORT
+
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: fchost-config-prod
+                  key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: fchost-config-prod
+                  key: DB_PASSWORD
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: fchost-config-prod
+                  key: DB_NAME
+
+            - name: RABBITMQ_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: fchost-config-prod
+                  key: RABBITMQ_URI
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fchost-fraud-consumer-service
+  # namespace: fchost
+spec:
+  type: ClusterIP
+  selector:
+    app: fchost-fraud-consumer
+  ports:
+    - protocol: TCP
+      port: 8080

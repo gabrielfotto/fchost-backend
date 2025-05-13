@@ -28,4 +28,3 @@ ENTRYPOINT ["/usr/local/bin/docker-entrypoint-apps.sh"]
 
 # Somente para ambiente DEV
 # CMD ["npm", "run", "start:debug:api"]
-

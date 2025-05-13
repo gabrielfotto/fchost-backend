@@ -16,9 +16,6 @@ COPY . .
 # Creates a "dist" folder with the production build
 RUN npm run build
 
-# Expose the port on which the app will run
-# EXPOSE 8080
-
 # Copiar o entrypoint
 COPY docker-entrypoint-apps.sh /usr/local/bin/docker-entrypoint-apps.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint-apps.sh

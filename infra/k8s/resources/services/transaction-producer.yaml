@@ -21,8 +21,6 @@ spec:
             limits:
               memory: '256Mi'
               cpu: '250m'
-          # ports:
-          #   - containerPort: 8080
           env:
             - name: APP_NAME
               value: 'transaction-producer'
@@ -64,16 +62,3 @@ spec:
                 configMapKeyRef:
                   name: fchost-config-prod
                   key: RABBITMQ_URI
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: fchost-transaction-producer-service
-#   # namespace: fchost
-# spec:
-#   type: ClusterIP
-#   selector:
-#     app: fchost-transaction-producer
-#   ports:
-#     - protocol: TCP
-#       port: 8080

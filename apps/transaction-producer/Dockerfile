@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Creates a "dist" folder with the production build
-RUN npm run build
+RUN npm run build:transaction-producer
 
 # Copiar o entrypoint
 COPY docker-entrypoint-apps.sh /usr/local/bin/docker-entrypoint-apps.sh

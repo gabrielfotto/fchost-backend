@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Criar a pasta dist (build)
-RUN npm run build
+RUN npm run build:api
 
 # Expor a porta
 EXPOSE 8080

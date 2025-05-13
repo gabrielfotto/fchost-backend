@@ -29,7 +29,7 @@
 			"address": "0.0.0.0",
 
 			"cwd": "${workspaceFolder}",
-			"localRoot": "${workspaceFolder}/apps/workers/fraud-consumer",
+			"localRoot": "${workspaceFolder}/apps/fraud-consumer",
 			"remoteRoot": "/usr/src/app",
 
 			"restart": true,
@@ -44,7 +44,7 @@
 			"address": "0.0.0.0",
 
 			"cwd": "${workspaceFolder}",
-			"localRoot": "${workspaceFolder}/apps/workers/transaction-consumer",
+			"localRoot": "${workspaceFolder}/apps/transaction-consumer",
 			"remoteRoot": "/usr/src/app",
 
 			"restart": true,
@@ -59,7 +59,7 @@
 			"address": "0.0.0.0",
 
 			"cwd": "${workspaceFolder}",
-			"localRoot": "${workspaceFolder}/apps/workers/transaction-producer",
+			"localRoot": "${workspaceFolder}/apps/transaction-producer",
 			"remoteRoot": "/usr/src/app",
 
 			"restart": true,

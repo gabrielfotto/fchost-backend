@@ -2,8 +2,8 @@ services:
   fchost-transaction-consumer:
     container_name: fchost-transaction-consumer
     build:
-      context: ../../..
-      dockerfile: apps/workers/transaction-consumer/Dockerfile
+      context: ../..
+      dockerfile: apps/transaction-consumer/Dockerfile
     restart: always
 
     ports:
@@ -11,7 +11,7 @@ services:
 
     working_dir: /usr/src/app
     volumes:
-      - ./src:/usr/src/app/apps/workers/transaction-consumer/src
+      - ./src:/usr/src/app/apps/transaction-consumer/src
 
     environment:
       - APP_NAME=api

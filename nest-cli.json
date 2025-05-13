@@ -37,11 +37,11 @@
 		},
 		"fraud-consumer": {
 			"type": "application",
-			"root": "apps/workers/fraud-consumer",
+			"root": "apps/fraud-consumer",
 			"entryFile": "main",
-			"sourceRoot": "apps/workers/fraud-consumer/src",
+			"sourceRoot": "apps/fraud-consumer/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/workers/fraud-consumer/tsconfig.app.json"
+				"tsConfigPath": "apps/fraud-consumer/tsconfig.app.json"
 			}
 		},
 		"shared": {
@@ -55,20 +55,20 @@
 		},
 		"transaction-consumer": {
 			"type": "application",
-			"root": "apps/workers/transaction-consumer",
+			"root": "apps/transaction-consumer",
 			"entryFile": "main",
-			"sourceRoot": "apps/workers/transaction-consumer/src",
+			"sourceRoot": "apps/transaction-consumer/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/workers/transaction-consumer/tsconfig.app.json"
+				"tsConfigPath": "apps/transaction-consumer/tsconfig.app.json"
 			}
 		},
 		"transaction-producer": {
 			"type": "application",
-			"root": "apps/workers/transaction-producer",
+			"root": "apps/transaction-producer",
 			"entryFile": "main",
-			"sourceRoot": "apps/workers/transaction-producer/src",
+			"sourceRoot": "apps/transaction-producer/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/workers/transaction-producer/tsconfig.app.json"
+				"tsConfigPath": "apps/transaction-producer/tsconfig.app.json"
 			}
 		}
 	},

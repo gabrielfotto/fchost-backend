@@ -1,17 +1,17 @@
 services:
-  fchost-transaction-producer:
-    container_name: fchost-transaction-producer
+  fchost-fraud-consumer:
+    container_name: fchost-fraud-consumer
     build:
-      context: ../../..
-      dockerfile: apps/workers/transaction-producer/Dockerfile
+      context: ../..
+      dockerfile: apps/fraud-consumer/Dockerfile
     restart: always
 
     ports:
-      - 8084:8084 # porta do debugger
+      - 8082:8082 # porta do debugger
 
     working_dir: /usr/src/app
     volumes:
-      - ./src:/usr/src/app/apps/workers/transaction-producer/src
+      - ./src:/usr/src/app/apps/fraud-consumer/src
 
     environment:
       - APP_NAME=api
@@ -23,7 +23,7 @@ services:
       - DB_NAME=${DB_NAME}
       - RABBITMQ_URI=${RABBITMQ_URI}
 
-    command: npm run start:debug:transaction-producer
+    command: npm run start:debug:fraud-consumer
 
     networks:
       - kind

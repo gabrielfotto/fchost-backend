@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
 
-import { CreditAccountBalanceService } from '../credit-balance/credit-balance.service'
+import { CreditAccountBalanceService } from './credit-balance.service'
 import { CreditBalanceInputDTO } from './credit-balance.dtos'
 
 @Injectable()

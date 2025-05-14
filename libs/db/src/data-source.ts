@@ -16,10 +16,6 @@ function resolveValidPath(primary: string, fallback: string): string {
 	return existsSync(primary) ? primary : fallback
 }
 
-function getProjectRootDir(): string {
-	return dirname(require.main?.filename || process.cwd())
-}
-
 function readCertFile(certPath: string) {
 	try {
 		const cert = readFileSync(certPath)

@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { plainToInstance } from 'class-transformer'
 
-import { PaginationResponseDTO } from '@api/shared/dtos/pagination.dtos'
-import { TPaginationMeta } from '@api/shared/types/pagination.types'
-import { plainToInstanceAndValidate } from '@api/shared/utils/plain-to-instance-and-validate.utils'
+import { PaginationResponseDTO } from '@api/dtos/pagination.dtos'
+import { TPaginationMeta } from '@api/types/pagination.types'
+import { plainToInstanceAndValidate } from '@api/utils/plain-to-instance-and-validate.utils'
 
 import { GetInvoicesByAccountOutputDTO } from './get-invoices-by-account.dtos'
 

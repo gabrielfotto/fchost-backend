@@ -2,7 +2,7 @@ import { Body, Controller, Param, Post } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
 
-import { Account } from '@api/shared/decorators/account.decorator'
+import { Account } from '@api/decorators/account.decorator'
 import { AccountEntity } from '@libs/db/entities'
 
 import { RentMachineInputDTO } from './commands/rent-machine/rent-machine.dtos'

@@ -12,6 +12,8 @@ import {
 	MachineUsageEntity,
 } from '@libs/db/entities'
 
+// this global module is used to ensure the application has only one connection
+// for rabbitmq, and one connection postgres database
 @Global()
 @Module({
 	imports: [

@@ -9,7 +9,7 @@ import {
 import { QueryBus } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
 
-import { Account } from '@api/shared/decorators/account.decorator'
+import { Account } from '@api/decorators/account.decorator'
 import { AccountEntity } from '@libs/db/entities'
 
 // import { GetInvoiceByIdOutputDTO } from './queries/get-invoice-by-id/get-invoice-by-id.dtos'

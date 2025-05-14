@@ -56,6 +56,7 @@ export default class GetAccountMachinesQueryHandler
 				'machine.name',
 				'machine.vcpu',
 				'machine.ram',
+				'machine.storage',
 				'machine.pricePerHour',
 				'COALESCE(SUM("machineUsage"."cost"), 0) AS "totalUsageCost"',
 				`COALESCE(SUM(
@@ -87,6 +88,7 @@ export default class GetAccountMachinesQueryHandler
 					name: entity.machine.name,
 					vcpu: entity.machine.vcpu,
 					ram: entity.machine.ram,
+					storage: entity.machine.storage,
 					pricePerHour: entity.machine.pricePerHour,
 				},
 			}

@@ -14,6 +14,9 @@ export class MachineOutputDTO {
 	ram: string
 
 	@Expose()
+	storage: string
+
+	@Expose()
 	pricePerHour: number
 }
 

@@ -39,7 +39,7 @@ function copyStaticFiles(libName) {
 		try {
 			fs.mkdirSync(path.dirname(destPath), { recursive: true })
 			fs.cpSync(srcPath, destPath, { recursive: true })
-			console.log(`✅ [${libName}] Copiado: ${item} → ${destPath}`)
+			console.log(`✅ [${libName}] Copied: ${item} → ${destPath}`)
 		} catch (err) {
 			console.error(`❌ Erro ao copiar ${item} para ${destPath}:`, err)
 		}

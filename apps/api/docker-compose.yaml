@@ -16,7 +16,7 @@ services:
 
     environment:
       - APP_NAME=api
-      - NODE_ENV=prod
+      - NODE_ENV=dev
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USERNAME=${DB_USERNAME}
@@ -35,12 +35,12 @@ services:
     command: npm run start:debug:api
 
     networks:
-      - kind
+      # - kind
       - fchost_network
 
 # kind k8s
 networks:
-  kind: # ficar ligado no nome
-    external: true
+  # kind: # ficar ligado no nome
+  #   external: true
   fchost_network: # ficar ligado no nome
     external: true

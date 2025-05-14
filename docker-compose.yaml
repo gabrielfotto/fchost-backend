@@ -17,7 +17,7 @@ services:
       retries: 5
     restart: unless-stopped
     networks:
-      - kind
+      # - kind
       - fchost_network
 
   fchost-rabbitmq:
@@ -32,7 +32,7 @@ services:
     volumes:
       - fchost_rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - kind
+      # - kind
       - fchost_network
 
 volumes:
@@ -41,7 +41,7 @@ volumes:
 
 # kind k8s
 networks:
-  kind: # ficar ligado no nome
-    external: true
+  # kind: # ficar ligado no nome
+  #   external: true
   fchost_network:
     name: fchost_network # ficar ligado no nome

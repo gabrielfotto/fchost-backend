@@ -12,7 +12,10 @@ export class GetMachinesOutputDTO {
 	vcpu: number
 
 	@Expose()
-	ram: number // MB
+	ram: number // GB
+
+	@Expose()
+	storage: number // GB
 
 	@Expose()
 	pricePerHour: number

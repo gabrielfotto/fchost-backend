@@ -8,9 +8,7 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
 
 	app.enableCors({
-		// origin: 'http://localhost:5173',
-		// https://portfolio.fchost.ottodev.com.br
-		origin: '*',
+		origin: ['http://localhost:5173', 'https://fchost.ottodev.com.br'],
 	})
 
 	const config = new DocumentBuilder()
@@ -22,7 +20,6 @@ async function bootstrap() {
 
 	const documentFactory = () => SwaggerModule.createDocument(app, config)
 	SwaggerModule.setup('api', app, documentFactory)
-
 	await app.listen(8080)
 }
 

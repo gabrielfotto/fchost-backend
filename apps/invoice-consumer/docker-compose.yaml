@@ -1,9 +1,9 @@
 services:
-  fchost-fraud-consumer:
-    container_name: fchost-fraud-consumer
+  fchost-invoice-consumer:
+    container_name: fchost-invoice-consumer
     build:
       context: ../..
-      dockerfile: apps/fraud-consumer/Dockerfile
+      dockerfile: apps/invoice-consumer/Dockerfile
     restart: always
 
     ports:
@@ -11,7 +11,7 @@ services:
 
     working_dir: /usr/src/app
     volumes:
-      - ./src:/usr/src/app/apps/fraud-consumer/src
+      - ./src:/usr/src/app/apps/invoice-consumer/src
 
     environment:
       - APP_NAME=api
@@ -23,7 +23,7 @@ services:
       - DB_NAME=${DB_NAME}
       - RABBITMQ_URI=${RABBITMQ_URI}
 
-    command: npm run start:debug:fraud-consumer
+    command: npm run start:debug:invoice-consumer
 
     networks:
       - kind

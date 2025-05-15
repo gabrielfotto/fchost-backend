@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fchost-fraud-consumer-deployment
+  name: fchost-invoice-consumer-deployment
   # namespace: fchost
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fchost-fraud-consumer
+      app: fchost-invoice-consumer
   template:
     metadata:
       labels:
-        app: fchost-fraud-consumer
+        app: fchost-invoice-consumer
     spec:
       containers:
-        - name: fchost-fraud-consumer
-          image: public.ecr.aws/e0j5c6t0/fchost/fraud-consumer:latest
+        - name: fchost-invoice-consumer
+          image: public.ecr.aws/e0j5c6t0/fchost/invoice-consumer:latest
           imagePullPolicy: Always
           resources:
             limits:
@@ -23,7 +23,7 @@ spec:
               cpu: '250m'
           env:
             - name: APP_NAME
-              value: 'fraud-consumer'
+              value: 'invoice-consumer'
             - name: NODE_ENV
               value: 'prod'
 

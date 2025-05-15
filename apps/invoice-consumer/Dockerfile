@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Creates a "dist" folder with the production build
-RUN npm run build:fraud-consumer
+RUN npm run build:invoice-consumer
 
 # Copiar o entrypoint
 COPY docker-entrypoint-apps.sh /usr/local/bin/docker-entrypoint-apps.sh
@@ -24,4 +24,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint-apps.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint-apps.sh"]
 
 # Somente para ambiente DEV
-# CMD ["npm", "run", "start:debug:fraud-consumer"]
+# CMD ["npm", "run", "start:debug:invoice-consumer"]

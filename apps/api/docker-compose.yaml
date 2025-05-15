@@ -23,6 +23,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - RABBITMQ_URI=${RABBITMQ_URI}
+      - AWS_SES_USER_ACCESS_KEY=${AWS_SES_USER_ACCESS_KEY}
+      - AWS_SES_USER_SECRET_ACCESS_KEY=${AWS_SES_USER_SECRET_ACCESS_KEY}
 
     # develop:
     #   watch:

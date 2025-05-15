@@ -1,13 +1,5 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
-import { TypeOrmModule } from '@nestjs/typeorm'
-
-import {
-	AccountEntity,
-	AccountMachineEntity,
-	InvoiceEntity,
-	MachineEntity,
-} from '@libs/db/entities'
 
 import MachinesQueriesController from './machines-queries.controller'
 import MachinesCommandsController from './machines-commands.controller'
@@ -16,15 +8,7 @@ import MachinesQueryHandlers from './queries'
 import MachinesCommandHandlers from './commands'
 
 @Module({
-	imports: [
-		CqrsModule,
-		TypeOrmModule.forFeature([
-			AccountEntity,
-			InvoiceEntity,
-			MachineEntity,
-			AccountMachineEntity,
-		]),
-	],
+	imports: [CqrsModule],
 	providers: [...MachinesQueryHandlers, ...MachinesCommandHandlers],
 	controllers: [MachinesQueriesController, MachinesCommandsController],
 })

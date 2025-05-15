@@ -15,10 +15,7 @@ import TransactionsQueryHandlers from './queries'
 // import InvoicesCommandHandlers from './commands'
 
 @Module({
-	imports: [
-		CqrsModule,
-		TypeOrmModule.forFeature([AccountEntity, InvoiceEntity, TransactionEntity]),
-	],
+	imports: [CqrsModule],
 	providers: [...TransactionsQueryHandlers],
 	controllers: [TransactionsQueriesController],
 })

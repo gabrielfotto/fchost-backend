@@ -14,7 +14,9 @@
 			"entryFile": "main",
 			"sourceRoot": "apps/api/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/api/tsconfig.app.json"
+				"tsConfigPath": "apps/api/tsconfig.app.json",
+				"assets": ["views/emails/**/*"],
+				"watchAssets": true
 			}
 		},
 		"config": {
@@ -35,13 +37,13 @@
 				"tsConfigPath": "libs/db/tsconfig.lib.json"
 			}
 		},
-		"fraud-consumer": {
+		"invoice-consumer": {
 			"type": "application",
-			"root": "apps/fraud-consumer",
+			"root": "apps/invoice-consumer",
 			"entryFile": "main",
-			"sourceRoot": "apps/fraud-consumer/src",
+			"sourceRoot": "apps/invoice-consumer/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/fraud-consumer/tsconfig.app.json"
+				"tsConfigPath": "apps/invoice-consumer/tsconfig.app.json"
 			}
 		},
 		"shared": {

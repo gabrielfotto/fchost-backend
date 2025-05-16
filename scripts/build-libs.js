@@ -52,9 +52,11 @@ function buildLibs() {
 	libs.forEach(lib => {
 		const tsConfigPath = path.join(libsPath, lib, 'tsconfig.lib.json')
 		if (fs.existsSync(tsConfigPath)) {
+			console.log()
 			console.log(`Building ${lib}...`)
 			execSync(`tsc -p ${tsConfigPath}`, { stdio: 'inherit' })
 			copyStaticFiles(lib)
+			console.log('✅ done')
 		} else {
 			console.log(`No tsconfig.lib.json found for ${lib}. Skipping...`)
 		}

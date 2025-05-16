@@ -3,7 +3,7 @@ export type TSendEmailParams = {
 	from: string
 	subject: string
 	template: {
-		filePath: string
+		file: string
 		variables: Record<string, any>
 	}
 }

@@ -26,14 +26,6 @@ services:
       - AWS_SES_USER_ACCESS_KEY=${AWS_SES_USER_ACCESS_KEY}
       - AWS_SES_USER_SECRET_ACCESS_KEY=${AWS_SES_USER_SECRET_ACCESS_KEY}
 
-    # develop:
-    #   watch:
-    #     - path: .
-    #       action: sync+restart
-    #       target: /usr/src/app/apps/api
-    # exec:
-    #   command: npm run start:prod:api
-
     command: npm run start:debug:api
 
     networks:

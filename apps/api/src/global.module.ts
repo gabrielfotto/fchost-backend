@@ -13,6 +13,7 @@ import {
 	MachineEntity,
 	TransactionEntity,
 } from '@libs/db/entities'
+import { ProvidersModule } from './providers/providers.module'
 
 // this global module is used to ensure the application has only one connection
 // for rabbitmq, and one connection postgres database

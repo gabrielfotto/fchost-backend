@@ -11,7 +11,7 @@ import { TSendEmailParams } from '../email/provider.models'
 import { IEmailTemplateProvider } from '../email-template/provider.models'
 
 @Injectable()
-export default class AWSSESEmailProvider
+export class AWSSESEmailProvider
 	implements IEmailProvider<SendEmailCommandOutput>
 {
 	constructor(

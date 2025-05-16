@@ -1,5 +1,5 @@
 export type TParseEmailTemplateParams = {
-	filePath: string
+	file: string
 	variables: Record<string, any>
 }
 

@@ -1,16 +1,17 @@
-import { Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { BadRequestException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
+import { InjectDataSource } from '@nestjs/typeorm'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
 
 import { AccountEntity } from '@libs/db/entities'
 import { CreateAccountOutputDTO } from './create-account.dtos'
 
+import { AWSSESEmailProvider } from '../../../../providers/email/aws-ses-email.provider'
+
 export class CreateAccountCommand {
 	name: string
 	email: string
-	// balance: string
 }
 
 @CommandHandler(CreateAccountCommand)
@@ -18,8 +19,9 @@ export default class CreateAccountCommandHandler
 	implements ICommandHandler<CreateAccountCommand, CreateAccountOutputDTO>
 {
 	constructor(
-		@InjectRepository(AccountEntity)
-		private readonly accountsRepository: Repository<AccountEntity>,
+		@InjectDataSource()
+		private readonly dataSource: DataSource,
+		private readonly awsSESEmailProvider: AWSSESEmailProvider,
 	) {}
 
 	async execute(
@@ -27,34 +29,53 @@ export default class CreateAccountCommandHandler
 	): Promise<CreateAccountOutputDTO> {
 		const { name, email } = command
 
-		const dbAccount = await this.accountsRepository.findOne({
-			where: {
-				email,
-			},
-		})
+		const transformedAccount = await this.dataSource.transaction(
+			async manager => {
+				const dbAccount = await manager.findOne(AccountEntity, {
+					where: {
+						email,
+					},
+				})
 
-		if (dbAccount) {
-			throw new BadRequestException(`Email already used`)
-		}
+				if (dbAccount) {
+					throw new BadRequestException(`Email already used`)
+				}
 
-		const account = await this.accountsRepository.create({
-			name,
-			email,
-		})
+				const account = await manager.create(AccountEntity, {
+					name,
+					email,
+				})
 
-		// usar shared/utils dto para validar dados
-		await this.accountsRepository.save(account)
+				// usar shared/utils dto para validar dados
+				await manager.save(AccountEntity, account)
 
-		const transformedAccount = plainToInstance(
-			CreateAccountOutputDTO,
-			account,
-			{
-				// Importante: Garante que apenas propriedades com @Expose() sejam incluídas
-				// e que transformações padrão sejam aplicadas.
+				const transformedAccount = plainToInstance(
+					CreateAccountOutputDTO,
+					account,
+					{
+						// Importante: Garante que apenas propriedades com @Expose() sejam incluídas
+						// e que transformações padrão sejam aplicadas.
 
-				// se eu quiser que seja lançado um erro,
-				// precisarei criar um interceptor usando o util plain-to-instance-and-validate.utils
-				excludeExtraneousValues: true,
+						// se eu quiser que seja lançado um erro,
+						// precisarei criar um interceptor usando o util plain-to-instance-and-validate.utils
+						excludeExtraneousValues: true,
+					},
+				)
+
+				await this.awsSESEmailProvider.send({
+					to: email,
+					from: 'contato@asinfy.com.br',
+					subject: 'FCHost API Key',
+					template: {
+						file: 'accounts.create-account',
+						variables: {
+							name,
+							apiKey: account.apiKey,
+						},
+					},
+				})
+
+				return transformedAccount
 			},
 		)
 

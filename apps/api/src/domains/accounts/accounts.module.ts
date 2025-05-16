@@ -7,10 +7,10 @@ import AccountsCommandsController from './accounts-commands.controller'
 import AccountQueryHandlers from './queries'
 import AccountCommandHandlers from './commands'
 
-import { ProvidersModule } from '../../providers/providers.module'
+import { ProvidersModule } from '../..//providers/providers.module'
 
 @Module({
-	imports: [CqrsModule],
+	imports: [CqrsModule, ProvidersModule],
 	providers: [...AccountQueryHandlers, ...AccountCommandHandlers],
 	controllers: [AccountsQueriesController, AccountsCommandsController],
 })

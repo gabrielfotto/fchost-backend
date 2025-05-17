@@ -64,7 +64,7 @@ export default class CreateAccountCommandHandler
 					},
 				)
 
-				const sourceEmail = `"FCHost" <${this.configService.get('APP_EMAIL_SOURCE')}>`
+				const sourceEmail = this.configService.get('APP_EMAIL_SOURCE')
 				await this.awsSESEmailProvider.send({
 					to: email,
 					from: sourceEmail,

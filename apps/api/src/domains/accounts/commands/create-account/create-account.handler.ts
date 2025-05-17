@@ -8,7 +8,7 @@ import { plainToInstance } from 'class-transformer'
 import { AccountEntity } from '@libs/db/entities'
 import { CreateAccountOutputDTO } from './create-account.dtos'
 
-import { AWSSESEmailProvider } from '../../../../providers/email/aws-ses-email.provider'
+import { AWSSESEmailProvider } from '@libs/shared/providers/email/aws-ses-email.provider'
 
 export class CreateAccountCommand {
 	name: string

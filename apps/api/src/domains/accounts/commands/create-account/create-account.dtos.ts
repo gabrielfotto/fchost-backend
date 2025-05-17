@@ -17,15 +17,10 @@ export class CreateAccountInputDTO {
 // OUTPUT
 @Exclude()
 export class CreateAccountOutputDTO {
-	@Expose()
-	name: string
-
-	@Expose()
-	email: string
-
 	// @Expose()
-	// balance: string
-
-	@Expose()
-	apiKey: string
+	// name: string
+	// @Expose()
+	// email: string
+	// @Expose()
+	// apiKey: string
 }

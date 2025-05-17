@@ -13,7 +13,6 @@ import {
 	MachineEntity,
 	TransactionEntity,
 } from '@libs/db/entities'
-import { ProvidersModule } from './providers/providers.module'
 
 import constantsConfig from './app.constants'
 

@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm'
+import { ConfigService } from '@nestjs/config'
 import { BadRequestException } from '@nestjs/common'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
@@ -22,6 +23,7 @@ export default class CreateAccountCommandHandler
 		@InjectDataSource()
 		private readonly dataSource: DataSource,
 		private readonly awsSESEmailProvider: AWSSESEmailProvider,
+		private readonly configService: ConfigService,
 	) {}
 
 	async execute(
@@ -62,10 +64,11 @@ export default class CreateAccountCommandHandler
 					},
 				)
 
+				const sourceEmail = `"FCHost" <${this.configService.get('APP_EMAIL_SOURCE')}>`
 				await this.awsSESEmailProvider.send({
 					to: email,
-					from: 'contato@asinfy.com.br',
-					subject: 'FCHost API Key',
+					from: sourceEmail,
+					subject: 'API Key',
 					template: {
 						file: 'accounts.create-account',
 						variables: {

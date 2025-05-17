@@ -2,7 +2,7 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "debug:fchost-gateway-api", // Nome descritivo para a configuração
+			"name": "debug:fchost-api", // Nome descritivo para a configuração
 			"type": "node", // Tipo de depurador (Node.js)
 			"request": "attach", // Queremos anexar a um processo existente
 			"port": 8081, // Porta do debugger EXPOSTA NO HOST (mapeada no docker-compose)
@@ -22,14 +22,14 @@
 			]
 		},
 		{
-			"name": "debug:fchost-fraud-consumer",
+			"name": "debug:fchost-invoice-consumer",
 			"type": "node",
 			"request": "attach",
 			"port": 8082,
 			"address": "0.0.0.0",
 
 			"cwd": "${workspaceFolder}",
-			"localRoot": "${workspaceFolder}/apps/fraud-consumer",
+			"localRoot": "${workspaceFolder}/apps/invoice-consumer",
 			"remoteRoot": "/usr/src/app",
 
 			"restart": true,

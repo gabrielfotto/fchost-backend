@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
 
 import constantsConfig from './config/constants.config'
+
 import { dataSourceOptionsFn } from '@libs/db/data-source'
 import { rabbitmqConfigFn } from '@libs/config'
 

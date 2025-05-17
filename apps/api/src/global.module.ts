@@ -15,13 +15,18 @@ import {
 } from '@libs/db/entities'
 import { ProvidersModule } from './providers/providers.module'
 
+import constantsConfig from './app.constants'
+
 // this global module is used to ensure the application has only one connection
 // for rabbitmq, and one connection postgres database
 @Global()
 @Module({
 	imports: [
 		CqrsModule,
-		ConfigModule.forRoot(),
+		ConfigModule.forRoot({
+			isGlobal: true,
+			load: [constantsConfig],
+		}),
 
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],

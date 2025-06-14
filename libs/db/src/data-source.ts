@@ -31,6 +31,12 @@ function readCertFile(certPath: string) {
 
 export function findRoot(startDir: string = __dirname): string {
 	let currentDir = startDir
+	const isTsNode = currentDir.includes('node_modules/ts-node')
+
+	// Se estiver rodando com ts-node, precisamos ajustar o caminho
+	if (isTsNode) {
+		currentDir = process.cwd()
+	}
 
 	while (
 		!existsSync(join(currentDir, 'libs')) &&
@@ -55,15 +61,31 @@ export function dataSourceOptionsFn(
 	// Usa findRoot para achar o dist/libs independente da estrutura
 	const distRoot = findRoot()
 
-	let rdsSslCertOptions
-	if (nodeEnv === 'prod') {
-		rdsSslCertOptions = readCertFile(
-			join(distRoot, 'libs', 'db', 'cert', 'rds-us-east-1-bundle.pem'),
-		)
-	}
+	// Verifica se estamos rodando com ts-node de uma forma mais confiável
+	const isTsNode =
+		process.argv.some(arg => arg.includes('ts-node')) ||
+		process.execPath.includes('ts-node') ||
+		process.env._?.includes('ts-node')
 
-	const baseWithLibs = join(distRoot, 'libs', 'db')
-	const baseWithoutLibs = join(distRoot, 'db')
+	// console.log('Debug paths:', {
+	// 	__dirname,
+	// 	isTsNode,
+	// 	processExecPath: process.execPath,
+	// 	processArgv: process.argv,
+	// 	processEnv: process.env._,
+	// 	distRoot,
+	// 	expectedTsNodePath: join(distRoot, 'libs', 'db', 'src', 'entities'),
+	// 	expectedAppPath: join(distRoot, 'libs', 'db', 'entities'),
+	// })
+
+	// Se estiver rodando com ts-node, usamos o caminho com src
+	const baseWithLibs = isTsNode
+		? join(distRoot, 'libs', 'db', 'src')
+		: join(distRoot, 'libs', 'db')
+
+	const baseWithoutLibs = isTsNode
+		? join(distRoot, 'db', 'src')
+		: join(distRoot, 'db')
 
 	const entitiesBase = resolveValidPath(
 		join(baseWithLibs, 'entities'),
@@ -75,12 +97,26 @@ export function dataSourceOptionsFn(
 		join(baseWithoutLibs, 'migrations'),
 	)
 
+	// console.log('Final paths:', {
+	// 	baseWithLibs,
+	// 	baseWithoutLibs,
+	// 	entitiesBase,
+	// 	existsEntitiesBase: existsSync(entitiesBase),
+	// })
+
 	if (!existsSync(entitiesBase)) {
 		throw new Error(`Entities path not found: ${entitiesBase}`)
 	}
 
 	if (!existsSync(migrationsBase)) {
 		throw new Error(`Migrations path not found: ${migrationsBase}`)
+	}
+
+	let rdsSslCertOptions
+	if (nodeEnv === 'prod') {
+		rdsSslCertOptions = readCertFile(
+			join(distRoot, 'libs', 'db', 'cert', 'rds-us-east-1-bundle.pem'),
+		)
 	}
 
 	return {
@@ -90,8 +126,7 @@ export function dataSourceOptionsFn(
 		username: config.get('DB_USERNAME'),
 		password: config.get('DB_PASSWORD'),
 		database: config.get('DB_NAME'),
-		// entities: [join(entitiesBase, '*.entity.js')],
-		entities: [...Entities],
+		entities: Entities,
 		migrations: [join(migrationsBase, '*.js')],
 		...(nodeEnv === 'prod'
 			? {
@@ -101,10 +136,14 @@ export function dataSourceOptionsFn(
 	}
 }
 
-const dataSource = new DataSource(
-	dataSourceOptionsFn({
+export function defaultConfigService() {
+	return {
 		get: (varName: string) => process.env[varName],
-	}),
+	}
+}
+
+const dataSource = new DataSource(
+	dataSourceOptionsFn(defaultConfigService() as CustomConfigType),
 )
 
 export default dataSource

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 
-import AuthGuard from './guards/auth.guard'
+import AccountApiKeyGuard from './guards/account-api-key.guard'
 
 import AccountsModule from './domains/accounts/accounts.module'
 import InvoicesModule from './domains/invoices/invoices.module'
@@ -9,11 +9,13 @@ import MachinesModule from './domains/machines/machines.module'
 import TransactionsModule from './domains/transactions/transactions.module'
 
 import { GlobalModule } from './global.module'
+import AuthModule from './domains/_auth/auth.module'
 
 @Module({
 	imports: [
 		GlobalModule,
 
+		AuthModule,
 		AccountsModule,
 		InvoicesModule,
 		MachinesModule,
@@ -23,7 +25,7 @@ import { GlobalModule } from './global.module'
 	providers: [
 		{
 			provide: APP_GUARD,
-			useClass: AuthGuard,
+			useClass: AccountApiKeyGuard,
 		},
 	],
 })

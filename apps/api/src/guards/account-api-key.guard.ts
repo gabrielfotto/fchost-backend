@@ -12,7 +12,7 @@ import { IRequest } from '../interfaces/request.interfaces'
 import { Reflector } from '@nestjs/core'
 
 @Injectable()
-export default class AuthGuard implements CanActivate {
+export default class AccountApiKeyGuard implements CanActivate {
 	constructor(
 		@InjectRepository(AccountEntity)
 		private accountsRepository: Repository<AccountEntity>,

@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
+import { ThrottlerModule } from '@nestjs/throttler'
 
-import AuthGuard from './guards/auth.guard'
+import AccountApiKeyGuard from './guards/account-api-key.guard'
 
 import AccountsModule from './domains/accounts/accounts.module'
 import InvoicesModule from './domains/invoices/invoices.module'
@@ -18,12 +19,21 @@ import { GlobalModule } from './global.module'
 		InvoicesModule,
 		MachinesModule,
 		TransactionsModule,
+
+		ThrottlerModule.forRoot({
+			throttlers: [
+				{
+					ttl: 1000,
+					limit: 5,
+				},
+			],
+		}),
 	],
 	controllers: [],
 	providers: [
 		{
 			provide: APP_GUARD,
-			useClass: AuthGuard,
+			useClass: AccountApiKeyGuard,
 		},
 	],
 })

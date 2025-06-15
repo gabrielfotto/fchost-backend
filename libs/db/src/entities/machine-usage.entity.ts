@@ -26,6 +26,7 @@ export default class MachineUsageEntity {
 	@Column({ type: 'decimal', scale: 4, default: 0 })
 	cost: string
 
+	// the last time when cron service (transaction-producer) executed/processed the cost to be debited for this machine usage
 	@Column({ type: 'timestamp', nullable: true })
 	lastProcessedAt?: Date | null
 

@@ -14,7 +14,7 @@ services:
       - ./src:/usr/src/app/apps/transaction-consumer/src
 
     environment:
-      - APP_NAME=api
+      - APP_NAME=transaction-consumer
       - NODE_ENV=dev
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
@@ -26,12 +26,12 @@ services:
     command: npm run start:debug:transaction-consumer
 
     networks:
-      - kind
+      # - kind
       - fchost_network
 
 # kind k8s
 networks:
-  kind: # ficar ligado no nome
-    external: true
+  # kind: # ficar ligado no nome
+  #   external: true
   fchost_network: # ficar ligado no nome
     external: true

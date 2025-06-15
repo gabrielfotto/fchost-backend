@@ -12,7 +12,10 @@ export class AppCron implements ICron {
 
 	constructor(private readonly appService: AppService) {}
 
-	@Cron(CronExpression.EVERY_MINUTE, { waitForCompletion: true })
+	@Cron(CronExpression.EVERY_MINUTE, {
+		waitForCompletion: true,
+		// timeZone: 'America/Sao_Paulo',
+	})
 	async run() {
 		try {
 			await this.appService.execute()

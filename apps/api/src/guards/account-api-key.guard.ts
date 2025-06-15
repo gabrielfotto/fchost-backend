@@ -36,8 +36,10 @@ export default class AccountApiKeyGuard implements CanActivate {
 			throw new UnauthorizedException()
 		}
 
-		const account = await this.accountsRepository.findOneBy({
-			apiKey: xApiKey,
+		const account = await this.accountsRepository.findOne({
+			where: {
+				apiKey: xApiKey,
+			},
 		})
 
 		if (!account) {

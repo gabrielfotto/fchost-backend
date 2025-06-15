@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import { InjectRepository } from '@nestjs/typeorm'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import { In, IsNull, Repository } from 'typeorm'
 
 import { ICronService } from './app.interfaces'

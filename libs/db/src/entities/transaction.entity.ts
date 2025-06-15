@@ -30,6 +30,7 @@ export default class TransactionEntity {
 	// @Column()
 	// balance: string
 
+	// only if the transaction is CREDIT
 	@OneToOne(() => InvoiceEntity, { onDelete: 'CASCADE', nullable: true })
 	@JoinColumn({ name: 'invoiceId' })
 	invoice?: InvoiceEntity

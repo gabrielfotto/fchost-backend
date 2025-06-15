@@ -21,7 +21,6 @@ export class DebitAccountBalanceService {
 	) {}
 
 	async execute(message: DebitBalanceInputDTO) {
-		// . setar debitedAt para machine-usages
 		const { account_id, amount } = message
 
 		await this.dataSource.transaction(async manager => {
@@ -35,13 +34,24 @@ export class DebitAccountBalanceService {
 				return
 			}
 
+			if (lockedAccount.balance === '0') {
+				this.logger.debug(`Account ${account_id}: balance is 0`)
+				return
+			}
+
 			if (lockedAccount.balance < amount) {
-				this.logger.warn(`Insufficient balance`)
+				lockedAccount.balance = '0'
+				await manager.save(AccountEntity, lockedAccount)
+
+				this.logger.warn(
+					`Account ${account_id}: balance updated to 0 due to insufficient balance`,
+				)
+
 				return
 			}
 
 			const totalBalance = (
-				parseFloat(lockedAccount.balance) - parseFloat(amount)
+				Number(lockedAccount.balance) - Number(amount)
 			).toFixed(4)
 
 			lockedAccount.balance = totalBalance

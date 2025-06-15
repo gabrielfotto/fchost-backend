@@ -30,9 +30,6 @@ export default class MachineUsageEntity {
 	@Column({ type: 'timestamp', nullable: true })
 	lastProcessedAt?: Date | null
 
-	@Column({ type: 'timestamp', nullable: true })
-	debitedAt?: Date | null
-
 	@CreateDateColumn()
 	createdAt: Date
 

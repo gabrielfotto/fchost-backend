@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import { In, IsNull, Repository } from 'typeorm'
 
-import { ICronService } from './app.interfaces'
+import { ICronService } from '../../../app.interfaces'
 import {
 	AccountEntity,
 	AccountMachineEntity,
@@ -12,7 +12,7 @@ import {
 import { differenceInMilliseconds } from 'date-fns'
 
 @Injectable()
-export class AppService implements ICronService {
+export class CalculateMachineUsageCostToDebitService implements ICronService {
 	constructor(
 		@InjectRepository(AccountEntity)
 		private readonly accountsRepository: Repository<AccountEntity>,
@@ -73,9 +73,7 @@ export class AppService implements ICronService {
 				)
 
 				const usageDiffInHours = usageDiffInMs / (1000 * 60 * 60)
-				const usageCost = Number(
-					usageDiffInHours * accountMachine.machine.pricePerHour,
-				)
+				const usageCost = usageDiffInHours * accountMachine.machine.pricePerHour
 
 				totalAccountUsageCost += Number(usageCost.toFixed(4))
 				const parsedUsageCost = (Number(usage.cost || 0) + usageCost).toFixed(4)

@@ -1,9 +1,20 @@
-import { runSeeder } from 'typeorm-extension'
+import { DataSource, DataSourceOptions } from 'typeorm'
+import { runSeeder, SeederOptions } from 'typeorm-extension'
 
 import { MainSeeder } from './seeder'
-import dataSource from '../data-source'
+import { dataSourceOptionsFn, defaultConfigService } from '../data-source'
 
-dataSource.initialize().then(async () => {
-	await dataSource.synchronize(true)
-	await runSeeder(dataSource, MainSeeder)
+import { MachineFactory } from './factories/machine.factory'
+
+const seederDataSourceOptions: DataSourceOptions & SeederOptions = {
+	...dataSourceOptionsFn(defaultConfigService()),
+	factories: [MachineFactory],
+	seeds: [MainSeeder],
+}
+
+const seederDataSource = new DataSource(seederDataSourceOptions)
+
+seederDataSource.initialize().then(async () => {
+	await seederDataSource.synchronize(true)
+	await runSeeder(seederDataSource, MainSeeder)
 })

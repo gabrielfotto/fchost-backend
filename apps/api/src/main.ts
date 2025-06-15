@@ -1,4 +1,5 @@
 import 'dotenv/config'
+
 import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
@@ -8,7 +9,11 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
 
 	app.enableCors({
-		origin: ['http://localhost:5173', 'https://fchost.ottodev.com.br'],
+		origin: [
+			'http://localhost:5173',
+			'https://fchost.ottodev.me',
+			'https://fchost.ottodev.com.br',
+		],
 	})
 
 	const config = new DocumentBuilder()

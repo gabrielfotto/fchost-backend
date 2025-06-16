@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { DataSource, In, IsNull } from 'typeorm'
 
-import { ICronService } from '../../../app.interfaces'
+import { ICronService } from '@libs/shared/interfaces'
 import {
 	AccountEntity,
 	AccountMachineEntity,

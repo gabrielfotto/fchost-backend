@@ -1,9 +1,9 @@
 services:
-  fchost-transaction-producer:
-    container_name: fchost-transaction-producer
+  fchost-balance-monitor:
+    container_name: fchost-balance-monitor
     build:
       context: ../..
-      dockerfile: apps/transaction-producer/Dockerfile
+      dockerfile: apps/balance-monitor/Dockerfile
     restart: always
 
     ports:
@@ -11,19 +11,19 @@ services:
 
     working_dir: /usr/src/app
     volumes:
-      - ./src:/usr/src/app/apps/transaction-producer/src
+      - ./src:/usr/src/app/apps/balance-monitor/src
 
     environment:
-      - APP_NAME=transaction-producer
+      - APP_NAME=balance-monitor
       - NODE_ENV=dev
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-      - RABBITMQ_URI=${RABBITMQ_URI}
+      # - RABBITMQ_URI=${RABBITMQ_URI}
 
-    command: npm run start:debug:transaction-producer
+    command: npm run start:debug:balance-monitor
 
     networks:
       # - kind

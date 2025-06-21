@@ -5,7 +5,6 @@ import { join, dirname } from 'path'
 
 import { DataSource, DataSourceOptions } from 'typeorm'
 import { ConfigService } from '@nestjs/config'
-
 import Entities from './entities'
 
 type CustomConfigType = {
@@ -58,51 +57,15 @@ export function dataSourceOptionsFn(
 		dbHost = 'localhost'
 	}
 
-	// Usa findRoot para achar o dist/libs independente da estrutura
-	const distRoot = findRoot()
+	// Usa findRoot para achar o diretório raiz do projeto
+	const projectRoot = findRoot()
 
-	// Verifica se estamos rodando com ts-node de uma forma mais confiável
-	const isTsNode =
-		process.argv.some(arg => arg.includes('ts-node')) ||
-		process.execPath.includes('ts-node') ||
-		process.env._?.includes('ts-node')
+	// Detecta se já está rodando do dist
+	const isDist = projectRoot.endsWith('dist')
 
-	// console.log('Debug paths:', {
-	// 	__dirname,
-	// 	isTsNode,
-	// 	processExecPath: process.execPath,
-	// 	processArgv: process.argv,
-	// 	processEnv: process.env._,
-	// 	distRoot,
-	// 	expectedTsNodePath: join(distRoot, 'libs', 'db', 'src', 'entities'),
-	// 	expectedAppPath: join(distRoot, 'libs', 'db', 'entities'),
-	// })
-
-	// Se estiver rodando com ts-node, usamos o caminho com src
-	const baseWithLibs = isTsNode
-		? join(distRoot, 'libs', 'db', 'src')
-		: join(distRoot, 'libs', 'db')
-
-	const baseWithoutLibs = isTsNode
-		? join(distRoot, 'db', 'src')
-		: join(distRoot, 'db')
-
-	const entitiesBase = resolveValidPath(
-		join(baseWithLibs, 'entities'),
-		join(baseWithoutLibs, 'entities'),
-	)
-
-	const migrationsBase = resolveValidPath(
-		join(baseWithLibs, 'migrations'),
-		join(baseWithoutLibs, 'migrations'),
-	)
-
-	// console.log('Final paths:', {
-	// 	baseWithLibs,
-	// 	baseWithoutLibs,
-	// 	entitiesBase,
-	// 	existsEntitiesBase: existsSync(entitiesBase),
-	// })
+	const basePath = isDist ? projectRoot : join(projectRoot, 'dist')
+	const entitiesBase = join(basePath, 'libs', 'db', 'entities')
+	const migrationsBase = join(basePath, 'libs', 'db', 'migrations')
 
 	if (!existsSync(entitiesBase)) {
 		throw new Error(`Entities path not found: ${entitiesBase}`)
@@ -115,7 +78,7 @@ export function dataSourceOptionsFn(
 	let rdsSslCertOptions
 	if (nodeEnv === 'prod') {
 		rdsSslCertOptions = readCertFile(
-			join(distRoot, 'libs', 'db', 'cert', 'rds-us-east-1-bundle.pem'),
+			join(basePath, 'libs', 'db', 'cert', 'rds-us-east-1-bundle.pem'),
 		)
 	}
 
@@ -126,6 +89,7 @@ export function dataSourceOptionsFn(
 		username: config.get('DB_USERNAME'),
 		password: config.get('DB_PASSWORD'),
 		database: config.get('DB_NAME'),
+		// entities: [join(entitiesBase, '*.js')],
 		entities: Entities,
 		migrations: [join(migrationsBase, '*.js')],
 		...(nodeEnv === 'prod'

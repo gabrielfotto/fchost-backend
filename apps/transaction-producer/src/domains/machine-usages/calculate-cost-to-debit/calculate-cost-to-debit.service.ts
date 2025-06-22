@@ -13,6 +13,8 @@ import { differenceInMilliseconds } from 'date-fns'
 
 @Injectable()
 export class CalculateMachineUsageCostToDebitService implements ICronService {
+	private readonly ACCOUNT_BATCH_SIZE = 100
+
 	constructor(
 		@InjectRepository(AccountEntity)
 		private readonly accountsRepository: Repository<AccountEntity>,
@@ -24,8 +26,28 @@ export class CalculateMachineUsageCostToDebitService implements ICronService {
 	) {}
 
 	async execute() {
-		const accounts = await this.accountsRepository.find()
+		let skip = 0
+		let hasMoreAccounts = true
 
+		while (hasMoreAccounts) {
+			const accounts = await this.accountsRepository.find({
+				skip,
+				take: this.ACCOUNT_BATCH_SIZE,
+			})
+
+			if (accounts.length === 0) {
+				hasMoreAccounts = false
+				break
+			}
+
+			await this.processAccountsBatch(accounts)
+
+			skip += this.ACCOUNT_BATCH_SIZE
+			hasMoreAccounts = accounts.length === this.ACCOUNT_BATCH_SIZE
+		}
+	}
+
+	private async processAccountsBatch(accounts: AccountEntity[]) {
 		for (const account of accounts) {
 			const accountMachines = await this.accountMachinesRepository.find({
 				where: { account: { id: account.id } },

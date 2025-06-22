@@ -11,16 +11,36 @@ import { EMachineStatus } from '@libs/db/enums'
 
 @Injectable()
 export class CheckAccountBalanceService implements ICronService {
+	private readonly ACCOUNT_BATCH_SIZE = 100
+
 	constructor(private readonly dataSource: DataSource) {}
 
 	async execute() {
-		const accounts = await this.dataSource.getRepository(AccountEntity).find({
-			// @ts-ignore
-			where: { balance: 0 },
-		})
+		let skip = 0
+		let hasMoreAccounts = true
 
+		while (hasMoreAccounts) {
+			const accounts = await this.dataSource.getRepository(AccountEntity).find({
+				// @ts-ignore
+				where: { balance: 0 },
+				skip,
+				take: this.ACCOUNT_BATCH_SIZE,
+			})
+
+			if (accounts.length === 0) {
+				hasMoreAccounts = false
+				break
+			}
+
+			await this.processAccountsBatch(accounts)
+
+			skip += this.ACCOUNT_BATCH_SIZE
+			hasMoreAccounts = accounts.length === this.ACCOUNT_BATCH_SIZE
+		}
+	}
+
+	private async processAccountsBatch(accounts: AccountEntity[]) {
 		for (const account of accounts) {
-			// Inicia uma transação
 			await this.dataSource.transaction(async manager => {
 				const accountMachines = await manager.find(AccountMachineEntity, {
 					where: { status: EMachineStatus.ON, account: { id: account.id } },

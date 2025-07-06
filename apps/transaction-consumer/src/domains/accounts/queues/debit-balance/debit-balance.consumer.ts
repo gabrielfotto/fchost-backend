@@ -1,20 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
 
-import { DebitAccountBalanceService } from './debit-balance.service'
-import { DebitBalanceInputDTO } from './debit-balance.dtos'
+import { DebitAccountBalanceQueueService } from './debit-balance.service'
+import { DebitBalanceQueueInputDTO } from './debit-balance.dtos'
 
 @Injectable()
-export class DebitAccountBalanceConsumerHandler {
+export class DebitAccountBalanceQueueConsumerHandler {
 	private readonly logger: Logger = new Logger(
-		DebitAccountBalanceConsumerHandler.name,
+		DebitAccountBalanceQueueConsumerHandler.name,
 		{
 			timestamp: true,
 		},
 	)
 
 	constructor(
-		private readonly debitAccountBalanceService: DebitAccountBalanceService,
+		private readonly debitAccountBalanceQueueService: DebitAccountBalanceQueueService,
 	) {}
 
 	@RabbitSubscribe({
@@ -29,8 +29,8 @@ export class DebitAccountBalanceConsumerHandler {
 			},
 		},
 	})
-	async handler(message: DebitBalanceInputDTO) {
-		await this.debitAccountBalanceService.execute(message)
+	async handler(message: DebitBalanceQueueInputDTO) {
+		await this.debitAccountBalanceQueueService.execute(message)
 		this.logger.debug(`Message consumed: ${JSON.stringify(message)}`)
 	}
 }

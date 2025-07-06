@@ -7,7 +7,7 @@ services:
     restart: always
 
     ports:
-      - 8085:8085 # porta do debugger
+      - 8082:8082 # porta do debugger
 
     working_dir: /usr/src/app
     volumes:
@@ -21,7 +21,7 @@ services:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-      # - RABBITMQ_URI=${RABBITMQ_URI}
+      - RABBITMQ_URI=${RABBITMQ_URI}
 
     command: npm run start:debug:balance-monitor
 

@@ -9,6 +9,7 @@
 		"build:libs": "rm -rf dist/libs/ && node scripts/build-libs.js",
 		"build": "nest build && npm run build:libs",
 		"build:api": "nest build api && npm run build:libs",
+		"build:balance-monitor": "nest build balance-monitor && npm run build:libs",
 		"build:invoice-consumer": "nest build invoice-consumer && npm run build:libs",
 		"build:transaction-producer": "nest build transaction-producer && npm run build:libs",
 		"build:transaction-consumer": "nest build transaction-consumer && npm run build:libs",

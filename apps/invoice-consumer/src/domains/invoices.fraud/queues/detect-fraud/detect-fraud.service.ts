@@ -3,7 +3,10 @@ import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
-import { FraudDetectionInputDTO, FraudDetectionOutputDTO } from './fraud.dtos'
+import {
+	FraudDetectionQueueInputDTO,
+	FraudDetectionQueueOutputDTO,
+} from './detect-fraud.dtos'
 import { FraudSpecificationAggregator } from './specifications'
 
 import { InvoiceEntity } from '@libs/db/entities'
@@ -11,9 +14,9 @@ import { FraudEntity } from '@libs/db/entities'
 import { EInvoiceStatus } from '@libs/common/enums'
 
 @Injectable()
-export class FraudDetectionConsumerHandlerService {
+export class FraudDetectionQueueConsumerHandlerService {
 	private readonly logger: Logger = new Logger(
-		FraudDetectionConsumerHandlerService.name,
+		FraudDetectionQueueConsumerHandlerService.name,
 		{
 			timestamp: true,
 		},
@@ -26,11 +29,11 @@ export class FraudDetectionConsumerHandlerService {
 		private readonly amqpConnection: AmqpConnection,
 	) {}
 
-	async execute(message: FraudDetectionInputDTO) {
+	async execute(message: FraudDetectionQueueInputDTO) {
 		const { invoice_id } = message
 
 		const invoice = await this.dataSource.transaction<
-			FraudDetectionOutputDTO | undefined
+			FraudDetectionQueueOutputDTO | undefined
 		>(async manager => {
 			const invoice = await manager.findOne(InvoiceEntity, {
 				where: { id: invoice_id },

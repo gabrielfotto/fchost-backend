@@ -3,13 +3,13 @@ import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
 import { AccountEntity, TransactionEntity } from '@libs/db/entities'
-import { DebitBalanceInputDTO } from './debit-balance.dtos'
+import { DebitBalanceQueueInputDTO } from './debit-balance.dtos'
 import { ETransactionType } from '@libs/db/enums/transaction-type.enum'
 
 @Injectable()
-export class DebitAccountBalanceService {
+export class DebitAccountBalanceQueueService {
 	private readonly logger: Logger = new Logger(
-		DebitAccountBalanceService.name,
+		DebitAccountBalanceQueueService.name,
 		{
 			timestamp: true,
 		},
@@ -20,7 +20,7 @@ export class DebitAccountBalanceService {
 		private readonly dataSource: DataSource,
 	) {}
 
-	async execute(message: DebitBalanceInputDTO) {
+	async execute(message: DebitBalanceQueueInputDTO) {
 		const { account_id, amount } = message
 
 		await this.dataSource.transaction(async manager => {

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 
-import { CreditBalanceInputDTO } from './credit-balance.dtos'
+import { CreditBalanceQueueInputDTO } from './credit-balance.dtos'
 import {
 	AccountEntity,
 	InvoiceEntity,
@@ -12,9 +12,9 @@ import { EInvoiceStatus } from '@libs/common/enums'
 import { ETransactionType } from '@libs/db/enums/transaction-type.enum'
 
 @Injectable()
-export class CreditAccountBalanceService {
+export class CreditAccountBalanceQueueService {
 	private readonly logger: Logger = new Logger(
-		CreditAccountBalanceService.name,
+		CreditAccountBalanceQueueService.name,
 		{
 			timestamp: true,
 		},
@@ -25,7 +25,7 @@ export class CreditAccountBalanceService {
 		private readonly dataSource: DataSource,
 	) {}
 
-	async execute(message: CreditBalanceInputDTO) {
+	async execute(message: CreditBalanceQueueInputDTO) {
 		const { invoice_id } = message
 
 		await this.dataSource.transaction(async manager => {

@@ -1,10 +1,10 @@
 import { TFraud } from '@libs/common/types'
 
-export class FraudDetectionInputDTO {
+export class FraudDetectionQueueInputDTO {
 	invoice_id: number
 }
 
-export class FraudDetectionOutputDTO {
+export class FraudDetectionQueueOutputDTO {
 	id: number
 	fraud?: TFraud
 }

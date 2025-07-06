@@ -31,12 +31,12 @@ import {
 			AccountMachineEntity,
 		]),
 
-		// RabbitMQModule.forRootAsync({
-		// 	imports: [ConfigModule],
-		// 	inject: [ConfigService],
-		// 	useFactory: (configService: ConfigService) =>
-		// 		rabbitmqConfigFn(configService),
-		// }),
+		RabbitMQModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) =>
+				rabbitmqConfigFn(configService),
+		}),
 	],
 	controllers: [],
 	exports: [TypeOrmModule, RabbitMQModule],

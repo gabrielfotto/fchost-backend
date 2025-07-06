@@ -1,20 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
 
-import { CreditAccountBalanceService } from './credit-balance.service'
-import { CreditBalanceInputDTO } from './credit-balance.dtos'
+import { CreditAccountBalanceQueueService } from './credit-balance.service'
+import { CreditBalanceQueueInputDTO } from './credit-balance.dtos'
 
 @Injectable()
-export class CreditAccountBalanceConsumerHandler {
+export class CreditAccountBalanceQueueConsumerHandler {
 	private readonly logger: Logger = new Logger(
-		CreditAccountBalanceConsumerHandler.name,
+		CreditAccountBalanceQueueConsumerHandler.name,
 		{
 			timestamp: true,
 		},
 	)
 
 	constructor(
-		private readonly creditAccountBalanceService: CreditAccountBalanceService,
+		private readonly creditAccountBalanceQueueService: CreditAccountBalanceQueueService,
 	) {}
 
 	@RabbitSubscribe({
@@ -29,8 +29,8 @@ export class CreditAccountBalanceConsumerHandler {
 			},
 		},
 	})
-	async handler(message: CreditBalanceInputDTO) {
-		await this.creditAccountBalanceService.execute(message)
+	async handler(message: CreditBalanceQueueInputDTO) {
+		await this.creditAccountBalanceQueueService.execute(message)
 		this.logger.debug(`Message consumed: ${JSON.stringify(message)}`)
 	}
 }

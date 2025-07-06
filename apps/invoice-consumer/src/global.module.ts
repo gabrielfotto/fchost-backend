@@ -10,6 +10,7 @@ import { rabbitmqConfigFn } from '@libs/config'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
 
+// singleton
 // this global module is used to ensure the application has only one connection
 // for rabbitmq, and one connection postgres database
 @Global()

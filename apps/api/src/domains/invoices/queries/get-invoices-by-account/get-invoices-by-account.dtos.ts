@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer'
-import { EInvoiceStatus } from '@libs/shared/enums'
+import { EInvoiceStatus } from '@libs/common/enums'
 
 @Exclude()
 export class GetInvoicesByAccountOutputDTO {

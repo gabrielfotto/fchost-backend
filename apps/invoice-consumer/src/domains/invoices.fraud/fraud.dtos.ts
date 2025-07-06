@@ -1,4 +1,4 @@
-import { TFraud } from '@libs/shared/types'
+import { TFraud } from '@libs/common/types'
 
 export class FraudDetectionInputDTO {
 	invoice_id: number

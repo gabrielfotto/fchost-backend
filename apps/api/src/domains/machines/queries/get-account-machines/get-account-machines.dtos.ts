@@ -1,6 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer'
 import { EMachineStatus } from '@libs/db/enums'
-import { TMachine } from '@libs/shared/types'
+import { TMachine } from '@libs/common/types'
 
 @Exclude()
 export class MachineOutputDTO {

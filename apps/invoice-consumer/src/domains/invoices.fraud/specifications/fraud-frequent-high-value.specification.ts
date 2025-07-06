@@ -5,7 +5,7 @@ import { MoreThan, Repository } from 'typeorm'
 import { subHours } from 'date-fns'
 
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
-import { EFraudReason } from '@libs/shared/enums'
+import { EFraudReason } from '@libs/common/enums'
 
 @Injectable()
 export default class FraudFrequentHighValueEspecification {

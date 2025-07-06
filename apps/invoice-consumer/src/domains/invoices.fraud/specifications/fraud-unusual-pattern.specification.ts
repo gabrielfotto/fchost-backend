@@ -5,7 +5,7 @@ import { Repository } from 'typeorm'
 
 import { IFraudSpecification } from '../interfaces'
 import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
-import { EFraudReason } from '@libs/shared/enums'
+import { EFraudReason } from '@libs/common/enums'
 
 @Injectable()
 export default class FraudUnusualPatternEspecification

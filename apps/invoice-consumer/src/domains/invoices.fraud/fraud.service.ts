@@ -8,7 +8,7 @@ import { FraudSpecificationAggregator } from './specifications'
 
 import { InvoiceEntity } from '@libs/db/entities'
 import { FraudEntity } from '@libs/db/entities'
-import { EInvoiceStatus } from '@libs/shared/enums'
+import { EInvoiceStatus } from '@libs/common/enums'
 
 @Injectable()
 export class FraudDetectionConsumerHandlerService {

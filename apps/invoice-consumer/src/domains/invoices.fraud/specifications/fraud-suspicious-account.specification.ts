@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { IFraudSpecification } from '../interfaces'
 
 import { AccountEntity } from '@libs/db/entities'
-import { EFraudReason } from '@libs/shared/enums'
+import { EFraudReason } from '@libs/common/enums'
 
 @Injectable()
 export default class FraudSuspiciousAccountEspecification

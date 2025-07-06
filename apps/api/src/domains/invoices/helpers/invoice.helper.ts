@@ -1,5 +1,5 @@
-import { TInvoice } from '@libs/shared/types'
-import { EInvoiceStatus } from '@libs/shared/enums'
+import { TInvoice } from '@libs/common/types'
+import { EInvoiceStatus } from '@libs/common/enums'
 
 export class InvoiceHelper {
 	constructor(private invoice: TInvoice) {

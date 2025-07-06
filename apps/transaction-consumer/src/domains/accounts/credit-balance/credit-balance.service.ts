@@ -8,7 +8,7 @@ import {
 	InvoiceEntity,
 	TransactionEntity,
 } from '@libs/db/entities'
-import { EInvoiceStatus } from '@libs/shared/enums'
+import { EInvoiceStatus } from '@libs/common/enums'
 import { ETransactionType } from '@libs/db/enums/transaction-type.enum'
 
 @Injectable()

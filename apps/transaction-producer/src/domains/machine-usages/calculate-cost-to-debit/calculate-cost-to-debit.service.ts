@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
 import { In, IsNull, Repository } from 'typeorm'
 
-import { ICronService } from '@libs/shared/interfaces'
+import { ICronService } from '@libs/common/interfaces'
 import {
 	AccountEntity,
 	AccountMachineEntity,

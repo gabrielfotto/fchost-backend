@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 
-import { ICron } from '@libs/shared/interfaces'
+import { ICron } from '@libs/common/interfaces'
 import { CalculateMachineUsageCostToDebitService } from './calculate-cost-to-debit.service'
 
 @Injectable()

@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
 
-import { Account } from '@api/decorators/account.decorator'
+import { Account } from '@api/_common/decorators/account.decorator'
 import { AccountEntity } from '@libs/db/entities'
 
 import { CreateInvoiceInputDTO } from './commands/create-invoice/create-invoice.dtos'

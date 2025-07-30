@@ -4,9 +4,9 @@ import { Repository } from 'typeorm'
 import { plainToInstance } from 'class-transformer'
 
 import { AccountEntity, MachineEntity } from '@libs/db/entities'
-import { TPaginationMeta } from '@api/types/pagination.types'
+import { TPaginationMeta } from '@api/_common/types/pagination.types'
 
-import { PaginationResponseDTO } from '@api/dtos/pagination.dtos'
+import { PaginationResponseDTO } from '@api/_common/dtos/pagination.dtos'
 import { GetMachinesOutputDTO } from './get-machines.dtos'
 
 export class GetMachinesQuery {

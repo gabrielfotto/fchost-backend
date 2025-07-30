@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs'
 import { plainToInstance } from 'class-transformer'
 
 import { GetAccountQuery } from './queries/get-account-by-id/get-account-by-id.handler'
-import { Account } from '@api/decorators'
+import { Account } from '@api/_common/decorators'
 
 @Controller('accounts')
 export default class AccountsQueriesController {

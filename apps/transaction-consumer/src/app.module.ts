@@ -1,22 +1,22 @@
 import { Module } from '@nestjs/common'
 
-import { CreditAccountBalanceConsumerHandler } from './domains/accounts.transaction/credit-balance/credit-balance.consumer'
-import { CreditAccountBalanceService } from './domains/accounts.transaction/credit-balance/credit-balance.service'
-
-import { DebitAccountBalanceConsumerHandler } from './domains/accounts.transaction/debit-balance/debit-balance.consumer'
-import { DebitAccountBalanceService } from './domains/accounts.transaction/debit-balance/debit-balance.service'
-
 import { GlobalModule } from './global.module'
+
+import { CreditAccountBalanceQueueConsumerHandler } from './domains/accounts/queues/credit-balance/credit-balance.consumer'
+import { CreditAccountBalanceQueueService } from './domains/accounts/queues/credit-balance/credit-balance.service'
+
+import { DebitAccountBalanceQueueConsumerHandler } from './domains/accounts/queues/debit-balance/debit-balance.consumer'
+import { DebitAccountBalanceQueueService } from './domains/accounts/queues/debit-balance/debit-balance.service'
 
 @Module({
 	imports: [GlobalModule],
 	controllers: [],
 	providers: [
-		CreditAccountBalanceConsumerHandler,
-		CreditAccountBalanceService,
+		CreditAccountBalanceQueueConsumerHandler,
+		CreditAccountBalanceQueueService,
 
-		DebitAccountBalanceConsumerHandler,
-		DebitAccountBalanceService,
+		DebitAccountBalanceQueueConsumerHandler,
+		DebitAccountBalanceQueueService,
 	],
 })
 export class AppModule {}

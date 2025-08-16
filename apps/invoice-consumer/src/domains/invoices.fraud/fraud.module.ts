@@ -1,26 +1,20 @@
 import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
-import { ConfigModule, ConfigService } from '@nestjs/config'
 import {
 	FraudFrequentHighValueEspecification,
 	FraudSuspiciousAccountEspecification,
 	FraudUnusualPatternEspecification,
-} from './specifications'
+} from './queues/detect-fraud/specifications'
 
-import { FraudDetectionConsumerHandlerService } from './fraud.service'
-import { FraudDetectionConsumerHandler } from './fraud.consumer'
+import { FraudDetectionQueueConsumerHandlerService } from './queues/detect-fraud/detect-fraud.service'
+import { FraudDetectionQueueConsumerHandler } from './queues/detect-fraud/detect-fraud.consumer'
 
-import { rabbitmqConfigFn } from '@libs/config'
-import { AccountEntity, InvoiceEntity } from '@libs/db/entities'
-
-import { FraudSpecificationAggregator } from './specifications'
+import { FraudSpecificationAggregator } from './queues/detect-fraud/specifications'
 
 @Module({
 	imports: [],
 	providers: [
-		FraudDetectionConsumerHandlerService,
-		FraudDetectionConsumerHandler,
+		FraudDetectionQueueConsumerHandlerService,
+		FraudDetectionQueueConsumerHandler,
 
 		FraudSpecificationAggregator,
 		FraudFrequentHighValueEspecification,

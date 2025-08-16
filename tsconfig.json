@@ -23,8 +23,8 @@
 			"@libs/config/*": ["libs/config/src/*"],
 			"@libs/db": ["libs/db/src"],
 			"@libs/db/*": ["libs/db/src/*"],
-			"@libs/shared": ["libs/shared/src"],
-			"@libs/shared/*": ["libs/shared/src/*"]
+			"@libs/common": ["libs/common/src"],
+			"@libs/common/*": ["libs/common/src/*"]
 		}
 	}
 }

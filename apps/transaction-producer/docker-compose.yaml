@@ -7,14 +7,14 @@ services:
     restart: always
 
     ports:
-      - 8084:8084 # porta do debugger
+      - 8085:8085 # porta do debugger
 
     working_dir: /usr/src/app
     volumes:
       - ./src:/usr/src/app/apps/transaction-producer/src
 
     environment:
-      - APP_NAME=api
+      - APP_NAME=transaction-producer
       - NODE_ENV=dev
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
@@ -26,12 +26,12 @@ services:
     command: npm run start:debug:transaction-producer
 
     networks:
-      - kind
+      # - kind
       - fchost_network
 
 # kind k8s
 networks:
-  kind: # ficar ligado no nome
-    external: true
+  # kind: # ficar ligado no nome
+  #   external: true
   fchost_network: # ficar ligado no nome
     external: true

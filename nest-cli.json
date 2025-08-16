@@ -19,6 +19,15 @@
 				"watchAssets": true
 			}
 		},
+		"balance-monitor": {
+			"type": "application",
+			"root": "apps/balance-monitor",
+			"entryFile": "main",
+			"sourceRoot": "apps/balance-monitor/src",
+			"compilerOptions": {
+				"tsConfigPath": "apps/balance-monitor/tsconfig.app.json"
+			}
+		},
 		"config": {
 			"type": "library",
 			"root": "libs/config",
@@ -46,13 +55,13 @@
 				"tsConfigPath": "apps/invoice-consumer/tsconfig.app.json"
 			}
 		},
-		"shared": {
+		"common": {
 			"type": "library",
-			"root": "libs/shared",
+			"root": "libs/common",
 			"entryFile": "index",
-			"sourceRoot": "libs/shared/src",
+			"sourceRoot": "libs/common/src",
 			"compilerOptions": {
-				"tsConfigPath": "libs/shared/tsconfig.lib.json"
+				"tsConfigPath": "libs/common/tsconfig.lib.json"
 			}
 		},
 		"transaction-consumer": {

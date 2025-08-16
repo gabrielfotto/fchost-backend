@@ -31,6 +31,12 @@ function readCertFile(certPath: string) {
 
 export function findRoot(startDir: string = __dirname): string {
 	let currentDir = startDir
+	const isTsNode = currentDir.includes('node_modules/ts-node')
+
+	// Se estiver rodando com ts-node, precisamos ajustar o caminho
+	if (isTsNode) {
+		currentDir = process.cwd()
+	}
 
 	while (
 		!existsSync(join(currentDir, 'libs')) &&
@@ -52,28 +58,15 @@ export function dataSourceOptionsFn(
 		dbHost = 'localhost'
 	}
 
-	// Usa findRoot para achar o dist/libs independente da estrutura
-	const distRoot = findRoot()
+	// Usa findRoot para achar o diretório raiz do projeto
+	const projectRoot = findRoot()
 
-	let rdsSslCertOptions
-	if (nodeEnv === 'prod') {
-		rdsSslCertOptions = readCertFile(
-			join(distRoot, 'libs', 'db', 'cert', 'rds-us-east-1-bundle.pem'),
-		)
-	}
+	// Detecta se já está rodando do dist
+	const isDist = projectRoot.endsWith('dist')
 
-	const baseWithLibs = join(distRoot, 'libs', 'db')
-	const baseWithoutLibs = join(distRoot, 'db')
-
-	const entitiesBase = resolveValidPath(
-		join(baseWithLibs, 'entities'),
-		join(baseWithoutLibs, 'entities'),
-	)
-
-	const migrationsBase = resolveValidPath(
-		join(baseWithLibs, 'migrations'),
-		join(baseWithoutLibs, 'migrations'),
-	)
+	const basePath = isDist ? projectRoot : join(projectRoot, 'dist')
+	const entitiesBase = join(basePath, 'libs', 'db', 'entities')
+	const migrationsBase = join(basePath, 'libs', 'db', 'migrations')
 
 	if (!existsSync(entitiesBase)) {
 		throw new Error(`Entities path not found: ${entitiesBase}`)
@@ -83,6 +76,13 @@ export function dataSourceOptionsFn(
 		throw new Error(`Migrations path not found: ${migrationsBase}`)
 	}
 
+	let rdsSslCertOptions
+	if (nodeEnv === 'prod') {
+		rdsSslCertOptions = readCertFile(
+			join(basePath, 'libs', 'db', 'cert', 'rds-us-east-1-bundle.pem'),
+		)
+	}
+
 	return {
 		type: 'postgres',
 		host: dbHost,
@@ -90,8 +90,8 @@ export function dataSourceOptionsFn(
 		username: config.get('DB_USERNAME'),
 		password: config.get('DB_PASSWORD'),
 		database: config.get('DB_NAME'),
-		// entities: [join(entitiesBase, '*.entity.js')],
-		entities: [...Entities],
+		// entities: [join(entitiesBase, '*.js')],
+		entities: Entities,
 		migrations: [join(migrationsBase, '*.js')],
 		...(nodeEnv === 'prod'
 			? {
@@ -101,10 +101,14 @@ export function dataSourceOptionsFn(
 	}
 }
 
-const dataSource = new DataSource(
-	dataSourceOptionsFn({
+export function defaultConfigService() {
+	return {
 		get: (varName: string) => process.env[varName],
-	}),
+	}
+}
+
+const dataSource = new DataSource(
+	dataSourceOptionsFn(defaultConfigService() as CustomConfigType),
 )
 
 export default dataSource

@@ -4,18 +4,18 @@ export class MachinesMigration1745539773804 implements MigrationInterface {
 	name = 'MachinesMigration1745539773804'
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.query(
-			`CREATE TYPE "public"."invoice-frauds_reason_enum" AS ENUM('0', '1', '2')`,
-		)
+		// await queryRunner.query(
+		// 	`CREATE TYPE "public"."invoice-frauds_reason_enum" AS ENUM('0', '1', '2')`,
+		// )
 		await queryRunner.query(
 			`CREATE TABLE "invoice-frauds" ("id" SERIAL NOT NULL, "reason" "public"."invoice-frauds_reason_enum" NOT NULL, "description" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "invoiceId" integer, CONSTRAINT "REL_172322d7190fb8c6a1b2f7c9fa" UNIQUE ("invoiceId"), CONSTRAINT "PK_6e456175aba22dfe45e8c9a5057" PRIMARY KEY ("id"))`,
 		)
 		await queryRunner.query(
 			`CREATE TABLE "machines" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "vcpu" integer NOT NULL, "ram" integer NOT NULL, "pricePerHour" numeric NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_7b0817c674bb984650c5274e713" PRIMARY KEY ("id"))`,
 		)
-		await queryRunner.query(
-			`CREATE TYPE "public"."account-machines_status_enum" AS ENUM('on', 'off')`,
-		)
+		// await queryRunner.query(
+		// 	`CREATE TYPE "public"."account-machines_status_enum" AS ENUM('on', 'off')`,
+		// )
 		await queryRunner.query(
 			`CREATE TABLE "account-machines" ("id" SERIAL NOT NULL, "status" "public"."account-machines_status_enum" NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "accountId" integer, "machineId" integer, CONSTRAINT "PK_6fe90badf55733a4652c19ca2da" PRIMARY KEY ("id"))`,
 		)

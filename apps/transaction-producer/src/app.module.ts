@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common'
 import { ScheduleModule } from '@nestjs/schedule'
 
-import { AppCron } from './app.cron'
-import { AppService } from './app.service'
-
 import { GlobalModule } from './global.module'
+
+import { CalculateMachineUsageCostToDebitCron } from './domains/machine-usages/crons/calculate-cost-to-debit/calculate-cost-to-debit.cron'
+import { CalculateMachineUsageCostToDebitService } from './domains/machine-usages/crons/calculate-cost-to-debit/calculate-cost-to-debit.service'
 
 @Module({
 	imports: [ScheduleModule.forRoot(), GlobalModule],
 	controllers: [],
-	providers: [AppCron, AppService],
+	providers: [
+		CalculateMachineUsageCostToDebitCron,
+		CalculateMachineUsageCostToDebitService,
+	],
 })
 export class AppModule {}

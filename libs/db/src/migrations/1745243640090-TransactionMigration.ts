@@ -4,12 +4,12 @@ export class TransactionMigration1745243640090 implements MigrationInterface {
 	name = 'TransactionMigration1745243640090'
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.query(
-			`CREATE TYPE "public"."frauds_reason_enum" AS ENUM('0', '1', '2')`,
-		)
-		await queryRunner.query(
-			`CREATE TYPE "public"."transactions_type_enum" AS ENUM('credit', 'debit')`,
-		)
+		// await queryRunner.query(
+		// 	`CREATE TYPE "public"."frauds_reason_enum" AS ENUM('0', '1', '2')`,
+		// )
+		// await queryRunner.query(
+		// 	`CREATE TYPE "public"."transactions_type_enum" AS ENUM('credit', 'debit')`,
+		// )
 		await queryRunner.query(
 			`CREATE TABLE "transactions" ("id" SERIAL NOT NULL, "type" "public"."transactions_type_enum" NOT NULL, "value" integer NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "accountId" integer, "invoiceId" integer, CONSTRAINT "REL_9bde8424ba459604061c4cb01f" UNIQUE ("invoiceId"), CONSTRAINT "PK_a219afd8dd77ed80f5a862f1db9" PRIMARY KEY ("id"))`,
 		)

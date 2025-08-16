@@ -5,6 +5,7 @@ import { join, dirname } from 'path'
 
 import { DataSource, DataSourceOptions } from 'typeorm'
 import { ConfigService } from '@nestjs/config'
+
 import Entities from './entities'
 
 type CustomConfigType = {

@@ -4,8 +4,7 @@ import { runSeeder, SeederOptions } from 'typeorm-extension'
 import { MainSeeder } from './seeder'
 import { dataSourceOptionsFn, defaultConfigService } from '../data-source'
 
-import { AccountFactory } from './factories/account.factory'
-import { MachineFactory } from './factories/machine.factory'
+import { AccountFactory, MachineFactory } from './factories'
 
 const seederDataSourceOptions: DataSourceOptions & SeederOptions = {
 	...dataSourceOptionsFn(defaultConfigService()),

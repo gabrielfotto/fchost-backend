@@ -8,8 +8,7 @@ import {
 	UpdateDateColumn,
 } from 'typeorm'
 
-import AccountEntity from './account.entity'
-import MachineEntity from './machine.entity'
+import { AccountEntity, MachineEntity } from '.'
 
 import { EMachineStatus } from '../enums/machine-status.enum'
 

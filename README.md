@@ -1,98 +1,255 @@
+# FCHost Backend
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="NestJS Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  <strong>Sistema de hospedagem de máquinas virtuais com monitoramento de saldo e detecção de fraudes</strong>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## 📋 Índice
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [O que é a aplicação](#-o-que-é-a-aplicação)
+- [Funcionalidades](#-funcionalidades)
+- [Como executar a aplicação](#-como-executar-a-aplicação)
+- [Estrutura do projeto](#-estrutura-do-projeto)
+- [Tecnologias utilizadas](#-tecnologias-utilizadas)
 
-## Project setup
+## 🚀 O que é a aplicação
+
+O **FCHost Backend** é uma plataforma que simula a hospedagem de máquinas virtuais construída com arquitetura de microserviços usando NestJS.
+
+### Arquitetura
+
+O projeto segue uma arquitetura de monorepo com múltiplas aplicações especializadas:
+
+- **API Gateway**: Interface principal para clientes
+- **Balance Monitor**: Monitoramento automático de saldos
+- **Invoice Consumer**: Processamento de faturas e detecção de fraudes
+- **Transaction Consumer**: Processamento de transações financeiras
+- **Transaction Producer**: Geração automática de transações
+
+## ⚡ Funcionalidades
+
+### 🔐 Gestão de Contas
+
+- Criação e validação de contas de usuário
+- Sistema de API keys para autenticação
+- Controle de saldo e créditos
+- Histórico de transações
+
+### 🖥️ Gestão de Máquinas
+
+- Registro e aluguel de máquinas virtuais
+- Monitoramento de uso e consumo de recursos
+- Cálculo automático de custos baseado no uso
+- Controle de status e disponibilidade
+
+### 💰 Sistema Financeiro
+
+- Geração automática de faturas
+- Processamento de transações (crédito/débito)
+- Histórico completo de movimentações
+
+### 🚨 Detecção de Fraudes
+
+- Análise de padrões suspeitos
+- Detecção de uso anormal de recursos
+- Sistema de especificações configuráveis
+
+### 📧 Notificações
+
+- Envio de emails via AWS SES
+- Templates personalizáveis com Handlebars
+- Notificações automáticas para eventos importantes
+
+## 🛠️ Como executar a aplicação
+
+### Pré-requisitos
+
+- Node.js 18+
+- Docker e Docker Compose
+- PostgreSQL 16
+- RabbitMQ 3
+
+### 1. Configuração do ambiente
 
 ```bash
-$ npm install
+# Clone o repositório
+git clone <repository-url>
+cd fchost-backend
+
+# Instale as dependências
+npm install
 ```
 
-## Compile and run the project
+### 2. Configuração dos serviços
 
 ```bash
-# development
-$ npm run start
+# Inicie os serviços de infraestrutura
+docker-compose up -d
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Aguarde os serviços estarem prontos
+docker-compose ps
 ```
 
-## Run tests
+### 3. Configuração do banco de dados
 
 ```bash
-# unit tests
-$ npm run test
+# Execute as migrações
+npm run migration:run
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# (Opcional) Popule o banco com dados de teste
+npm run seed
 ```
 
-## Deployment
+### 4. Executando as aplicações
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+#### API Gateway (Porta 8081)
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Desenvolvimento
+npm run start:debug:api
+
+# Produção
+npm run build:api
+npm run start:prod:api
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+#### Balance Monitor (Porta 8082)
 
-## Resources
+```bash
+# Desenvolvimento
+npm run start:debug:balance-monitor
 
-Check out a few resources that may come in handy when working with NestJS:
+# Produção
+npm run build:balance-monitor
+npm run start:prod:balance-monitor
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+#### Invoice Consumer (Porta 8083)
 
-## Support
+```bash
+# Desenvolvimento
+npm run start:debug:invoice-consumer
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Produção
+npm run build:invoice-consumer
+npm run start:prod:invoice-consumer
+```
 
-## Stay in touch
+#### Transaction Consumer (Porta 8084)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+# Desenvolvimento
+npm run start:debug:transaction-consumer
 
-## License
+# Produção
+npm run build:transaction-consumer
+npm run start:prod:transaction-consumer
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+#### Transaction Producer (Porta 8085)
+
+```bash
+# Desenvolvimento
+npm run start:debug:transaction-producer
+
+# Produção
+npm run build:transaction-producer
+npm run start:prod:transaction-producer
+```
+
+### 5. Scripts úteis
+
+```bash
+# Build de todas as aplicações
+npm run build
+
+# Build de uma aplicação específica
+npm run build:api
+npm run build:balance-monitor
+npm run build:invoice-consumer
+npm run build:transaction-consumer
+npm run build:transaction-producer
+
+# Executar testes
+npm run test
+npm run test:e2e
+
+# Formatação de código
+npm run format
+
+# Linting
+npm run lint
+
+# Migrações
+npm run migration:generate
+npm run migration:run
+npm run migration:revert
+```
+
+### 6. Acessos aos serviços
+
+- **PostgreSQL**: `localhost:5432` (usuário: `postgres`, senha: `postgres`)
+- **RabbitMQ**: `localhost:5672` (usuário: `rabbitmq`, senha: `rabbitmq`)
+- **RabbitMQ Management**: `http://localhost:15672`
+
+## 🏗️ Estrutura do projeto
+
+```
+fchost-backend/
+├── apps/                          # Aplicações do monorepo
+│   ├── api/                      # API Gateway principal
+│   ├── balance-monitor/          # Monitor de saldo
+│   ├── invoice-consumer/         # Consumidor de faturas
+│   ├── transaction-consumer/     # Consumidor de transações
+│   └── transaction-producer/     # Produtor de transações
+├── libs/                         # Bibliotecas compartilhadas
+│   ├── common/                   # Tipos e interfaces comuns
+│   ├── config/                   # Configurações
+│   └── db/                       # Entidades e migrações
+├── infra/                        # Configurações de infraestrutura
+│   ├── aws/                      # Configurações AWS
+│   └── k8s/                      # Manifests Kubernetes
+└── scripts/                      # Scripts de build e deploy
+```
+
+## 🛠️ Tecnologias utilizadas
+
+### Backend
+
+- **NestJS**: Framework principal para construção de aplicações
+- **TypeScript**: Linguagem de programação
+- **TypeORM**: ORM para banco de dados
+- **PostgreSQL**: Banco de dados principal
+- **RabbitMQ**: Message broker para comunicação entre serviços
+
+### Infraestrutura
+
+- **Docker**: Containerização das aplicações
+- **Docker Compose**: Orquestração local dos serviços
+- **Kubernetes**: Orquestração em produção
+- **AWS**: Serviços em nuvem (ECR, SES)
+
+### Desenvolvimento
+
+- **Jest**: Framework de testes
+- **ESLint**: Linting de código
+- **Prettier**: Formatação de código
+- **SWC**: Compilador TypeScript rápido
+
+## 📚 Documentação adicional
+
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [TypeORM Documentation](https://typeorm.io/)
+- [RabbitMQ Documentation](https://www.rabbitmq.com/documentation.html)
+
+## 📄 Licença
+
+Este projeto é privado e não licenciado para uso público.
+
+---
+
+**Desenvolvido com ❤️ usando NestJS**

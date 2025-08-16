@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Sistema de contratação de máquinas virtuais com monitoramento de saldo e detecção de fraudes</strong>
+  <strong>Sistema de aluguel de máquinas virtuais com monitoramento de saldo e detecção de fraudes</strong>
 </p>
 
 ## 📋 Índice
@@ -18,7 +18,7 @@
 
 ## 🚀 O que é a aplicação
 
-O **FCHost Backend** é uma plataforma que simula a contratação de máquinas virtuais construída com arquitetura de microserviços usando NestJS.
+O **FCHost Backend** é uma plataforma que simula o aluguel de máquinas virtuais construída com arquitetura de microserviços usando NestJS.
 
 ### Arquitetura
 

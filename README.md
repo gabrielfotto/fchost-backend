@@ -248,8 +248,4 @@ fchost-backend/
 
 ## 📄 Licença
 
-Este projeto é privado e não licenciado para uso público.
-
----
-
-**Desenvolvido com ❤️ usando NestJS**
+Este projeto está sob a licença [MIT](LICENSE).

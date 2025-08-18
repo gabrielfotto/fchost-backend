@@ -41,10 +41,9 @@ O projeto segue uma arquitetura de monorepo com múltiplas aplicações especial
 
 ### 🖥️ Gestão de Máquinas
 
-- Registro e aluguel de máquinas virtuais
-- Monitoramento de uso e consumo de recursos
+- Aluguel de máquinas
 - Cálculo automático de custos baseado no uso
-- Controle de status e disponibilidade
+- Controle de status (On e Off)
 
 ### 💰 Sistema Financeiro
 
